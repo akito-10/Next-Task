@@ -1,10 +1,10 @@
 import { Auth } from "src/components/Auth";
-import { MainLayout } from "src/layouts";
+import { Layout } from "src/layouts";
 
 export default function LoginPage() {
   return (
-    <MainLayout page="ログイン" description="ログインページです。">
+    <Layout page="ログイン" description="ログインページです。">
       <Auth />
-    </MainLayout>
+    </Layout>
   );
 }
