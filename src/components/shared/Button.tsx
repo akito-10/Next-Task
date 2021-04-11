@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { useState } from "react";
 
 type ButtonProps = {
   // onClick?:
@@ -17,9 +16,10 @@ type ButtonProps = {
 
 export const Button = ({
   children,
-  bgColor,
-  textColor,
+  bgColor = "blue",
+  textColor = "black",
 }: ButtonProps): JSX.Element => {
+  // 指定した色をクラスに追加
   const colorClasses = classNames({
     "text-white bg-blue-500 hover:bg-blue-600": bgColor === "blue",
     "text-white bg-red-500 hover:bg-red-600": bgColor === "red",
