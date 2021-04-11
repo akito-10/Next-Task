@@ -1,3 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#btn {
+  user-select: none;
+  cursor: pointer;
+  /*ボタンのデフォルトのデザインをリセット*/
+  border: none;
+  outline: none;
+  /*position: relative; は必須*/
+  position: relative;
+  color: white;
+  box-shadow: 0.9px 1px 2px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  /*波紋のはみ出しを消す*/
+  overflow: hidden;
+}
+.ripple-field {
+  position: relative;
+  overflow: hidden;
+}
+.ripple {
+  /*position: absolute; は必須*/
+  position: absolute;
+  pointer-events: none;
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  /*今回はアニメーションの名前，変化の時間，繰り返し回数*/
+  animation: rippleEffect 1200ms 1;
+  opacity: 0;
+}
+
+@keyframes rippleEffect {
+  from {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  to {
+    transform: scale(30);
+    opacity: 0;
+  }
+}
