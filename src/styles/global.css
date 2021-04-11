@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+.max-w-20p {
+  max-width: 20%;
+}
+.max-w-30p {
+  max-width: 30%;
+}
+.max-w-50p {
+  max-width: 50%;
+}
+.max-w-90p {
+  max-width: 90%;
+}
+.max-h-500px {
+  max-width: 500px;
+}
+
+/* 以下、ripple */
 #btn {
   user-select: none;
   cursor: pointer;
