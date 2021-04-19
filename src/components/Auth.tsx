@@ -1,51 +1,77 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
+import { InputField } from "./shared/InputField";
+import Image from "next/image";
 
 export const Auth = (): JSX.Element => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [avatar, setAvatar] = useState<File | null>(null);
+  const [username, setUsername] = useState<string>("");
+
+  const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files![0]) {
+      setAvatar(e.target.files![0]);
+      e.target.value = "";
+    }
+  };
 
   return (
     <div className="max-w-md w-full space-y-8">
       <div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-100">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-600">
           {isLogin ? "Login" : "Sign Up"}
         </h2>
       </div>
-      <form className="mt-8 space-y-6" action="#" method="POST">
+      <form className="mt-8 space-y-6 text-center" action="#" method="POST">
         <input type="hidden" name="remember" value="true" />
         <div className="rounded-md shadow-sm -space-y-px">
+          {!isLogin && (
+            <div>
+              <InputField
+                name="username"
+                type="text"
+                autoComplete="username"
+                placeholder="ユーザー名"
+                value={username}
+                onChange={setUsername}
+              />
+            </div>
+          )}
+          {!isLogin && (
+            <label className="cursor-pointer">
+              <Image
+                src="/profile.png"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+              <input type="file" hidden onChange={onChangeImageHandler} />
+            </label>
+          )}
           <div>
-            <input
+            <InputField
               name="email"
               type="email"
               autoComplete="email"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 mb-3 border border-gray-300 placeholder-gray-100 text-white rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="メールアドレス"
               value={email}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setEmail(e.target.value)
-              }
+              onChange={setEmail}
             />
           </div>
           <div>
-            <input
+            <InputField
               name="password"
               type="password"
-              autoComplete="current-password"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-100 text-white rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              autoComplete="password"
               placeholder="パスワード"
               value={password}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setPassword(e.target.value)
-              }
+              onChange={setPassword}
             />
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between px-3">
           <div className="flex items-center">
             <input
               id="remember_me"
@@ -61,7 +87,7 @@ export const Auth = (): JSX.Element => {
           <div className="text-sm">
             <a
               href="#"
-              className="font-medium text-indigo-900 hover:text-indigo-700"
+              className="font-medium text-indigo-700 hover:text-indigo-900"
             >
               パスワードを忘れた
             </a>
@@ -92,7 +118,7 @@ export const Auth = (): JSX.Element => {
           </button>
           <div className="mt-3 ml-3">
             <span
-              className="cursor-pointer text-gray-100"
+              className="cursor-pointer text-gray-600"
               onClick={() => setIsLogin(!isLogin)}
             >
               {isLogin ? "新規登録へ" : "ログイン画面へ"}
