@@ -2,7 +2,7 @@ import React, { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 type InputFieldProps = {
   name: string;
-  type: string;
+  type: "text" | "email" | "password";
   autoComplete: string;
   placeholder: string;
   value: string;
