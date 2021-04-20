@@ -1,10 +1,38 @@
+import {
+  TableContents,
+  TableContentsProps,
+} from "src/components/shared/TableContents";
+
+const TABLE_CONTENTS_VALUE: TableContentsProps[] = [
+  {
+    id: "1",
+    name: "個人開発アプリ１",
+    process: "100%",
+  },
+  {
+    id: "2",
+    name: "個人開発アプリ２",
+    process: "100%",
+  },
+  {
+    id: "3",
+    name: "個人開発アプリ３",
+    process: "38%",
+  },
+  {
+    id: "4",
+    name: "個人開発アプリ４",
+    process: "25%",
+  },
+];
+
 export const TasksContent = (): JSX.Element => {
   return (
-    <div className="flex flex-col max-w-full text-center">
+    <div className="flex flex-col max-w-full -my-8 sm:my-0">
       <div className="-my-2">
         <div className="py-2 align-middle">
-          <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-            <table className="divide-y divide-gray-200">
+          <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg  w-650px max-w-full mx-auto">
+            <table className="divide-y divide-gray-200 w-full">
               <thead className="bg-gray-50">
                 <tr>
                   <th
@@ -28,398 +56,13 @@ export const TasksContent = (): JSX.Element => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">100%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sm font-medium text-gray-900">
-                        Jane Cooper
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">34%</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </td>
-                </tr>
+                {TABLE_CONTENTS_VALUE.map((content) => (
+                  <TableContents
+                    key={content.id}
+                    name={content.name}
+                    process={content.process}
+                  />
+                ))}
               </tbody>
             </table>
           </div>
