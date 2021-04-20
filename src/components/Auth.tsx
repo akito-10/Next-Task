@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { InputField } from "./shared/InputField";
 import Image from "next/image";
+import classNames from "classnames";
 
 export const Auth = (): JSX.Element => {
   const [email, setEmail] = useState<string>("");
@@ -44,7 +45,10 @@ export const Auth = (): JSX.Element => {
                 src="/profile.png"
                 width={40}
                 height={40}
-                className="rounded-full"
+                className={classNames(
+                  "rounded-full",
+                  !avatar ? "opacity-30" : "opacity-100"
+                )}
               />
               <input type="file" hidden onChange={onChangeImageHandler} />
             </label>
