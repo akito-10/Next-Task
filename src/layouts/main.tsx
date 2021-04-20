@@ -1,5 +1,5 @@
 import { NextSeo } from "next-seo";
-import { HeaderComponent } from "src/components/header";
+import { HeaderComponent } from "src/components/shared/Header";
 import type { MainLayoutProps } from "src/layouts/types";
 
 export function MainLayout({
