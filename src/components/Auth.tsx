@@ -2,8 +2,12 @@ import { useState } from "react";
 import { InputField } from "./shared/InputField";
 import Image from "next/image";
 import classNames from "classnames";
+import { auth, storage } from "src/firebase/firebase";
+import { useDispatch } from "react-redux";
+import { updateUserProfile } from "src/features/userSlice";
 
 export const Auth = (): JSX.Element => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -15,6 +19,40 @@ export const Auth = (): JSX.Element => {
       setAvatar(e.target.files![0]);
       e.target.value = "";
     }
+  };
+
+  const signInEmail = async () => {
+    await auth.signInWithEmailAndPassword(email, password);
+  };
+
+  const signUpEmail = async () => {
+    const authUser = await auth.createUserWithEmailAndPassword(email, password);
+
+    let url = "";
+    if (avatar) {
+      const S =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const N = 16;
+      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+        .map((n) => S[n % S.length])
+        .join("");
+      const fileName = randomChar + "_" + avatar.name;
+
+      await storage.ref(`avatars/${fileName}`).put(avatar);
+      url = await storage.ref("avatars").child(fileName).getDownloadURL();
+    }
+
+    await authUser.user?.updateProfile({
+      displayName: username,
+      photoURL: url,
+    });
+
+    dispatch(
+      updateUserProfile({
+        displayName: username,
+        photoUrl: url,
+      })
+    );
   };
 
   return (
@@ -102,6 +140,11 @@ export const Auth = (): JSX.Element => {
           <button
             type="submit"
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={() => {
+              {
+                isLogin ? signInEmail() : signUpEmail();
+              }
+            }}
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
               <svg
