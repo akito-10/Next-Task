@@ -17,13 +17,13 @@ export const TableContents = ({
           <div className="text-sm font-medium text-gray-900">{name}</div>
         </div>
       </td>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 text-center">
         <div className="text-sm text-gray-900">{process}</div>
       </td>
       <td className="px-6 py-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 mx-auto sm:mx-0"
+          className="h-6 w-6 mx-auto"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
