@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+.w-650px {
+  width: 650px;
+}
 .max-w-20p {
   max-width: 20%;
 }
@@ -10,6 +13,9 @@
 }
 .max-w-50p {
   max-width: 50%;
+}
+.max-w-80p {
+  max-width: 80%;
 }
 .max-w-90p {
   max-width: 90%;
