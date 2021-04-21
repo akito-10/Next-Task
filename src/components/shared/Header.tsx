@@ -2,6 +2,8 @@ import classNames from "classnames";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectUser } from "src/features/userSlice";
 
 type MenuItemProps = {
   title: string;
@@ -29,11 +31,15 @@ const SUB_MENU_ITEMS = [
   },
   {
     title: "Sign out",
+    function: logout,
+    link: "/",
   },
 ];
 
 export const HeaderComponent = (): JSX.Element => {
   const router = useRouter();
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const defaultStyle = "text-gray-300 hover:bg-gray-700 hover:text-white";
@@ -124,7 +130,7 @@ export const HeaderComponent = (): JSX.Element => {
                   <span className="sr-only">Open user menu</span>
                   <img
                     className="h-8 w-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    src={user.photoUrl}
                     alt=""
                   />
                 </button>
@@ -140,9 +146,10 @@ export const HeaderComponent = (): JSX.Element => {
                 aria-labelledby="user-menu"
               >
                 {SUB_MENU_ITEMS.map((item) => (
-                  <Link href="#">
+                  <Link href={item.link ? item.link : "#"}>
                     <a
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => item.function && dispatch(item.function())}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                       role="menuitem"
                     >
                       {item.title}
