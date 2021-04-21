@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import React from "react";
 
 type ButtonProps = {
   // onClick?:
@@ -14,11 +15,11 @@ type ButtonProps = {
   textColor?: "black" | "red" | "blue";
 };
 
-export const Button = ({
+export const PrimaryButton: React.VFC<ButtonProps> = ({
   children,
   bgColor = "blue",
   textColor = "black",
-}: ButtonProps): JSX.Element => {
+}) => {
   // 指定した色をクラスに追加
   const colorClasses = classNames({
     "text-white bg-blue-500 hover:bg-blue-600": bgColor === "blue",
