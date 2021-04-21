@@ -5,9 +5,11 @@ import classNames from "classnames";
 import { auth, storage } from "src/firebase/firebase";
 import { useDispatch } from "react-redux";
 import { updateUserProfile } from "src/features/userSlice";
+import { useRouter } from "next/router";
 
 export const Auth = (): JSX.Element => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -23,6 +25,7 @@ export const Auth = (): JSX.Element => {
 
   const signInEmail = async () => {
     await auth.signInWithEmailAndPassword(email, password);
+    router.push("/main-page");
   };
 
   const signUpEmail = async () => {
@@ -53,6 +56,8 @@ export const Auth = (): JSX.Element => {
         photoUrl: url,
       })
     );
+
+    router.push("/main-page");
   };
 
   return (
@@ -138,7 +143,7 @@ export const Auth = (): JSX.Element => {
 
         <div>
           <button
-            type="submit"
+            type="button"
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             onClick={() => {
               {
