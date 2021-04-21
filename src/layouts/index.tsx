@@ -1,4 +1,5 @@
 import { NextSeo } from "next-seo";
+import { useWatchIsLogin } from "src/hooks/useWatchIsLogin";
 import type { MainLayoutProps } from "src/layouts/types";
 
 export function Layout({
@@ -6,6 +7,8 @@ export function Layout({
   children,
   description,
 }: MainLayoutProps): JSX.Element {
+  useWatchIsLogin();
+
   return (
     <>
       <NextSeo title={`Tasker - ${page}`} description={description}></NextSeo>
