@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
-import { Button } from "./shared/Button";
+import { PrimaryButton } from "./shared/PrimaryButton";
 
 export const MainContent = (): JSX.Element => {
   const user = useSelector(selectUser);
@@ -26,7 +26,7 @@ export const MainContent = (): JSX.Element => {
         <p className="mb-2 text-black">次のタスク</p>
         <p>プロフィール画面作成</p>
         <p>~3/24</p>
-        <Button bgColor="blue">Done!!</Button>
+        <PrimaryButton bgColor="blue">Done!!</PrimaryButton>
       </div>
     </div>
   );
