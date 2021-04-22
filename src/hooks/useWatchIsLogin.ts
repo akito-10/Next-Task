@@ -9,8 +9,10 @@ export const useWatchIsLogin = () => {
   const router = useRouter();
 
   useEffect(() => {
+    // ログイン状態を監視
     const unSub = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
+        // 認証状態にある場合の処理
         dispatch(
           login({
             uid: authUser.uid,
@@ -19,6 +21,7 @@ export const useWatchIsLogin = () => {
           })
         );
       } else {
+        // 認証状態にない場合の処理
         dispatch(logout());
         router.push("/");
       }
