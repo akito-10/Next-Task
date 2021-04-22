@@ -2,12 +2,18 @@ import classNames from "classnames";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUser } from "src/features/userSlice";
+import { useSelector } from "react-redux";
+import { selectUser } from "src/features/userSlice";
+import { auth } from "src/firebase/firebase";
 
 type MenuItemProps = {
   title: string;
   link: string;
+};
+
+type SubMenuItemProps = {
+  title: string;
+  type: string;
 };
 
 const MENU_ITEMS: MenuItemProps[] = [
@@ -25,21 +31,20 @@ const MENU_ITEMS: MenuItemProps[] = [
   },
 ];
 
-const SUB_MENU_ITEMS = [
+const SUB_MENU_ITEMS: SubMenuItemProps[] = [
   {
     title: "Notifications",
+    type: "notifications",
   },
   {
     title: "Sign out",
-    function: logout,
-    link: "/",
+    type: "logout",
   },
 ];
 
 export const HeaderComponent = (): JSX.Element => {
   const router = useRouter();
   const user = useSelector(selectUser);
-  const dispatch = useDispatch();
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const defaultStyle = "text-gray-300 hover:bg-gray-700 hover:text-white";
@@ -146,15 +151,17 @@ export const HeaderComponent = (): JSX.Element => {
                 aria-labelledby="user-menu"
               >
                 {SUB_MENU_ITEMS.map((item) => (
-                  <Link href={item.link ? item.link : "#"}>
-                    <a
-                      onClick={() => item.function && dispatch(item.function())}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  <ul>
+                    <li
+                      onClick={async () =>
+                        item.type === "logout" && (await auth.signOut())
+                      }
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer list-none"
                       role="menuitem"
                     >
                       {item.title}
-                    </a>
-                  </Link>
+                    </li>
+                  </ul>
                 ))}
               </div>
             </div>
