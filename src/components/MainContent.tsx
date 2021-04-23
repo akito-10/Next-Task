@@ -26,7 +26,9 @@ export const MainContent = (): JSX.Element => {
         <p className="mb-2 text-black">次のタスク</p>
         <p>プロフィール画面作成</p>
         <p>~3/24</p>
-        <PrimaryButton bgColor="blue">Done!!</PrimaryButton>
+        <PrimaryButton bgColor="blue" ripple>
+          Done!!
+        </PrimaryButton>
       </div>
     </div>
   );

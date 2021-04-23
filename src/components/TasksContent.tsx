@@ -2,6 +2,7 @@ import {
   TableContents,
   TableContentsProps,
 } from "src/components/shared/TableContents";
+import { PrimaryButton } from "./shared/PrimaryButton";
 
 const TABLE_CONTENTS_VALUE: TableContentsProps[] = [
   {
@@ -67,6 +68,13 @@ export const TasksContent = (): JSX.Element => {
             </table>
           </div>
         </div>
+        <PrimaryButton
+          bgColor="blue"
+          className="bottom-16 left-1/2 translate-x-50"
+          fixed
+        >
+          新規タスク追加
+        </PrimaryButton>
       </div>
     </div>
   );

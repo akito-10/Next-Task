@@ -13,13 +13,21 @@ type ButtonProps = {
     | "gray"
     | "transparent";
   textColor?: "black" | "red" | "blue";
+  className?: string;
+  fixed?: boolean;
+  ripple?: boolean;
 };
 
 export const PrimaryButton: React.VFC<ButtonProps> = ({
   children,
   bgColor = "blue",
   textColor = "black",
+  className,
+  fixed = false,
+  ripple = false,
 }) => {
+  const position = fixed ? "fixed" : "relative";
+
   // 指定した色をクラスに追加
   const colorClasses = classNames({
     "text-white bg-blue-500 hover:bg-blue-600": bgColor === "blue",
@@ -58,10 +66,15 @@ export const PrimaryButton: React.VFC<ButtonProps> = ({
   return (
     <button
       id="btn"
-      className={classNames("my-4 px-6 py-2 rounded-lg", colorClasses)}
+      className={classNames(
+        "my-4 px-6 py-2 rounded-lg",
+        position,
+        colorClasses,
+        className
+      )}
       onMouseUp={(e) => {
         const rippleElement = document.getElementById("btn");
-        if (rippleElement) addRippleEffect(rippleElement, e);
+        if (rippleElement && ripple) addRippleEffect(rippleElement, e);
       }}
     >
       {children}
