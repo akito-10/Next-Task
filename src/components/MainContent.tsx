@@ -16,8 +16,8 @@ export const MainContent = (): JSX.Element => {
           className="rounded-full mx-auto"
         />
       )}
-      <h2 className="text-3xl mt-4">{user.displayName}</h2>
-      <h3 className="text-2xl mt-12">進行中のタスク</h3>
+      <h2 className="text-3xl mt-4 text-gray-800">{user.displayName}</h2>
+      <h3 className="text-2xl mt-12 text-gray-800">進行中のタスク</h3>
       <div className="bg-gray-50 text-gray-500 px-16 py-4 mt-4 rounded-lg shadow-xl">
         <h4 className="mb-2 border-b border-black border-solid text-black">
           タスク名
