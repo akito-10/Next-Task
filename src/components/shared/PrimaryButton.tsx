@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React from "react";
 
 type ButtonProps = {
-  // onClick?:
+  onClick: any;
   children: React.ReactNode;
   bgColor?:
     | "blue"
@@ -19,6 +19,7 @@ type ButtonProps = {
 };
 
 export const PrimaryButton: React.VFC<ButtonProps> = ({
+  onClick,
   children,
   bgColor = "blue",
   textColor = "black",
@@ -76,6 +77,7 @@ export const PrimaryButton: React.VFC<ButtonProps> = ({
         const rippleElement = document.getElementById("btn");
         if (rippleElement && ripple) addRippleEffect(rippleElement, e);
       }}
+      onClick={onClick}
     >
       {children}
     </button>
