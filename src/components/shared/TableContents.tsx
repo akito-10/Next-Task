@@ -10,18 +10,18 @@ export const TableContents = ({
 }: TableContentsProps): JSX.Element => {
   return (
     <tr>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 w-2/5">
         <div className="flex flex-col items-center">
           <div className="text-sm font-medium text-gray-900">{name}</div>
         </div>
       </td>
-      <td className="px-6 py-4 text-center">
+      <td className="px-6 py-4 text-center w-2/5">
         <div className="text-sm text-gray-900">{process}</div>
       </td>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 w-1/5">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 mx-auto"
+          className="h-6 w-full mx-auto"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
