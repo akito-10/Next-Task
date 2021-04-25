@@ -35,7 +35,7 @@ export const PrimaryButton: React.VFC<ButtonProps> = ({
     "text-white bg-red-500 hover:bg-red-600": bgColor === "red",
     "text-white bg-green-500 hover:bg-green-600": bgColor === "green",
     "text-black bg-gray-300 hover:bg-gray-400": bgColor === "gray",
-    "text-white bg-black hover:bg-gray-500": bgColor === "black",
+    "text-white bg-black hover:bg-gray-600": bgColor === "black",
     "bg-white hover:bg-gray-300": bgColor === "white",
     "bg-transparent": bgColor === "transparent",
     "text-black":
