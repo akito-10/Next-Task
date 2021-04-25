@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import {
   TableContents,
   TableContentsProps,
@@ -28,6 +29,8 @@ const TABLE_CONTENTS_VALUE: TableContentsProps[] = [
 ];
 
 export const TasksContent = (): JSX.Element => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col max-w-full -my-8 sm:my-0">
       <div className="-my-2">
@@ -72,6 +75,7 @@ export const TasksContent = (): JSX.Element => {
           bgColor="blue"
           className="bottom-16 left-1/2 translate-x-50"
           fixed
+          onClick={() => router.push("/tasks-page/new-task")}
         >
           新規タスク追加
         </PrimaryButton>
