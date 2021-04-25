@@ -1,30 +1,27 @@
 import { useRouter } from "next/router";
-import {
-  TableContents,
-  TableContentsProps,
-} from "src/components/shared/TableContents";
+import { TableContents } from "src/components/shared/TableContents";
 import { PrimaryButton } from "./shared/PrimaryButton";
 
-const TABLE_CONTENTS_VALUE: TableContentsProps[] = [
+const TABLE_CONTENTS_VALUE = [
   {
     id: "1",
     name: "個人開発アプリ１",
-    process: "100%",
+    progress: "100%",
   },
   {
     id: "2",
     name: "個人開発アプリ２",
-    process: "100%",
+    progress: "100%",
   },
   {
     id: "3",
     name: "個人開発アプリ３",
-    process: "38%",
+    progress: "38%",
   },
   {
     id: "4",
     name: "個人開発アプリ４",
-    process: "25%",
+    progress: "25%",
   },
 ];
 
@@ -64,7 +61,7 @@ export const TasksContent = (): JSX.Element => {
                   <TableContents
                     key={content.id}
                     name={content.name}
-                    process={content.process}
+                    sub={content.progress}
                   />
                 ))}
               </tbody>

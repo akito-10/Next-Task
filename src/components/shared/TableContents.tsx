@@ -1,12 +1,12 @@
 export type TableContentsProps = {
   id?: string;
   name: string;
-  process: string;
+  sub: string;
 };
 
 export const TableContents = ({
   name,
-  process,
+  sub,
 }: TableContentsProps): JSX.Element => {
   return (
     <tr>
@@ -16,7 +16,7 @@ export const TableContents = ({
         </div>
       </td>
       <td className="px-6 py-4 text-center w-2/5">
-        <div className="text-sm text-gray-900">{process}</div>
+        <div className="text-sm text-gray-900">{sub}</div>
       </td>
       <td className="px-6 py-4 w-1/5">
         <svg
