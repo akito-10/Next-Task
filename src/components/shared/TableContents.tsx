@@ -2,11 +2,13 @@ export type TableContentsProps = {
   id?: string;
   name: string;
   sub: string;
+  onClick: any;
 };
 
 export const TableContents = ({
   name,
   sub,
+  onClick,
 }: TableContentsProps): JSX.Element => {
   return (
     <tr>
@@ -25,6 +27,7 @@ export const TableContents = ({
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          onClick={onClick}
         >
           <path
             strokeLinecap="round"
