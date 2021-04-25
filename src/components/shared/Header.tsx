@@ -104,7 +104,7 @@ export const HeaderComponent = (): JSX.Element => {
             <div className="hidden sm:block sm:ml-6">
               <div className="flex space-x-4">
                 {MENU_ITEMS.map((item) => (
-                  <Link href={`/${item.link}`}>
+                  <Link key={item.title} href={`/${item.link}`}>
                     <a
                       className={classNames(
                         "px-3 py-2 rounded-md text-sm font-medium",
@@ -150,9 +150,10 @@ export const HeaderComponent = (): JSX.Element => {
                 aria-orientation="vertical"
                 aria-labelledby="user-menu"
               >
-                {SUB_MENU_ITEMS.map((item) => (
-                  <ul>
+                <ul>
+                  {SUB_MENU_ITEMS.map((item) => (
                     <li
+                      key={item.type}
                       onClick={async () =>
                         item.type === "logout" && (await auth.signOut())
                       }
@@ -161,8 +162,8 @@ export const HeaderComponent = (): JSX.Element => {
                     >
                       {item.title}
                     </li>
-                  </ul>
-                ))}
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
@@ -175,7 +176,7 @@ export const HeaderComponent = (): JSX.Element => {
       >
         <div className="px-2 pt-2 pb-3 space-y-1">
           {MENU_ITEMS.map((item) => (
-            <Link href={`/${item.link}`}>
+            <Link key={item.title} href={`/${item.link}`}>
               <a
                 className={classNames(
                   "block px-3 py-2 rounded-md text-base font-medium",
