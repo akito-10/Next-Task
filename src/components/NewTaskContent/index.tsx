@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { Task } from "./task";
+import { TodoList } from "./todo-list";
 
 export const NewTaskContent = () => {
-  const [title, setTitle] = useState<string>("");
+  const [taskTitle, setTaskTitle] = useState<string>("");
   const [page, setPage] = useState<string>("task");
 
   return (
     <div>
       {page === "task" ? (
-        <Task title={title} setTitle={setTitle} setPage={setPage} />
+        <Task setTitle={setTaskTitle} setPage={setPage} />
       ) : (
-        <></>
+        <TodoList taskTitle={taskTitle} setPage={setPage} />
       )}
     </div>
   );
