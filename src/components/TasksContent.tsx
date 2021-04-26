@@ -32,7 +32,7 @@ const TABLE_CONTENTS_VALUE = [
   // },
 ];
 
-type Table_Contents_Type = {
+type TableContentsType = {
   title: string;
   created_at: any;
   todoList: {
@@ -45,7 +45,7 @@ type Table_Contents_Type = {
 
 export const TasksContent = (): JSX.Element => {
   const router = useRouter();
-  const [tableContents, setTableContents] = useState<Table_Contents_Type>([
+  const [tableContents, setTableContents] = useState<TableContentsType>([
     {
       title: "",
       created_at: null,
@@ -68,10 +68,10 @@ export const TasksContent = (): JSX.Element => {
   return (
     <div className="flex flex-col max-w-full -my-8 sm:my-0">
       <div className="-my-2">
-        <div className="py-2 align-middle bg-gray-50">
+        <div className="py-2 align-middle sm:rounded-t-lg bg-gray-50">
           <div
             className={classNames(
-              "shadow overflow-hidden border-b border-gray-200 sm:rounded-t-lg w-650px max-w-full mx-auto",
+              "shadow overflow-hidden border-b border-gray-200 w-650px max-w-full mx-auto",
               classes
             )}
           >
@@ -196,7 +196,6 @@ export const TasksContent = (): JSX.Element => {
                     className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                   >
                     <span className="sr-only">Next</span>
-                    {/* <!-- Heroicon name: solid/chevron-right --> */}
                     <svg
                       className="h-5 w-5"
                       xmlns="http://www.w3.org/2000/svg"
