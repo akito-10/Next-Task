@@ -5,6 +5,8 @@ import { InputField } from "../shared/InputField";
 import { PrimaryButton } from "../shared/PrimaryButton";
 import { TableContents } from "../shared/TableContents";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { selectUser } from "src/features/userSlice";
 
 type TodoListProps = {
   taskTitle: string;
@@ -16,6 +18,7 @@ export const TodoList = ({
   setPage,
 }: TodoListProps): JSX.Element => {
   const router = useRouter();
+  const user = useSelector(selectUser);
   const [title, setTitle] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [todoInfo, setTodoInfo] = useState([
@@ -26,17 +29,20 @@ export const TodoList = ({
   ]);
 
   const registerTask = () => {
-    db.collection("tasks").add({
-      title: taskTitle,
-      created_at: firebase.firestore.FieldValue.serverTimestamp(),
-      todoList: todoInfo.map((todo) => {
-        return {
-          ...todo,
-          isDone: false,
-          doneDate: null,
-        };
-      }),
-    });
+    db.collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .add({
+        title: taskTitle,
+        created_at: firebase.firestore.FieldValue.serverTimestamp(),
+        todoList: todoInfo.map((todo) => {
+          return {
+            ...todo,
+            isDone: false,
+            doneDate: null,
+          };
+        }),
+      });
   };
 
   return (
