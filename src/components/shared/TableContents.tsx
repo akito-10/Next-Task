@@ -1,29 +1,33 @@
+import classNames from "classnames";
+
 export type TableContentsProps = {
   id?: string;
+  className?: string;
   name: string;
   sub: string;
   onClick: any;
 };
 
 export const TableContents = ({
+  className,
   name,
   sub,
   onClick,
 }: TableContentsProps): JSX.Element => {
   return (
     <tr>
-      <td className="px-6 py-4 w-2/5">
+      <td className={classNames("px-6 py-4 w-2/5", className)}>
         <div className="flex flex-col items-center">
           <div className="text-sm font-medium text-gray-900">{name}</div>
         </div>
       </td>
-      <td className="px-6 py-4 text-center w-2/5">
+      <td className={classNames("px-6 py-4 text-center w-2/5", className)}>
         <div className="text-sm text-gray-900">{sub}</div>
       </td>
-      <td className="px-6 py-4 w-1/5">
+      <td className={classNames("px-6 py-4 w-1/5", className)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-full mx-auto cursor-pointer"
+          className={"h-6 w-full mx-auto cursor-pointer"}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
