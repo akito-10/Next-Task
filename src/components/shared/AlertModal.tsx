@@ -1,8 +1,10 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { PrimaryButton } from "./PrimaryButton";
 
 type AlertModalProps = {
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   primaryText: string;
   message: string;
   secondText?: string;
@@ -10,13 +12,13 @@ type AlertModalProps = {
 };
 
 export const AlertModal = ({
+  isOpen,
+  setIsOpen,
   primaryText,
   message,
   secondText,
   onClick,
 }: AlertModalProps): JSX.Element => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
-
   return (
     <div
       className={classNames(
