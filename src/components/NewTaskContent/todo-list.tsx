@@ -7,6 +7,7 @@ import { TableContents } from "../shared/TableContents";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
+import { AlertModal } from "../shared/AlertModal";
 
 type TodoListProps = {
   taskTitle: string;
@@ -27,6 +28,8 @@ export const TodoList = ({
       deadline: "",
     },
   ]);
+  const [message, setMessage] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const registerTask = () => {
     db.collection("users")
@@ -71,6 +74,19 @@ export const TodoList = ({
           bgColor="black"
           ripple
           onClick={() => {
+            if (!title && !date) {
+              setMessage("タイトルと締め切り");
+              setIsOpen(true);
+              return;
+            } else if (!title) {
+              setMessage("タイトル");
+              setIsOpen(true);
+              return;
+            } else if (!date) {
+              setMessage("締め切り");
+              setIsOpen(true);
+              return;
+            }
             setTodoInfo((prev) =>
               prev[0]?.title !== ""
                 ? [
@@ -156,6 +172,12 @@ export const TodoList = ({
           登録
         </PrimaryButton>
       </div>
+      <AlertModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        primaryText="OK"
+        message={`なんだろう、${message}埋めてもらってもいいですか？`}
+      />
     </div>
   );
 };
