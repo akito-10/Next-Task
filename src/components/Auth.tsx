@@ -15,12 +15,55 @@ export const Auth = (): JSX.Element => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [avatar, setAvatar] = useState<File | null>(null);
   const [username, setUsername] = useState<string>("");
+  const [alertText, setAlertText] = useState<string>("");
+  const [isViewAlert, setIsViewAlert] = useState<boolean>(true);
 
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
       setAvatar(e.target.files![0]);
       e.target.value = "";
     }
+  };
+
+  // ログイン時のバリデーション
+  const checkItemsInLogin = () => {
+    if (!email && !password) {
+      setAlertText("メールアドレス、パスワードは必須です。");
+      return false;
+    } else if (!email) {
+      setAlertText("メールアドレスは必須です。");
+      return false;
+    } else if (!password) {
+      setAlertText("パスワードは必須です。");
+      return false;
+    }
+    return true;
+  };
+
+  // 新規登録時のバリデーション
+  const checkItemsInSignUp = () => {
+    if (!username && !avatar && !email && !password) {
+      setAlertText(
+        "ユーザー名、アバター、メールアドレス、パスワードは必須です。"
+      );
+      return false;
+    } else if (!username) {
+      setAlertText("ユーザー名は必須です。");
+      return false;
+    } else if (!avatar) {
+      setAlertText("アバターは必須です。");
+      return false;
+    } else if (!email) {
+      setAlertText("メールアドレスは必須です。");
+      return false;
+    } else if (!password) {
+      setAlertText("パスワードは必須です。");
+      return false;
+    } else if (password.length < 6) {
+      setAlertText("パスワードは6文字以上です。");
+      return false;
+    }
+    return true;
   };
 
   const signInEmail = async () => {
@@ -116,6 +159,14 @@ export const Auth = (): JSX.Element => {
               onChange={setPassword}
             />
           </div>
+          <span
+            className={classNames(
+              "text-xs text-red-600",
+              !isViewAlert && "hidden"
+            )}
+          >
+            {alertText}
+          </span>
         </div>
 
         <div className="flex items-center justify-between px-3">
@@ -147,6 +198,14 @@ export const Auth = (): JSX.Element => {
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             onClick={() => {
               {
+                const checkedItems = isLogin
+                  ? checkItemsInLogin()
+                  : checkItemsInSignUp();
+                if (!checkedItems) {
+                  setIsViewAlert(true);
+                  return;
+                }
+                setIsViewAlert(false);
                 isLogin ? signInEmail() : signUpEmail();
               }
             }}
@@ -171,7 +230,10 @@ export const Auth = (): JSX.Element => {
           <div className="mt-3 ml-3">
             <span
               className="cursor-pointer text-gray-600"
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => {
+                setIsViewAlert(false);
+                setIsLogin(!isLogin);
+              }}
             >
               {isLogin ? "新規登録へ" : "ログイン画面へ"}
             </span>
