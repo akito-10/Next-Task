@@ -67,8 +67,15 @@ export const Auth = (): JSX.Element => {
   };
 
   const signInEmail = async () => {
-    await auth.signInWithEmailAndPassword(email, password);
-    router.push("/main-page");
+    await auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        router.push("/main-page");
+      })
+      .catch(() => {
+        setAlertText("メールアドレスまたはパスワードが正しくありません。");
+        setIsViewAlert(true);
+      });
   };
 
   const signUpEmail = async () => {
