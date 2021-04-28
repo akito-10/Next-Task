@@ -39,13 +39,15 @@ export const TodoList = ({
       .add({
         title: taskTitle,
         created_at: firebase.firestore.FieldValue.serverTimestamp(),
-        todoList: todoInfo.map((todo) => {
-          return {
-            ...todo,
-            isDone: false,
-            doneDate: null,
-          };
-        }),
+        todoList: todoInfo[0].title
+          ? todoInfo.map((todo) => {
+              return {
+                ...todo,
+                isDone: false,
+                doneDate: null,
+              };
+            })
+          : null,
       });
   };
 
