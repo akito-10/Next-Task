@@ -1,39 +1,16 @@
 import classNames from "classnames";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { TableContents } from "src/components/shared/TableContents";
+import { selectUser } from "src/features/userSlice";
+import { db } from "src/firebase/firebase";
 import { PrimaryButton } from "./shared/PrimaryButton";
 
-const TABLE_CONTENTS_VALUE = [
-  {
-    id: "1",
-    name: "個人開発アプリ１",
-    progress: "100%",
-  },
-  {
-    id: "2",
-    name: "個人開発アプリ２",
-    progress: "100%",
-  },
-  {
-    id: "3",
-    name: "個人開発アプリ３",
-    progress: "38%",
-  },
-  {
-    id: "4",
-    name: "個人開発アプリ４",
-    progress: "25%",
-  },
-  // {
-  //   id: "5",
-  //   name: "個人開発アプリ５",
-  //   progress: "25%",
-  // },
-];
-
 type TableContentsType = {
+  id: string;
   title: string;
+  progress: number;
   created_at: any;
   todoList: {
     title: string;
@@ -45,9 +22,12 @@ type TableContentsType = {
 
 export const TasksContent = (): JSX.Element => {
   const router = useRouter();
+  const user = useSelector(selectUser);
   const [tableContents, setTableContents] = useState<TableContentsType>([
     {
+      id: "",
       title: "",
+      progress: 0,
       created_at: null,
       todoList: [
         {
@@ -60,10 +40,32 @@ export const TasksContent = (): JSX.Element => {
     },
   ]);
 
-  const classes =
-    tableContents.length > 3 || TABLE_CONTENTS_VALUE.length > 3
-      ? "h-auto"
-      : "h-80";
+  const classes = tableContents.length > 3 ? "h-auto" : "h-80";
+
+  useEffect(() => {
+    // リロードが起きた瞬間、uidが空になり、エラーが起きてしまう。
+    // そのため、以下のような振り分けの処理を追加している。
+    const unSub = user.uid
+      ? db
+          .collection("users")
+          .doc(user.uid)
+          .collection("tasks")
+          .orderBy("created_at", "desc")
+          .onSnapshot((snapshot) => {
+            setTableContents(
+              snapshot.docs.map((doc) => ({
+                id: doc.id,
+                title: doc.data().title,
+                progress: doc.data().progress,
+                created_at: doc.data().title,
+                todoList: doc.data().todoList,
+              }))
+            );
+          })
+      : console.log;
+
+    return () => unSub();
+  }, [user.uid]);
 
   return (
     <div className="flex flex-col max-w-full -my-8 sm:my-0">
@@ -99,12 +101,12 @@ export const TasksContent = (): JSX.Element => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {TABLE_CONTENTS_VALUE.map((content) => (
+                {tableContents.map((content) => (
                   <TableContents
                     key={content.id}
                     className="h-14"
-                    name={content.name}
-                    sub={content.progress}
+                    name={content.title}
+                    sub={`${content.progress}%`}
                     onClick={() => console.log("OK!!")}
                   />
                 ))}
