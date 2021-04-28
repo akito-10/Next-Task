@@ -38,6 +38,7 @@ export const TodoList = ({
       .collection("tasks")
       .add({
         title: taskTitle,
+        progress: 0,
         created_at: firebase.firestore.FieldValue.serverTimestamp(),
         todoList: todoInfo[0].title
           ? todoInfo.map((todo) => {
