@@ -67,6 +67,22 @@ export const TasksContent = (): JSX.Element => {
     return () => unSub();
   }, [user.uid]);
 
+  const deleteTask = (id: string) => {
+    if (window.confirm("このタスクを削除しますか？")) {
+      db.collection("users")
+        .doc(user.uid)
+        .collection("tasks")
+        .doc(id)
+        .delete()
+        .then(() => {
+          console.log("削除成功！");
+        })
+        .catch((error) => {
+          console.error("Error removing document: ", error);
+        });
+    }
+  };
+
   return (
     <div className="flex flex-col max-w-full -my-8 sm:my-0">
       <div className="-my-2">
@@ -107,7 +123,7 @@ export const TasksContent = (): JSX.Element => {
                     className="h-14"
                     name={content.title}
                     sub={`${content.progress}%`}
-                    onClick={() => console.log("OK!!")}
+                    onClick={() => deleteTask(content.id)}
                   />
                 ))}
               </tbody>
