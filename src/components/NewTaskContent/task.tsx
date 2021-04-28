@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
+import { AlertModal } from "../shared/AlertModal";
 import { InputField } from "../shared/InputField";
 import { PrimaryButton } from "../shared/PrimaryButton";
 
@@ -9,6 +10,8 @@ type TaskProps = {
 
 export const Task = ({ setTitle, setPage }: TaskProps): JSX.Element => {
   const [taskTitle, setTaskTitle] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <div className="text-center">
@@ -28,12 +31,23 @@ export const Task = ({ setTitle, setPage }: TaskProps): JSX.Element => {
         className="bottom-16 left-1/2 translate-x-50"
         fixed
         onClick={() => {
+          if (!taskTitle) {
+            setMessage("タイトル");
+            setIsOpen(true);
+            return;
+          }
           setPage("todo");
           setTitle(taskTitle);
         }}
       >
         Todo入力へ
       </PrimaryButton>
+      <AlertModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        primaryText="OK"
+        message={`なんだろう、${message}埋めてもらってもいいですか？`}
+      />
     </div>
   );
 };
