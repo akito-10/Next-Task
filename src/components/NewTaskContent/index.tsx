@@ -7,7 +7,7 @@ export const NewTaskContent = () => {
   const [page, setPage] = useState<string>("task");
 
   return (
-    <div>
+    <div className="max-w-full">
       {page === "task" ? (
         <Task setTitle={setTaskTitle} setPage={setPage} />
       ) : (
