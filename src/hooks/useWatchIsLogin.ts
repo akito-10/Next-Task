@@ -8,6 +8,8 @@ export const useWatchIsLogin = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  console.log("watching..!");
+
   useEffect(() => {
     // ログイン状態を監視
     const unSub = auth.onAuthStateChanged((authUser) => {
