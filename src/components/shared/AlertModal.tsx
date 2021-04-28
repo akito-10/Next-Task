@@ -90,7 +90,7 @@ export const AlertModal = ({
               bgColor="black"
               onClick={() => {
                 setIsOpen(false);
-                onClick();
+                onClick && onClick();
               }}
               className="w-full inline-flex justify-center rounded-md border border-transparent text-base font-medium sm:ml-3 sm:w-auto sm:text-sm"
             >
