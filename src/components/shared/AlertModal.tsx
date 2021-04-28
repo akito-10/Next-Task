@@ -7,6 +7,7 @@ type AlertModalProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   primaryText: string;
   message: string;
+  type?: "alert" | "warning";
   secondText?: string;
   onClick?: any;
 };
@@ -16,9 +17,13 @@ export const AlertModal = ({
   setIsOpen,
   primaryText,
   message,
+  type = "alert",
   secondText,
   onClick,
 }: AlertModalProps): JSX.Element => {
+  const bgColor = type === "alert" ? "bg-red-100" : "bg-yellow-100";
+  const textColor = type === "alert" ? "text-red-600" : "text-yellow-300";
+
   return (
     <div
       className={classNames(
@@ -44,10 +49,15 @@ export const AlertModal = ({
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="sm:flex sm:items-start">
-              <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+              <div
+                className={classNames(
+                  "mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10",
+                  bgColor
+                )}
+              >
                 {/* <!-- Heroicon name: outline/exclamation --> */}
                 <svg
-                  className="h-6 w-6 text-red-600"
+                  className={classNames("h-6 w-6", textColor)}
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -80,7 +90,7 @@ export const AlertModal = ({
               bgColor="black"
               onClick={() => {
                 setIsOpen(false);
-                onClick;
+                onClick();
               }}
               className="w-full inline-flex justify-center rounded-md border border-transparent text-base font-medium sm:ml-3 sm:w-auto sm:text-sm"
             >
@@ -90,7 +100,9 @@ export const AlertModal = ({
               <PrimaryButton
                 bgColor="white"
                 textColor="black"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                }}
                 className="w-full inline-flex justify-center rounded-md border border-transparent text-base font-medium  sm:ml-3 sm:w-auto sm:text-sm"
               >
                 {secondText}
