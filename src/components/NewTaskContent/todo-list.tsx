@@ -29,7 +29,8 @@ export const TodoList = ({
     },
   ]);
   const [message, setMessage] = useState<string>("");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
+  const [isWarningOpen, setIsWarningOpen] = useState<boolean>(false);
 
   const registerTask = () => {
     db.collection("users")
@@ -76,15 +77,15 @@ export const TodoList = ({
           onClick={() => {
             if (!title && !date) {
               setMessage("タイトルと締め切り");
-              setIsOpen(true);
+              setIsAlertOpen(true);
               return;
             } else if (!title) {
               setMessage("タイトル");
-              setIsOpen(true);
+              setIsAlertOpen(true);
               return;
             } else if (!date) {
               setMessage("締め切り");
-              setIsOpen(true);
+              setIsAlertOpen(true);
               return;
             }
             setTodoInfo((prev) =>
@@ -165,18 +166,33 @@ export const TodoList = ({
         <PrimaryButton
           bgColor="green"
           onClick={() => {
-            registerTask();
-            router.push("/tasks-page");
+            if (!todoInfo[0].title) {
+              setIsWarningOpen(true);
+            } else {
+              registerTask();
+              router.push("/tasks-page");
+            }
           }}
         >
           登録
         </PrimaryButton>
       </div>
       <AlertModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isAlertOpen}
+        setIsOpen={setIsAlertOpen}
         primaryText="OK"
         message={`なんだろう、${message}埋めてもらってもいいですか？`}
+      />
+      <AlertModal
+        isOpen={isWarningOpen}
+        setIsOpen={setIsWarningOpen}
+        primaryText="進む"
+        message={"Todoが登録されていませんが、そのまま進みますか？"}
+        secondText="戻る"
+        onClick={() => {
+          registerTask();
+          router.push("/tasks-page");
+        }}
       />
     </div>
   );
