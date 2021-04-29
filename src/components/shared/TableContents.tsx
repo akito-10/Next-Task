@@ -3,14 +3,14 @@ import classNames from "classnames";
 export type TableContentsProps = {
   id?: string;
   className?: string;
-  name: string;
+  children: React.ReactNode;
   sub: string;
   onClick: any;
 };
 
 export const TableContents = ({
   className,
-  name,
+  children,
   sub,
   onClick,
 }: TableContentsProps): JSX.Element => {
@@ -18,7 +18,7 @@ export const TableContents = ({
     <tr>
       <td className={classNames("px-6 py-4 w-2/5", className)}>
         <div className="flex flex-col items-center">
-          <div className="text-sm font-medium text-gray-900">{name}</div>
+          <div className="text-sm font-medium text-gray-900">{children}</div>
         </div>
       </td>
       <td className={classNames("px-6 py-4 text-center w-2/5", className)}>
