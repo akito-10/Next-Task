@@ -24,7 +24,7 @@ export const TableContents = ({
       <td className={classNames("px-6 py-4 text-center w-2/5", className)}>
         <div className="text-sm text-gray-900">{sub}</div>
       </td>
-      <td className={classNames("px-6 py-4 w-1/5", className)}>
+      <td className={classNames("sm:px-6 sm:py-4 w-1/5", className)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={"h-6 w-full mx-auto cursor-pointer"}

@@ -16,7 +16,7 @@ export const Task = ({ setTitle, setPage }: TaskProps): JSX.Element => {
   return (
     <div className="text-center">
       <h1 className="text-3xl text-gray-700 mb-6 sm:mb-14">新規タスク登録</h1>
-      <div className="h-52 w-96 flex flex-col items-center justify-center max-w-full">
+      <div className="h-52 w-96 flex flex-col items-center justify-center max-w-90p mx-auto">
         <h2 className="text-2xl text-gray-700 mb-5">タイトルを入力</h2>
         <InputField
           color="white"
