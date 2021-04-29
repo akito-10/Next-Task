@@ -150,7 +150,7 @@ export const TodoList = ({
                 todoInfo.map((todo) => (
                   <TableContents
                     key={todo.id}
-                    name={todo.title}
+                    children={todo.title}
                     sub={todo.deadline}
                     onClick={() =>
                       setTodoInfo(() =>
