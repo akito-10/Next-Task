@@ -20,10 +20,12 @@ export const TodoList = ({
 }: TodoListProps): JSX.Element => {
   const router = useRouter();
   const user = useSelector(selectUser);
+  const [id, setId] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [todoInfo, setTodoInfo] = useState([
     {
+      id: 0,
       title: "",
       deadline: "",
     },
@@ -43,7 +45,8 @@ export const TodoList = ({
         todoList: todoInfo[0].title
           ? todoInfo.map((todo) => {
               return {
-                ...todo,
+                title: todo.title,
+                deadline: todo.deadline,
                 isDone: false,
                 doneDate: null,
               };
@@ -52,12 +55,14 @@ export const TodoList = ({
       });
   };
 
+  console.log(id);
+
   return (
     <div className="text-center">
       <h1 className="text-3xl text-gray-700 mb-6 sm:mb-14">
         {taskTitle ? `${taskTitle}のTodo登録` : "無名のタスク"}
       </h1>
-      <div className="h-96 w-96 flex flex-col items-center justify-center mx-auto max-w-full">
+      <div className="h-96 w-96 flex flex-col items-center justify-center mx-auto max-w-90p">
         <h2 className="text-2xl text-gray-700 mb-5">タイトルを入力</h2>
         <InputField
           color="white"
@@ -91,17 +96,20 @@ export const TodoList = ({
               setIsAlertOpen(true);
               return;
             }
+            setId((prev) => prev + 1);
             setTodoInfo((prev) =>
               prev[0]?.title !== ""
                 ? [
                     ...prev,
                     {
+                      id: id,
                       title: title,
                       deadline: date,
                     },
                   ]
                 : [
                     {
+                      id: id,
                       title: title,
                       deadline: date,
                     },
@@ -141,12 +149,12 @@ export const TodoList = ({
               {todoInfo[0]?.title && todoInfo[0].title !== null ? (
                 todoInfo.map((todo) => (
                   <TableContents
-                    key={`${todo.title}-${todo.deadline}`}
+                    key={todo.id}
                     name={todo.title}
                     sub={todo.deadline}
                     onClick={() =>
                       setTodoInfo(() =>
-                        todoInfo.filter((curr) => curr.title !== todo.title)
+                        todoInfo.filter((curr) => curr.id !== todo.id)
                       )
                     }
                   />
