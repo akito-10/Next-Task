@@ -19,25 +19,25 @@ type TableContentsType = {
     isDone: boolean | null;
     doneDate: any;
   }[];
-}[];
+};
 
 export const TasksContent = (): JSX.Element => {
   const router = useRouter();
   const user = useSelector(selectUser);
-  const [tableContents, setTableContents] = useState<TableContentsType>([
+  const [tableContents, setTableContents] = useState<TableContentsType[]>([
     {
       id: "",
       title: "",
-      progress: 0,
-      created_at: null,
       todoList: [
         {
           title: "",
-          deadline: "",
-          isDone: null,
           doneDate: null,
+          deadline: "",
+          isDone: false,
         },
       ],
+      progress: 0,
+      created_at: null,
     },
   ]);
 
@@ -118,25 +118,29 @@ export const TasksContent = (): JSX.Element => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {tableContents.map((content) => (
-                  <TableContents
-                    key={content.id}
-                    className="h-14"
-                    sub={`${content.progress}%`}
-                    onClick={() => deleteTask(content.id)}
-                  >
-                    <Link href={`/tasks/${content.id}`}>
-                      <span
-                        onClick={() =>
-                          localStorage.setItem("taskId", content.id)
-                        }
-                        className="cursor-pointer"
-                      >
-                        {content.title}
-                      </span>
-                    </Link>
-                  </TableContents>
-                ))}
+                {tableContents[0].title !== "" ? (
+                  tableContents.map((content) => (
+                    <TableContents
+                      key={content.id}
+                      className="h-14"
+                      sub={`${content.progress}%`}
+                      onClick={() => deleteTask(content.id)}
+                    >
+                      <Link href={`/tasks/${content.id}`}>
+                        <span
+                          onClick={() =>
+                            localStorage.setItem("taskId", content.id)
+                          }
+                          className="cursor-pointer"
+                        >
+                          {content.title}
+                        </span>
+                      </Link>
+                    </TableContents>
+                  ))
+                ) : (
+                  <></>
+                )}
               </tbody>
             </table>
           </div>
