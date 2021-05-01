@@ -6,25 +6,13 @@ import { useSelector } from "react-redux";
 import { TableContents } from "src/components/shared/TableContents";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
+import { TasksContentType } from "src/models";
 import { PrimaryButton } from "./shared/PrimaryButton";
-
-type TableContentsType = {
-  id: string;
-  title: string;
-  progress: number;
-  created_at: any;
-  todoList: {
-    title: string;
-    deadline: string;
-    isDone: boolean | null;
-    doneDate: any;
-  }[];
-};
 
 export const TasksContent = (): JSX.Element => {
   const router = useRouter();
   const user = useSelector(selectUser);
-  const [tableContents, setTableContents] = useState<TableContentsType[]>([
+  const [tableContents, setTableContents] = useState<TasksContentType[]>([
     {
       id: "",
       title: "",
