@@ -12,7 +12,6 @@ type ControlModalProps = {
   task: TasksContentType;
   currId: number;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  setTask: Dispatch<SetStateAction<TasksContentType>>;
 };
 
 export const ControlModal = ({
@@ -20,7 +19,6 @@ export const ControlModal = ({
   task,
   currId,
   setIsOpen,
-  setTask,
 }: ControlModalProps) => {
   const user = useSelector(selectUser);
   const taskId = localStorage.getItem("taskId");
@@ -107,22 +105,6 @@ export const ControlModal = ({
               bgColor="green"
               onClick={async () => {
                 setIsOpen(false);
-                setTask((prev) => {
-                  return {
-                    ...prev,
-                    todoList: [
-                      ...prev.todoList.filter((curr) => curr !== todo),
-                      {
-                        todoId:
-                          prev.todoList[prev.todoList.length - 1].todoId + 1,
-                        title: title,
-                        deadline: deadline,
-                        isDone: false,
-                        doneDate: null,
-                      },
-                    ],
-                  };
-                });
                 await updateTodo();
                 setTitle("");
                 setDeadline("");

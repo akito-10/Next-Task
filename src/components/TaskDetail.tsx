@@ -5,10 +5,9 @@ import { ControlModal } from "./shared/ControlModal";
 
 type TaskDetailProps = {
   task: TasksContentType;
-  setTask: Dispatch<SetStateAction<TasksContentType>>;
 };
 
-export const TaskDetail = ({ task, setTask }: TaskDetailProps): JSX.Element => {
+export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currId, setCurrId] = useState<number>(0);
 
@@ -28,7 +27,6 @@ export const TaskDetail = ({ task, setTask }: TaskDetailProps): JSX.Element => {
         setIsOpen={setIsOpen}
         task={task}
         currId={currId}
-        setTask={setTask}
       />
     </div>
   );

@@ -51,7 +51,7 @@ export default function TaskDetailPage() {
       page={`${task.title}詳細`}
       description={`${task.title}詳細です。`}
     >
-      <TaskDetail task={task} setTask={setTask} />
+      <TaskDetail task={task} />
     </MainLayout>
   );
 }
