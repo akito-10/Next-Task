@@ -4,6 +4,7 @@ export type TasksContentType = {
   progress: number;
   created_at: any;
   todoList: {
+    todoId: number;
     title: string;
     deadline: string;
     isDone: boolean | null;

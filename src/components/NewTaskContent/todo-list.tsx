@@ -45,6 +45,7 @@ export const TodoList = ({
         todoList: todoInfo[0].title
           ? todoInfo.map((todo) => {
               return {
+                todoId: todo.id,
                 title: todo.title,
                 deadline: todo.deadline,
                 isDone: false,

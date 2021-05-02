@@ -18,6 +18,7 @@ export const TasksContent = (): JSX.Element => {
       title: "",
       todoList: [
         {
+          todoId: 0,
           title: "",
           doneDate: null,
           deadline: "",
@@ -106,7 +107,7 @@ export const TasksContent = (): JSX.Element => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {tableContents[0].title !== "" ? (
+                {tableContents.length > 0 && tableContents[0].title !== "" ? (
                   tableContents.map((content) => (
                     <TableContents
                       key={content.id}

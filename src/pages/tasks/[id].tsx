@@ -15,6 +15,7 @@ export default function TaskDetailPage() {
     created_at: null,
     todoList: [
       {
+        todoId: 0,
         title: "",
         deadline: "",
         isDone: false,
@@ -50,7 +51,7 @@ export default function TaskDetailPage() {
       page={`${task.title}詳細`}
       description={`${task.title}詳細です。`}
     >
-      <TaskDetail task={task} />
+      <TaskDetail task={task} setTask={setTask} />
     </MainLayout>
   );
 }
