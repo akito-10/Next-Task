@@ -4,7 +4,8 @@ import { TaskDetail } from "src/components/TaskDetail";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
 import { MainLayout } from "src/layouts/main";
-import { TasksContentType } from "src/models";
+import { formatDeadline } from "src/lib/format-deadline";
+import { TasksContentType, TodoListType } from "src/models";
 
 export default function TaskDetailPage() {
   const user = useSelector(selectUser);
@@ -37,7 +38,12 @@ export default function TaskDetailPage() {
           title: snapshot.data()?.title,
           progress: snapshot.data()?.progress,
           created_at: snapshot.data()?.created_at,
-          todoList: snapshot.data()?.todoList,
+          todoList: snapshot
+            .data()
+            ?.todoList.sort(
+              (a: TodoListType, b: TodoListType) =>
+                formatDeadline(a.deadline) - formatDeadline(b.deadline)
+            ),
         });
       });
 
