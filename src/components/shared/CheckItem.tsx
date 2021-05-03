@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
+import { AlertModal } from "./AlertModal";
 
 type CheckItemProps = {
   todo: {
@@ -8,16 +9,19 @@ type CheckItemProps = {
     isDone: boolean | null;
     doneDate: any;
   };
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setIsEditOpen: Dispatch<SetStateAction<boolean>>;
   setId: Dispatch<SetStateAction<number>>;
+  deleteFunc: (id: number) => void;
 };
 
 export const CheckItem = ({
   todo,
-  setIsOpen,
+  setIsEditOpen,
   setId,
+  deleteFunc,
 }: CheckItemProps): JSX.Element => {
   const [checked, setChecked] = useState<boolean>(todo.isDone ? true : false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
     <div className="w-650px max-w-90p h-16 bg-gray-50 rounded-md flex items-center px-6 justify-between mx-auto mb-4">
@@ -40,7 +44,7 @@ export const CheckItem = ({
           viewBox="0 0 24 24"
           stroke="currentColor"
           onClick={() => {
-            setIsOpen(true);
+            setIsEditOpen(true);
             setId(todo.todoId);
           }}
         >
@@ -57,6 +61,7 @@ export const CheckItem = ({
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          onClick={() => setIsModalOpen(true)}
         >
           <path
             strokeLinecap="round"
@@ -66,6 +71,14 @@ export const CheckItem = ({
           />
         </svg>
       </div>
+      <AlertModal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        message={`${todo.title}を削除してよろしいですか？`}
+        primaryText={"削除"}
+        secondText={"キャンセル"}
+        onClick={() => deleteFunc(todo.todoId)}
+      />
     </div>
   );
 };
