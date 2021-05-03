@@ -152,7 +152,7 @@ export const TasksContent = (): JSX.Element => {
         </div>
         <PrimaryButton
           bgColor="blue"
-          className="bottom-16 left-1/2 translate-x-50"
+          className="bottom-20 left-1/2 translate-x-50"
           fixed
           onClick={() => router.push("/tasks-page/new-task")}
         >
