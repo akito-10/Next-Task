@@ -7,6 +7,7 @@ import { TableContents } from "src/components/shared/TableContents";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
 import { TasksContentType } from "src/models";
+import { AlertModal } from "./shared/AlertModal";
 import { PrimaryButton } from "./shared/PrimaryButton";
 
 export const TasksContent = (): JSX.Element => {
@@ -29,6 +30,8 @@ export const TasksContent = (): JSX.Element => {
       created_at: null,
     },
   ]);
+  const [currId, setCurrId] = useState<string>("");
+  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
   const classes = tableContents.length > 3 ? "h-auto" : "h-80";
 
@@ -58,19 +61,17 @@ export const TasksContent = (): JSX.Element => {
   }, [user.uid]);
 
   const deleteTask = (id: string) => {
-    if (window.confirm("このタスクを削除しますか？")) {
-      db.collection("users")
-        .doc(user.uid)
-        .collection("tasks")
-        .doc(id)
-        .delete()
-        .then(() => {
-          console.log("削除成功！");
-        })
-        .catch((error) => {
-          console.error("Error removing document: ", error);
-        });
-    }
+    db.collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("削除成功！");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
   };
 
   return (
@@ -113,7 +114,10 @@ export const TasksContent = (): JSX.Element => {
                       key={content.id}
                       className="h-14"
                       sub={`${content.progress}%`}
-                      onClick={() => deleteTask(content.id)}
+                      onClick={() => {
+                        setIsAlertOpen(true);
+                        setCurrId(content.id);
+                      }}
                     >
                       <Link href={`/tasks/${content.id}`}>
                         <span
@@ -159,6 +163,14 @@ export const TasksContent = (): JSX.Element => {
           新規タスク追加
         </PrimaryButton>
       </div>
+      <AlertModal
+        isOpen={isAlertOpen}
+        setIsOpen={setIsAlertOpen}
+        primaryText={"削除する"}
+        message="このタスクを削除しますか？"
+        secondText={"キャンセル"}
+        onClick={() => deleteTask(currId)}
+      />
     </div>
   );
 };
