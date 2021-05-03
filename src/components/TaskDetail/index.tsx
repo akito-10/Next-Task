@@ -30,7 +30,7 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   };
 
   return (
-    <div className="text-center max-w-full">
+    <div className="text-center max-w-full mb-24">
       <h1 className="text-3xl text-gray-700 mb-6 sm:mb-14">{`タスク名：${task.title}`}</h1>
       {task.todoList.map((todo) => (
         <CheckItem
@@ -44,7 +44,7 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
       <PrimaryButton
         onClick={() => setIsAddOpen(true)}
         fixed
-        className="bottom-16 left-1/2 translate-x-50"
+        className="bottom-20 left-1/2 translate-x-50"
       >
         新しいTodoを追加する
       </PrimaryButton>
