@@ -22,6 +22,9 @@ export const useWatchIsLogin = () => {
             displayName: authUser.displayName,
           })
         );
+        if (router.pathname === "/") {
+          router.push("/main-page");
+        }
       } else {
         // 認証状態にない場合の処理
         dispatch(logout());
