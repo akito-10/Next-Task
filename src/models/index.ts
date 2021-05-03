@@ -3,11 +3,13 @@ export type TasksContentType = {
   title: string;
   progress: number;
   created_at: any;
-  todoList: {
-    todoId: number;
-    title: string;
-    deadline: string;
-    isDone: boolean | null;
-    doneDate: any;
-  }[];
+  todoList: TodoListType[];
+};
+
+export type TodoListType = {
+  todoId: number;
+  title: string;
+  deadline: string;
+  isDone: boolean | null;
+  doneDate: any;
 };
