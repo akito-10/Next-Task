@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
+import { TodoListType } from "src/models";
 import { AlertModal } from "../../shared/AlertModal";
 
 type CheckItemProps = {
@@ -11,6 +12,7 @@ type CheckItemProps = {
   };
   setIsEditOpen: Dispatch<SetStateAction<boolean>>;
   setId: Dispatch<SetStateAction<number>>;
+  checkedFunc: (todo: TodoListType, checked: boolean) => void;
   deleteFunc: (id: number) => void;
 };
 
@@ -18,17 +20,21 @@ export const CheckItem = ({
   todo,
   setIsEditOpen,
   setId,
+  checkedFunc,
   deleteFunc,
 }: CheckItemProps): JSX.Element => {
-  const [checked, setChecked] = useState<boolean>(todo.isDone ? true : false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const checked = todo.isDone ? true : false;
+  const [isWarningOpen, setIsWarningOpen] = useState<boolean>(false);
+  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
   return (
     <div className="w-650px max-w-90p h-16 bg-gray-50 rounded-md flex items-center px-6 justify-between mx-auto mb-4">
       <input
         type="checkbox"
         checked={checked}
-        onClick={() => setChecked(!checked)}
+        onClick={() => {
+          setIsWarningOpen(true);
+        }}
         readOnly
         className="w-4 h-4 cursor-pointer"
       />
@@ -61,7 +67,7 @@ export const CheckItem = ({
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsAlertOpen(true)}
         >
           <path
             strokeLinecap="round"
@@ -72,8 +78,17 @@ export const CheckItem = ({
         </svg>
       </div>
       <AlertModal
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
+        isOpen={isWarningOpen}
+        setIsOpen={setIsWarningOpen}
+        message={`${todo.title}を${checked ? "未完了" : "完了"}にしますか？`}
+        primaryText={"OK"}
+        type="warning"
+        secondText={"キャンセル"}
+        onClick={() => checkedFunc(todo, checked)}
+      />
+      <AlertModal
+        isOpen={isAlertOpen}
+        setIsOpen={setIsAlertOpen}
         message={`${todo.title}を削除してよろしいですか？`}
         primaryText={"削除"}
         secondText={"キャンセル"}

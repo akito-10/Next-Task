@@ -1,11 +1,12 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
-import { TasksContentType } from "src/models";
+import { TasksContentType, TodoListType } from "src/models";
 import { PrimaryButton } from "../shared/PrimaryButton";
 import { CheckItem } from "./parts/CheckItem";
 import { ControlModal } from "./parts/ControlModal";
+import firebase from "firebase/app";
 
 type TaskDetailProps = {
   task: TasksContentType;
@@ -17,6 +18,37 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [currId, setCurrId] = useState<number>(0);
+
+  const checkedTodo = (todo: TodoListType, checked: boolean) => {
+    const allTodoLength = task.todoList.length;
+
+    // 渡ってきたcheckedがtrueの時はfalseになる時であるので-1、逆の時は+1
+    const doneTodoLength = checked
+      ? task.todoList.filter((curr) => curr.isDone === true).length - 1
+      : task.todoList.filter((curr) => curr.isDone === true).length + 1;
+
+    // 完了率の計算
+    const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
+
+    db.collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .doc(taskId!)
+      .set({
+        ...task,
+        progress: progress,
+        todoList: [
+          ...task.todoList.filter((curr) => curr.todoId !== todo.todoId),
+          {
+            todoId: todo.todoId,
+            title: todo.title,
+            deadline: todo.deadline,
+            isDone: !checked,
+            doneDate: new Date().getTime(),
+          },
+        ],
+      });
+  };
 
   const deleteTodo = (id: number) => {
     db.collection("users")
@@ -38,6 +70,7 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
           setId={setCurrId}
           todo={todo}
           setIsEditOpen={setIsEditOpen}
+          checkedFunc={checkedTodo}
           deleteFunc={deleteTodo}
         />
       ))}
