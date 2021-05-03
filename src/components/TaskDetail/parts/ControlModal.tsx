@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
@@ -44,8 +44,10 @@ export const ControlModal = ({
           ...task.todoList.filter((curr) => curr !== todo),
           {
             todoId: task.todoList[task.todoList.length - 1].todoId + 1,
-            title: title,
-            deadline: deadline,
+            // １.編集時、入力欄に何も入れていなかった場合、前回の値をいれるようにする。
+            // ２.typeがaddの時にtodoが""になってしまうための振り分け
+            title: title ? title : todo && todo.title,
+            deadline: deadline ? deadline : todo && todo.deadline,
             isDone: false,
             doneDate: null,
           },
