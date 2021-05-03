@@ -50,7 +50,7 @@ export const TasksContent = (): JSX.Element => {
                 id: doc.id,
                 title: doc.data().title,
                 progress: doc.data().progress,
-                created_at: doc.data().title,
+                created_at: doc.data().created_at,
                 todoList: doc.data().todoList,
               }))
             );
