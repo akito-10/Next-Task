@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
 import { TasksContentType } from "src/models";
-import { CheckItem } from "./shared/CheckItem";
-import { ControlModal } from "./shared/ControlModal";
+import { CheckItem } from "./parts/CheckItem";
+import { ControlModal } from "./parts/ControlModal";
 
 type TaskDetailProps = {
   task: TasksContentType;

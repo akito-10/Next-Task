@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
 import { TasksContentType } from "src/models";
-import { InputField } from "./InputField";
-import { PrimaryButton } from "./PrimaryButton";
+import { InputField } from "../../shared/InputField";
+import { PrimaryButton } from "../../shared/PrimaryButton";
 
 type ControlModalProps = {
   isOpen: boolean;

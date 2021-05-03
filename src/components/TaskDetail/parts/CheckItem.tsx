@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { AlertModal } from "./AlertModal";
+import { AlertModal } from "../../shared/AlertModal";
 
 type CheckItemProps = {
   todo: {
