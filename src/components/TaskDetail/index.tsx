@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
 import { TasksContentType } from "src/models";
+import { PrimaryButton } from "../shared/PrimaryButton";
 import { CheckItem } from "./parts/CheckItem";
 import { ControlModal } from "./parts/ControlModal";
 
@@ -13,7 +14,8 @@ type TaskDetailProps = {
 export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   const user = useSelector(selectUser);
   const taskId = localStorage.getItem("taskId");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [currId, setCurrId] = useState<number>(0);
 
   const deleteTodo = (id: number) => {
@@ -35,14 +37,28 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
           key={`${todo.todoId}`}
           setId={setCurrId}
           todo={todo}
-          setIsEditOpen={setIsOpen}
+          setIsEditOpen={setIsEditOpen}
           deleteFunc={deleteTodo}
         />
       ))}
+      <PrimaryButton
+        onClick={() => setIsAddOpen(true)}
+        fixed
+        className="bottom-16 left-1/2 translate-x-50"
+      >
+        新しいTodoを追加する
+      </PrimaryButton>
       <ControlModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isAddOpen}
+        setIsOpen={setIsAddOpen}
         task={task}
+        type="add"
+      />
+      <ControlModal
+        isOpen={isEditOpen}
+        setIsOpen={setIsEditOpen}
+        task={task}
+        type="edit"
         currId={currId}
       />
     </div>

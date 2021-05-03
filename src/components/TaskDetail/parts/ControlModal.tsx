@@ -10,20 +10,25 @@ import { PrimaryButton } from "../../shared/PrimaryButton";
 type ControlModalProps = {
   isOpen: boolean;
   task: TasksContentType;
-  currId: number;
+  type: "add" | "edit";
+  currId?: number;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export const ControlModal = ({
   isOpen,
   task,
+  type,
   currId,
   setIsOpen,
 }: ControlModalProps) => {
   const user = useSelector(selectUser);
   const taskId = localStorage.getItem("taskId");
   // filterから返ってくる値は配列であるが、返ってくる値は１つであるため。
-  const todo = task.todoList.filter((curr) => curr.todoId === currId)[0];
+  const todo =
+    type === "edit"
+      ? task.todoList.filter((curr) => curr.todoId === currId)[0]
+      : "";
   const [title, setTitle] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
 
@@ -37,6 +42,27 @@ export const ControlModal = ({
         ...task,
         todoList: [
           ...task.todoList.filter((curr) => curr !== todo),
+          {
+            todoId: task.todoList[task.todoList.length - 1].todoId + 1,
+            title: title,
+            deadline: deadline,
+            isDone: false,
+            doneDate: null,
+          },
+        ],
+      });
+  };
+
+  const addTodo = async () => {
+    await db
+      .collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .doc(taskId!)
+      .set({
+        ...task,
+        todoList: [
+          ...task.todoList,
           {
             todoId: task.todoList[task.todoList.length - 1].todoId + 1,
             title: title,
@@ -105,7 +131,7 @@ export const ControlModal = ({
               bgColor="green"
               onClick={async () => {
                 setIsOpen(false);
-                await updateTodo();
+                type === "edit" ? await updateTodo() : await addTodo();
                 setTitle("");
                 setDeadline("");
               }}
