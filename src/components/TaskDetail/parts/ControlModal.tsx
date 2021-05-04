@@ -32,6 +32,9 @@ export const ControlModal = ({
   const [title, setTitle] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
 
+  const todoIds = task.todoList.map((todo) => todo.todoId);
+  const maxIdNum = Math.max(...todoIds);
+
   const updateTodo = async () => {
     await db
       .collection("users")
@@ -43,7 +46,7 @@ export const ControlModal = ({
         todoList: [
           ...task.todoList.filter((curr) => curr !== todo),
           {
-            todoId: task.todoList[task.todoList.length - 1].todoId + 1,
+            todoId: maxIdNum + 1,
             // １.編集時、入力欄に何も入れていなかった場合、前回の値をいれるようにする。
             // ２.typeがaddの時にtodoが""になってしまうための振り分け
             title: title ? title : todo && todo.title,
@@ -66,7 +69,7 @@ export const ControlModal = ({
         todoList: [
           ...task.todoList,
           {
-            todoId: task.todoList[task.todoList.length - 1].todoId + 1,
+            todoId: maxIdNum + 1,
             title: title,
             deadline: deadline,
             isDone: false,
