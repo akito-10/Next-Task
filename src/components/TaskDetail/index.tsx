@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
 import { TasksContentType, TodoListType } from "src/models";
+import { AlertModal } from "../shared/AlertModal";
 import { PrimaryButton } from "../shared/PrimaryButton";
 import { CheckItem } from "./parts/CheckItem";
 import { ControlModal } from "./parts/ControlModal";
-import firebase from "firebase/app";
 
 type TaskDetailProps = {
   task: TasksContentType;
@@ -17,6 +17,7 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   const taskId = localStorage.getItem("taskId");
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [isWarningOpen, setIsWarningOpen] = useState<boolean>(false);
   const [currId, setCurrId] = useState<number>(0);
 
   const checkedTodo = (todo: TodoListType, checked: boolean) => {
@@ -61,8 +62,16 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
       });
   };
 
+  const addCurrTask = () => {
+    db.collection("users")
+      .doc(user.uid)
+      .set({
+        ...task,
+      });
+  };
+
   return (
-    <div className="text-center max-w-full mb-24">
+    <div className="text-center max-w-full mb-28">
       <h1 className="text-3xl text-gray-700 mb-6 sm:mb-14">{`タスク名：${task.title}`}</h1>
       {task.todoList.map((todo) => (
         <CheckItem
@@ -77,9 +86,17 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
       <PrimaryButton
         onClick={() => setIsAddOpen(true)}
         fixed
-        className="bottom-20 left-1/2 translate-x-50"
+        className="bottom-24 left-1/2 translate-x-50"
       >
         新しいTodoを追加する
+      </PrimaryButton>
+      <PrimaryButton
+        onClick={() => setIsWarningOpen(true)}
+        fixed
+        className="bottom-10 left-1/2 translate-x-50"
+        bgColor="white"
+      >
+        現在のタスクにする
       </PrimaryButton>
       <ControlModal
         isOpen={isAddOpen}
@@ -93,6 +110,15 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
         task={task}
         type="edit"
         currId={currId}
+      />
+      <AlertModal
+        isOpen={isWarningOpen}
+        setIsOpen={setIsWarningOpen}
+        primaryText={"設定"}
+        message={"このタスクを現在のタスクにしますか？"}
+        type="warning"
+        secondText={"キャンセル"}
+        onClick={() => addCurrTask()}
       />
     </div>
   );
