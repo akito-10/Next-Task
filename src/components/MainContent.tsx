@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
@@ -40,6 +40,7 @@ export const MainContent = (): JSX.Element => {
       isDone: false,
     },
   });
+  const [isDoneCurrTask, setIsDoneCurrTask] = useState<string>("");
 
   const isComplete = currTask.progress === 100;
 
@@ -79,7 +80,7 @@ export const MainContent = (): JSX.Element => {
             });
           }
         });
-  }, [currTask]);
+  }, [isDoneCurrTask]);
 
   const currTodoDone = () => {
     const allTodoLength = task.todoList.length;
@@ -111,8 +112,8 @@ export const MainContent = (): JSX.Element => {
           ],
         });
 
-    // データベースから値を取得するため、useEffectの依存値にしている。
-    setCurrTask({});
+    // useEffectを誘発
+    setIsDoneCurrTask((prev) => prev + "set");
   };
 
   console.log(task);
