@@ -41,6 +41,8 @@ export const MainContent = (): JSX.Element => {
     },
   });
 
+  const isComplete = currTask.progress === 100;
+
   useEffect(() => {
     currTaskId &&
       db
@@ -77,7 +79,41 @@ export const MainContent = (): JSX.Element => {
             });
           }
         });
-  }, []);
+  }, [currTask]);
+
+  const currTodoDone = () => {
+    const allTodoLength = task.todoList.length;
+    const doneTodoLength =
+      task.todoList.filter((curr: TodoListType) => curr.isDone === true)
+        .length + 1;
+
+    // 完了率の計算
+    const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
+
+    currTaskId &&
+      db
+        .collection("users")
+        .doc(user.uid)
+        .collection("tasks")
+        .doc(currTaskId)
+        .set({
+          ...task,
+          progress: progress,
+          todoList: [
+            ...task.todoList.filter(
+              (curr: TodoListType) => curr.todoId !== currTask.todo.todoId
+            ),
+            {
+              ...currTask.todo,
+              isDone: true,
+              doneDate: new Date().getTime(),
+            },
+          ],
+        });
+
+    // データベースから値を取得するため、useEffectの依存値にしている。
+    setCurrTask({});
+  };
 
   console.log(task);
 
@@ -111,8 +147,13 @@ export const MainContent = (): JSX.Element => {
             ? `〜 ${currTask.todo.deadline.split("-").join("/")}`
             : ""}
         </p>
-        <PrimaryButton bgColor="blue" ripple onClick={() => console.log()}>
-          Done!!
+        <PrimaryButton
+          bgColor={isComplete ? "gray" : "blue"}
+          ripple={!isComplete}
+          onClick={() => currTodoDone()}
+          className={isComplete ? "pointer-events-none" : ""}
+        >
+          {isComplete ? "Complete!!" : "Done!!"}
         </PrimaryButton>
       </div>
     </div>
