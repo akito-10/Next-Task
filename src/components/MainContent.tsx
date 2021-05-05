@@ -60,7 +60,7 @@ export const MainContent = (): JSX.Element => {
               : null;
 
             // 全タスクが完了している場合、falseとなり、空の値が設定される。
-            if (notDoneTodoList) {
+            if (notDoneTodoList.length > 0) {
               const firstTodo = notDoneTodoList.sort(
                 (a: TodoListType, b: TodoListType) =>
                   formatDeadline(a.deadline) - formatDeadline(b.deadline)
@@ -85,7 +85,13 @@ export const MainContent = (): JSX.Element => {
                 id: snapshot.data()?.id,
                 title: snapshot.data()?.title,
                 progress: snapshot.data()?.progress,
-                todo: null,
+                todo: {
+                  todoId: 0,
+                  title: "タスクは完了しました。",
+                  deadline: "",
+                  doneDate: null,
+                  isDone: false,
+                },
               });
             }
           })
@@ -129,8 +135,6 @@ export const MainContent = (): JSX.Element => {
     // useEffectを誘発
     setIsDoneCurrTask((prev) => prev + "set");
   };
-
-  console.log(task);
 
   return (
     <div className="text-center text-gray-50">
