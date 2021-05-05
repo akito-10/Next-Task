@@ -24,5 +24,5 @@ export type CurrTaskType = {
     deadline: string;
     doneDate: any;
     isDone: boolean;
-  } | null;
+  };
 };

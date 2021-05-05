@@ -52,8 +52,6 @@ export default function TaskDetailPage() {
     return () => unSub();
   }, []);
 
-  console.log(task);
-
   return (
     <MainLayout
       page={`${task.title}詳細`}
