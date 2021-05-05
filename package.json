@@ -12,6 +12,7 @@
     "@material-ui/icons": "^4.11.2",
     "@reduxjs/toolkit": "^1.5.1",
     "@types/react-redux": "^7.1.16",
+    "@yisheng90/react-loading": "^1.4.4",
     "@zeit/next-typescript": "^1.1.1",
     "autoprefixer": "^10.2.5",
     "classnames": "^2.3.1",
@@ -23,6 +24,8 @@
     "push.js": "^1.0.12",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-loader": "^2.4.7",
+    "react-loading": "^2.0.3",
     "react-redux": "^7.2.3",
     "ress": "^3.0.0",
     "tailwindcss": "^2.0.4"
