@@ -32,6 +32,7 @@ export const TasksContent = (): JSX.Element => {
   ]);
   const [currId, setCurrId] = useState<string>("");
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const classes = tableContents.length > 3 ? "h-auto" : "h-80";
 
@@ -56,6 +57,8 @@ export const TasksContent = (): JSX.Element => {
             );
           })
       : console.log;
+
+    setIsLoading(false);
 
     return () => unSub();
   }, [user.uid]);
@@ -108,7 +111,10 @@ export const TasksContent = (): JSX.Element => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {tableContents.length > 0 && tableContents[0].title !== "" ? (
+                {isLoading ? (
+                  <div></div>
+                ) : tableContents.length > 0 &&
+                  tableContents[0].title !== "" ? (
                   tableContents.map((content) => (
                     <TableContents
                       key={content.id}

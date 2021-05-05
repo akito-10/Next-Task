@@ -24,6 +24,7 @@ export default function TaskDetailPage() {
       },
     ],
   });
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const taskId = localStorage.getItem("taskId");
 
   useEffect(() => {
@@ -46,6 +47,7 @@ export default function TaskDetailPage() {
             ),
         });
       });
+    setIsLoading(false);
 
     return () => unSub();
   }, []);
@@ -57,7 +59,7 @@ export default function TaskDetailPage() {
       page={`${task.title}詳細`}
       description={`${task.title}詳細です。`}
     >
-      <TaskDetail task={task} />
+      {isLoading ? <div></div> : <TaskDetail task={task} />}
     </MainLayout>
   );
 }
