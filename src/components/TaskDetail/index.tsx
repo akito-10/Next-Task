@@ -83,13 +83,8 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
       });
   };
 
-  const addCurrTask = async () => {
-    await db
-      .collection("users")
-      .doc(user.uid)
-      .set({
-        ...task,
-      });
+  const addCurrTask = () => {
+    localStorage.setItem("currTaskId", task.id);
   };
 
   return (
