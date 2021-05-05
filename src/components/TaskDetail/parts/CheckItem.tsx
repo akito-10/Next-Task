@@ -3,13 +3,7 @@ import { TodoListType } from "src/models";
 import { AlertModal } from "../../shared/AlertModal";
 
 type CheckItemProps = {
-  todo: {
-    todoId: number;
-    title: string;
-    deadline: string;
-    isDone: boolean | null;
-    doneDate: any;
-  };
+  todo: TodoListType;
   setIsEditOpen: Dispatch<SetStateAction<boolean>>;
   setId: Dispatch<SetStateAction<number>>;
   checkedFunc: (todo: TodoListType, checked: boolean) => void;
@@ -23,7 +17,6 @@ export const CheckItem = ({
   checkedFunc,
   deleteFunc,
 }: CheckItemProps): JSX.Element => {
-  const checked = todo.isDone ? true : false;
   const [isWarningOpen, setIsWarningOpen] = useState<boolean>(false);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
@@ -31,7 +24,7 @@ export const CheckItem = ({
     <div className="w-650px max-w-90p h-16 bg-gray-50 rounded-md flex items-center px-6 justify-between mx-auto mb-4">
       <input
         type="checkbox"
-        checked={checked}
+        checked={todo.isDone}
         onClick={() => {
           setIsWarningOpen(true);
         }}
@@ -80,11 +73,13 @@ export const CheckItem = ({
       <AlertModal
         isOpen={isWarningOpen}
         setIsOpen={setIsWarningOpen}
-        message={`${todo.title}を${checked ? "未完了" : "完了"}にしますか？`}
+        message={`${todo.title}を${
+          todo.isDone ? "未完了" : "完了"
+        }にしますか？`}
         primaryText={"OK"}
         type="warning"
         secondText={"キャンセル"}
-        onClick={() => checkedFunc(todo, checked)}
+        onClick={() => checkedFunc(todo, todo.isDone)}
       />
       <AlertModal
         isOpen={isAlertOpen}
