@@ -20,7 +20,7 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   const [isWarningOpen, setIsWarningOpen] = useState<boolean>(false);
   const [currId, setCurrId] = useState<number>(0);
 
-  const checkedTodo = (todo: TodoListType, checked: boolean) => {
+  const checkedTodo = async (todo: TodoListType, checked: boolean) => {
     const allTodoLength = task.todoList.length;
 
     // 渡ってきたcheckedがtrueの時はfalseになる時であるので-1、逆の時は+1
@@ -31,24 +31,33 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
     // 完了率の計算
     const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
 
-    db.collection("users")
+    const addedBody = {
+      ...task,
+      progress: progress,
+      todoList: [
+        // 現在チェックしたTodo以外は前回と値が同じであるため。
+        ...task.todoList.filter((curr) => curr.todoId !== todo.todoId),
+        {
+          todoId: todo.todoId,
+          title: todo.title,
+          deadline: todo.deadline,
+          // 現在の真偽値と反対である必要があるため
+          isDone: !checked,
+          doneDate: new Date().getTime(),
+        },
+      ],
+    };
+
+    // tasksコレクションに値を格納
+    await db
+      .collection("users")
       .doc(user.uid)
       .collection("tasks")
       .doc(taskId!)
-      .set({
-        ...task,
-        progress: progress,
-        todoList: [
-          ...task.todoList.filter((curr) => curr.todoId !== todo.todoId),
-          {
-            todoId: todo.todoId,
-            title: todo.title,
-            deadline: todo.deadline,
-            isDone: !checked,
-            doneDate: new Date().getTime(),
-          },
-        ],
-      });
+      .set(addedBody);
+
+    // 現在のタスクに最新の値を代入するため。
+    await db.collection("users").doc(user.uid).set(addedBody);
   };
 
   const deleteTodo = (id: number) => {
@@ -62,8 +71,9 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
       });
   };
 
-  const addCurrTask = () => {
-    db.collection("users")
+  const addCurrTask = async () => {
+    await db
+      .collection("users")
       .doc(user.uid)
       .set({
         ...task,
