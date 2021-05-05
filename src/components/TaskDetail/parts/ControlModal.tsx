@@ -59,6 +59,15 @@ export const ControlModal = ({
   };
 
   const addTodo = async () => {
+    const allTodoLength = task.todoList.length + 1;
+
+    // 渡ってきたcheckedがtrueの時はfalseになる時であるので-1、逆の時は+1
+    const doneTodoLength = task.todoList.filter((curr) => curr.isDone === true)
+      .length;
+
+    // 完了率の計算
+    const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
+
     await db
       .collection("users")
       .doc(user.uid)
@@ -66,6 +75,7 @@ export const ControlModal = ({
       .doc(taskId!)
       .set({
         ...task,
+        progress: progress,
         todoList: [
           ...task.todoList,
           {

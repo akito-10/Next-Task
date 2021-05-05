@@ -61,12 +61,24 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   };
 
   const deleteTodo = (id: number) => {
+    const allTodoLength = task.todoList.length - 1;
+
+    // 渡ってきたcheckedがtrueの時はfalseになる時であるので-1、逆の時は+1
+    const doneTodoLength = task.todoList.filter((curr) => curr.isDone === true)
+      .length;
+
+    // 完了率の計算
+    const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
+
+    console.log(progress);
+
     db.collection("users")
       .doc(user.uid)
       .collection("tasks")
       .doc(taskId!)
       .set({
         ...task,
+        progress: progress,
         todoList: [...task.todoList.filter((curr) => curr.todoId !== id)],
       });
   };
