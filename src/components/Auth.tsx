@@ -177,26 +177,30 @@ export const Auth = (): JSX.Element => {
         </div>
 
         <div className="flex items-center justify-between px-3">
-          <div className="flex items-center">
-            <input
-              id="remember_me"
-              name="remember_me"
-              type="checkbox"
-              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-            />
-            <label className="ml-2 block text-sm text-gray-900">
-              パスワードを覚えておく
-            </label>
-          </div>
+          {isLogin && (
+            <div className="flex items-center">
+              <input
+                id="remember_me"
+                name="remember_me"
+                type="checkbox"
+                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              />
+              <label className="ml-2 block text-sm text-gray-900">
+                パスワードを覚えておく
+              </label>
+            </div>
+          )}
 
-          <div className="text-sm">
-            <a
-              href="#"
-              className="font-medium text-indigo-700 hover:text-indigo-900"
-            >
-              パスワードを忘れた
-            </a>
-          </div>
+          {isLogin && (
+            <div className="text-sm">
+              <a
+                href="#"
+                className="font-medium text-indigo-700 hover:text-indigo-900"
+              >
+                パスワードを忘れた
+              </a>
+            </div>
+          )}
         </div>
 
         <div>
