@@ -17,6 +17,7 @@ export const Auth = (): JSX.Element => {
   const [username, setUsername] = useState<string>("");
   const [alertText, setAlertText] = useState<string>("");
   const [isViewAlert, setIsViewAlert] = useState<boolean>(true);
+  const [isPasswordRemember, setIsPassWordRemember] = useState<boolean>(false);
 
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
@@ -69,9 +70,7 @@ export const Auth = (): JSX.Element => {
   const signInEmail = async () => {
     await auth
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        router.push("/main-page");
-      })
+      .then(() => {})
       .catch(() => {
         setAlertText("メールアドレスまたはパスワードが正しくありません。");
         setIsViewAlert(true);
@@ -106,8 +105,6 @@ export const Auth = (): JSX.Element => {
         photoUrl: url,
       })
     );
-
-    router.push("/main-page");
   };
 
   return (
@@ -177,20 +174,19 @@ export const Auth = (): JSX.Element => {
         </div>
 
         <div className="flex items-center justify-between px-3">
-          {isLogin && (
-            <div className="flex items-center">
-              <input
-                id="remember_me"
-                name="remember_me"
-                type="checkbox"
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label className="ml-2 block text-sm text-gray-900">
-                パスワードを覚えておく
-              </label>
-            </div>
-          )}
-
+          <div className="flex items-center">
+            <input
+              id="remember_me"
+              name="remember_me"
+              type="checkbox"
+              checked={isPasswordRemember}
+              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-pointer"
+              onChange={() => setIsPassWordRemember(!isPasswordRemember)}
+            />
+            <label className="ml-2 block text-sm text-gray-900">
+              パスワードを覚えておく
+            </label>
+          </div>
           {isLogin && (
             <div className="text-sm">
               <a
@@ -208,17 +204,15 @@ export const Auth = (): JSX.Element => {
             type="button"
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             onClick={() => {
-              {
-                const checkedItems = isLogin
-                  ? checkItemsInLogin()
-                  : checkItemsInSignUp();
-                if (!checkedItems) {
-                  setIsViewAlert(true);
-                  return;
-                }
-                setIsViewAlert(false);
-                isLogin ? signInEmail() : signUpEmail();
+              const checkedItems = isLogin
+                ? checkItemsInLogin()
+                : checkItemsInSignUp();
+              if (!checkedItems) {
+                setIsViewAlert(true);
+                return;
               }
+              setIsViewAlert(false);
+              isLogin ? signInEmail() : signUpEmail();
             }}
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
