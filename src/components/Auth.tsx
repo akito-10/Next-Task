@@ -5,11 +5,9 @@ import classNames from "classnames";
 import { auth, storage } from "src/firebase/firebase";
 import { useDispatch } from "react-redux";
 import { updateUserProfile } from "src/features/userSlice";
-import { useRouter } from "next/router";
 
 export const Auth = (): JSX.Element => {
   const dispatch = useDispatch();
-  const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useState<boolean>(true);
