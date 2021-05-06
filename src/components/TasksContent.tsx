@@ -70,6 +70,10 @@ export const TasksContent = (): JSX.Element => {
       .doc(id)
       .delete()
       .then(() => {
+        const currTaskId = localStorage.getItem("currTaskId");
+        if (id === currTaskId) {
+          localStorage.removeItem("currTaskId");
+        }
         console.log("削除成功！");
       })
       .catch((error) => {
@@ -112,7 +116,7 @@ export const TasksContent = (): JSX.Element => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {isLoading ? (
-                  <div></div>
+                  <tr></tr>
                 ) : tableContents.length > 0 &&
                   tableContents[0].title !== "" ? (
                   tableContents.map((content) => (
