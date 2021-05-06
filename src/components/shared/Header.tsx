@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
 import { auth } from "src/firebase/firebase";
+import { AlertModal } from "./AlertModal";
 
 type MenuItemProps = {
   title: string;
@@ -33,10 +34,6 @@ const MENU_ITEMS: MenuItemProps[] = [
 
 const SUB_MENU_ITEMS: SubMenuItemProps[] = [
   {
-    title: "Notifications",
-    type: "notifications",
-  },
-  {
     title: "Sign out",
     type: "logout",
   },
@@ -47,6 +44,7 @@ export const HeaderComponent = (): JSX.Element => {
   const user = useSelector(selectUser);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isWarmingOpen, setIsWarningOpen] = useState<boolean>(false);
   const defaultStyle = "text-gray-300 hover:bg-gray-700 hover:text-white";
   const selectedStyle = "bg-gray-900 text-white";
 
@@ -123,7 +121,7 @@ export const HeaderComponent = (): JSX.Element => {
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <div className="ml-3 relative">
               <div>
-                {/* クリックでサブメニュー切り替え */}
+                {/* アイコンクリックでサブメニューオン・オフ */}
                 <button
                   type="button"
                   className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
@@ -155,7 +153,7 @@ export const HeaderComponent = (): JSX.Element => {
                     <li
                       key={item.type}
                       onClick={async () =>
-                        item.type === "logout" && (await auth.signOut())
+                        item.type === "logout" && setIsWarningOpen(true)
                       }
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer list-none"
                       role="menuitem"
@@ -191,6 +189,15 @@ export const HeaderComponent = (): JSX.Element => {
           ))}
         </div>
       </div>
+      <AlertModal
+        type="warning"
+        isOpen={isWarmingOpen}
+        setIsOpen={setIsWarningOpen}
+        primaryText={"OK"}
+        message={"サインアウトしますか？"}
+        secondText={"キャンセル"}
+        onClick={async () => await auth.signOut()}
+      />
     </nav>
   );
 };
