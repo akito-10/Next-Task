@@ -13,7 +13,7 @@ export const ShadowCover = ({
     <>
       <div
         onClick={() => {
-          setIsMyOwnOpen!(false);
+          setIsMyOwnOpen && setIsMyOwnOpen(false);
           setIsOpen(false);
         }}
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
