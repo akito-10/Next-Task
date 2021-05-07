@@ -213,6 +213,7 @@ export const HeaderComponent = (): JSX.Element => {
       </nav>
       {isCoverOpen && (
         <ShadowCover
+          className="z-10"
           setIsMyOwnOpen={setIsCoverOpen}
           setIsOpen={isMenuOpen ? setIsMenuOpen : setIsSubMenuOpen}
         />
