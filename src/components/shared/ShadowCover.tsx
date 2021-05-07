@@ -1,14 +1,21 @@
 import { Dispatch, SetStateAction } from "react";
 
 type ShadowCoverProps = {
+  setIsMyOwnOpen?: Dispatch<SetStateAction<boolean>>;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export const ShadowCover = ({ setIsOpen }: ShadowCoverProps): JSX.Element => {
+export const ShadowCover = ({
+  setIsMyOwnOpen,
+  setIsOpen,
+}: ShadowCoverProps): JSX.Element => {
   return (
     <>
       <div
-        onClick={() => setIsOpen(false)}
+        onClick={() => {
+          setIsMyOwnOpen!(false);
+          setIsOpen(false);
+        }}
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
         aria-hidden="true"
       ></div>
