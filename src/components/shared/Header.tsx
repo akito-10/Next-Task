@@ -35,6 +35,10 @@ const MENU_ITEMS: MenuItemProps[] = [
 
 const SUB_MENU_ITEMS: SubMenuItemProps[] = [
   {
+    title: "Profile",
+    type: "profile",
+  },
+  {
     title: "Sign out",
     type: "logout",
   },
@@ -155,7 +159,7 @@ export const HeaderComponent = (): JSX.Element => {
                     <img
                       className="h-8 w-8 rounded-full"
                       src={user.photoUrl}
-                      alt=""
+                      alt="プロフィール画像"
                     />
                   </button>
                 </div>
@@ -174,7 +178,11 @@ export const HeaderComponent = (): JSX.Element => {
                       <li
                         key={item.type}
                         onClick={async () =>
-                          item.type === "logout" && setIsWarningOpen(true)
+                          item.type === "profile"
+                            ? router.push("profile-page")
+                            : item.type === "logout"
+                            ? setIsWarningOpen(true)
+                            : null
                         }
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer list-none"
                         role="menuitem"
