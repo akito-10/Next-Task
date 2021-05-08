@@ -44,58 +44,54 @@ export const MainContent = (): JSX.Element => {
   const isComplete = currTask.progress === 100;
 
   useEffect(() => {
-    const unSub = currTaskId
-      ? db
-          .collection("users")
-          .doc(user.uid)
-          .collection("tasks")
-          .doc(currTaskId)
-          .onSnapshot((snapshot) => {
-            const notDoneTodoList = snapshot.data()?.todoList
-              ? snapshot
-                  .data()
-                  ?.todoList.filter(
-                    (curr: TodoListType) => curr.isDone === false
-                  )
-              : null;
+    const unSub = db
+      .collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .doc(currTaskId!)
+      .onSnapshot((snapshot) => {
+        const notDoneTodoList = snapshot.data()?.todoList
+          ? snapshot
+              .data()
+              ?.todoList.filter((curr: TodoListType) => curr.isDone === false)
+          : null;
 
-            // 全タスクが完了している場合、falseとなり、空の値が設定される。
-            if (notDoneTodoList.length > 0) {
-              const firstTodo = notDoneTodoList.sort(
-                (a: TodoListType, b: TodoListType) =>
-                  formatDeadline(a.deadline) - formatDeadline(b.deadline)
-              )[0];
-              if (snapshot.data()) {
-                setTask({
-                  id: snapshot.data()?.id,
-                  title: snapshot.data()?.title,
-                  progress: snapshot.data()?.progress,
-                  created_at: snapshot.data()?.created_at,
-                  todoList: snapshot.data()?.todoList,
-                });
-                setCurrTask({
-                  id: snapshot.data()?.id,
-                  title: snapshot.data()?.title,
-                  progress: snapshot.data()?.progress,
-                  todo: firstTodo,
-                });
-              }
-            } else {
-              setCurrTask({
-                id: snapshot.data()?.id,
-                title: snapshot.data()?.title,
-                progress: snapshot.data()?.progress,
-                todo: {
-                  todoId: 0,
-                  title: "タスクは完了しました。",
-                  deadline: "",
-                  doneDate: null,
-                  isDone: false,
-                },
-              });
-            }
-          })
-      : console.log;
+        // 全タスクが完了している場合、falseとなり、空の値が設定される。
+        if (notDoneTodoList.length > 0) {
+          const firstTodo = notDoneTodoList.sort(
+            (a: TodoListType, b: TodoListType) =>
+              formatDeadline(a.deadline) - formatDeadline(b.deadline)
+          )[0];
+          if (snapshot.data()) {
+            setTask({
+              id: snapshot.data()?.id,
+              title: snapshot.data()?.title,
+              progress: snapshot.data()?.progress,
+              created_at: snapshot.data()?.created_at,
+              todoList: snapshot.data()?.todoList,
+            });
+            setCurrTask({
+              id: snapshot.data()?.id,
+              title: snapshot.data()?.title,
+              progress: snapshot.data()?.progress,
+              todo: firstTodo,
+            });
+          }
+        } else {
+          setCurrTask({
+            id: snapshot.data()?.id,
+            title: snapshot.data()?.title,
+            progress: snapshot.data()?.progress,
+            todo: {
+              todoId: 0,
+              title: "タスクは完了しました。",
+              deadline: "",
+              doneDate: null,
+              isDone: false,
+            },
+          });
+        }
+      });
 
     setIsLoading(false);
 
