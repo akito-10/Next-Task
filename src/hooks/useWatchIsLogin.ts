@@ -11,6 +11,8 @@ export const useWatchIsLogin = () => {
   console.log("watching..!");
 
   useEffect(() => {
+    router.prefetch("/");
+    router.prefetch("/main-page");
     // ログイン状態を監視
     const unSub = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
