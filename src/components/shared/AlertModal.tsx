@@ -8,7 +8,7 @@ type AlertModalProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   primaryText: string;
   message: string;
-  type?: "alert" | "warning";
+  type?: "alert" | "warning" | "success";
   secondText?: string;
   onClick?: any;
 };
@@ -22,8 +22,18 @@ export const AlertModal = ({
   secondText,
   onClick,
 }: AlertModalProps): JSX.Element => {
-  const bgColor = type === "alert" ? "bg-red-100" : "bg-yellow-100";
-  const textColor = type === "alert" ? "text-red-600" : "text-yellow-300";
+  const bgColor =
+    type === "alert"
+      ? "bg-red-100"
+      : type === "warning"
+      ? "bg-yellow-100"
+      : "bg-green-100";
+  const textColor =
+    type === "alert"
+      ? "text-red-600"
+      : type === "warning"
+      ? "text-yellow-300"
+      : "text-green-300";
 
   return (
     <div
@@ -35,7 +45,7 @@ export const AlertModal = ({
       role="dialog"
       aria-modal="true"
     >
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 ">
         <ShadowCover setIsOpen={setIsOpen} />
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
