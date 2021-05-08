@@ -1,9 +1,9 @@
 import classNames from "classnames";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
 import { db } from "src/firebase/firebase";
-import { TasksContentType } from "src/models";
+import { TasksContentType, TodoListType } from "src/models";
 import { InputField } from "../../shared/InputField";
 import { PrimaryButton } from "../../shared/PrimaryButton";
 
@@ -11,7 +11,7 @@ type ControlModalProps = {
   isOpen: boolean;
   task: TasksContentType;
   type: "add" | "edit";
-  currId?: number;
+  currTodo?: TodoListType;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -19,7 +19,7 @@ export const ControlModal = ({
   isOpen,
   task,
   type,
-  currId,
+  currTodo,
   setIsOpen,
 }: ControlModalProps) => {
   const user = useSelector(selectUser);
@@ -27,7 +27,7 @@ export const ControlModal = ({
   // filterから返ってくる値は配列であるが、返ってくる値は１つであるため。
   const todo =
     type === "edit"
-      ? task.todoList.filter((curr) => curr.todoId === currId)[0]
+      ? task.todoList.filter((curr) => curr.todoId === currTodo?.todoId)[0]
       : "";
   const [title, setTitle] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
@@ -35,10 +35,15 @@ export const ControlModal = ({
   const todoIds = task.todoList.map((todo) => todo.todoId);
   const maxIdNum = Math.max(...todoIds);
 
+  console.log(`${currTodo?.todoId} is edited`);
+
   const updateTodo = async () => {
     const allTodoLength = task.todoList.length;
-    const doneTodoLength =
-      task.todoList.filter((curr) => curr.isDone === true).length - 1;
+
+    // 現在のTodoが完了済みであれば完了Todo数-1、未完了であればそのまま
+    const doneTodoLength = currTodo?.isDone
+      ? task.todoList.filter((curr) => curr.isDone === true).length - 1
+      : task.todoList.filter((curr) => curr.isDone === true).length;
 
     // 完了率の計算
     const progress = Math.floor((doneTodoLength / allTodoLength) * 100);

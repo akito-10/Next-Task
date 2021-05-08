@@ -18,7 +18,13 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isWarningOpen, setIsWarningOpen] = useState<boolean>(false);
-  const [currId, setCurrId] = useState<number>(0);
+  const [currTodo, setCurrTodo] = useState<TodoListType>({
+    todoId: 0,
+    title: "",
+    deadline: "",
+    isDone: false,
+    doneDate: null,
+  });
 
   const checkedTodo = async (todo: TodoListType, checked: boolean) => {
     const allTodoLength = task.todoList.length;
@@ -93,7 +99,7 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
       {task.todoList.map((todo) => (
         <CheckItem
           key={`${todo.todoId}`}
-          setId={setCurrId}
+          setCurrTodo={setCurrTodo}
           todo={todo}
           setIsEditOpen={setIsEditOpen}
           checkedFunc={checkedTodo}
@@ -126,7 +132,7 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
         setIsOpen={setIsEditOpen}
         task={task}
         type="edit"
-        currId={currId}
+        currTodo={currTodo}
       />
       <AlertModal
         isOpen={isWarningOpen}

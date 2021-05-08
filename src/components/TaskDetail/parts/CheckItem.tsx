@@ -5,7 +5,7 @@ import { AlertModal } from "../../shared/AlertModal";
 type CheckItemProps = {
   todo: TodoListType;
   setIsEditOpen: Dispatch<SetStateAction<boolean>>;
-  setId: Dispatch<SetStateAction<number>>;
+  setCurrTodo: Dispatch<SetStateAction<TodoListType>>;
   checkedFunc: (todo: TodoListType, checked: boolean) => void;
   deleteFunc: (id: number) => void;
 };
@@ -13,7 +13,7 @@ type CheckItemProps = {
 export const CheckItem = ({
   todo,
   setIsEditOpen,
-  setId,
+  setCurrTodo,
   checkedFunc,
   deleteFunc,
 }: CheckItemProps): JSX.Element => {
@@ -44,7 +44,7 @@ export const CheckItem = ({
           stroke="currentColor"
           onClick={() => {
             setIsEditOpen(true);
-            setId(todo.todoId);
+            setCurrTodo(todo);
           }}
         >
           <path
