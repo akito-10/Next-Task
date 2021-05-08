@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -52,7 +52,11 @@ export const HeaderComponent = (): JSX.Element => {
   const [isWarmingOpen, setIsWarningOpen] = useState<boolean>(false);
   const [isCoverOpen, setIsCoverOpen] = useState<boolean>(false);
   const defaultStyle = "text-gray-300 hover:bg-gray-700 hover:text-white";
-  const selectedStyle = "bg-gray-900 text-white";
+  const selectedStyle = "bg-gray-700 text-white";
+
+  useEffect(() => {
+    router.prefetch("/profile-page");
+  }, []);
 
   return (
     <>
@@ -120,16 +124,16 @@ export const HeaderComponent = (): JSX.Element => {
                 <div className="flex space-x-4">
                   {MENU_ITEMS.map((item) => (
                     <Link key={item.title} href={`/${item.link}`}>
-                      <a
+                      <p
                         className={classNames(
-                          "px-3 py-2 rounded-md text-sm font-medium",
-                          router.pathname === `/${item.title.toLowerCase()}`
+                          "px-3 py-2 rounded-md text-sm font-medium cursor-pointer",
+                          router.pathname === `/${item.link}`
                             ? selectedStyle
                             : defaultStyle
                         )}
                       >
                         {item.title}
-                      </a>
+                      </p>
                     </Link>
                   ))}
                 </div>
@@ -179,7 +183,7 @@ export const HeaderComponent = (): JSX.Element => {
                         key={item.type}
                         onClick={async () =>
                           item.type === "profile"
-                            ? router.push("profile-page")
+                            ? router.push("/profile-page")
                             : item.type === "logout"
                             ? setIsWarningOpen(true)
                             : null
