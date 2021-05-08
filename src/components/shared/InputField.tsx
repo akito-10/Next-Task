@@ -37,8 +37,6 @@ export const InputField = ({
         value={value}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           onChange(e.target.value);
-          console.log(e.target.value);
-          console.log(typeof e.target.value);
         }}
       />
     </>
