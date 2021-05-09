@@ -92,10 +92,14 @@ export const MainContent = (): JSX.Element => {
           });
         }
       });
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+    }, 200);
 
-    setIsLoading(false);
-
-    return () => unSub();
+    return () => {
+      unSub();
+      clearTimeout(timeoutId);
+    };
   }, [isDoneCurrTask]);
 
   const currTodoDone = () => {
@@ -147,7 +151,7 @@ export const MainContent = (): JSX.Element => {
 
       {isLoading ? (
         <div className="mt-4">
-          <Skeleton width={258} height={250} />
+          <Skeleton width={258} height={250} color="#C0C0C0" />
         </div>
       ) : (
         <div className="bg-gray-50 text-gray-500 px-16 py-4 mt-4 rounded-lg shadow-xl">
