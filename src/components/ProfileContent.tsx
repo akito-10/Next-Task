@@ -88,7 +88,7 @@ export const ProfileContent = () => {
           height={40}
           className="rounded-full mt-8 mx-auto"
         />
-        <label className="cursor-pointer inline-block mt-7 mr-4">
+        <label className="cursor-pointer inline-block mt-10 mr-4">
           <input type="file" hidden onChange={onChangeImageHandler} />
           <p
             id="btn"
