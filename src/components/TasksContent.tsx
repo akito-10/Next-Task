@@ -30,38 +30,105 @@ export const TasksContent = (): JSX.Element => {
       created_at: null,
     },
   ]);
+  // 全体における一番目のタスク
+  const [firstTask, setFirstTask] = useState<TasksContentType>();
+  // 全体における最後のタスク
+  const [lastTask, setLastTask] = useState<TasksContentType>();
+  // 現在表示されている中の一番目のタスク
+  const [currentFirstTask, setCurrentFirstTask] = useState<TasksContentType>();
+  // 現在表示されている中の最後のタスク
+  const [currentLastTask, setCurrentLastTask] = useState<TasksContentType>();
+  const [hasPreviousPage, setHasPreviousPage] = useState<boolean>(false);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
   const [currId, setCurrId] = useState<string>("");
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const LIMIT = 5;
 
   const classes = tableContents.length > 3 ? "h-auto" : "h-80";
 
+  // 初期リロードにて値をセット
   useEffect(() => {
-    // リロードが起きた瞬間、uidが空になり、エラーが起きてしまう。
-    // そのため、以下のような振り分けの処理を追加している。
-    const unSub = user.uid
-      ? db
-          .collection("users")
-          .doc(user.uid)
-          .collection("tasks")
-          .orderBy("created_at", "desc")
-          .onSnapshot((snapshot) => {
-            setTableContents(
-              snapshot.docs.map((doc) => ({
-                id: doc.id,
-                title: doc.data().title,
-                progress: doc.data().progress,
-                created_at: doc.data().created_at,
-                todoList: doc.data().todoList,
-              }))
-            );
-          })
-      : console.log;
+    const unSub_1 = db
+      .collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .orderBy("created_at", "desc")
+      .limit(LIMIT)
+      .onSnapshot((snapshot) => {
+        setFirstTask(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            title: doc.data().title,
+            progress: doc.data().progress,
+            created_at: doc.data().created_at,
+            todoList: doc.data().todoList,
+          }))[0]
+        );
+        setCurrentFirstTask(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            title: doc.data().title,
+            progress: doc.data().progress,
+            created_at: doc.data().created_at,
+            todoList: doc.data().todoList,
+          }))[0]
+        );
+        setCurrentLastTask(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            title: doc.data().title,
+            progress: doc.data().progress,
+            created_at: doc.data().created_at,
+            todoList: doc.data().todoList,
+          }))[snapshot.docs.length - 1]
+        );
+        setTableContents(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            title: doc.data().title,
+            progress: doc.data().progress,
+            created_at: doc.data().created_at,
+            todoList: doc.data().todoList,
+          }))
+        );
+      });
+
+    const unSub_2 = db
+      .collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .orderBy("created_at", "desc")
+      .limitToLast(1)
+      .onSnapshot((snapshot) => {
+        setLastTask(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            title: doc.data().title,
+            progress: doc.data().progress,
+            created_at: doc.data().created_at,
+            todoList: doc.data().todoList,
+          }))[0]
+        );
+      });
 
     setIsLoading(false);
 
-    return () => unSub();
-  }, [user.uid]);
+    return () => {
+      unSub_1();
+      unSub_2();
+    };
+  }, []);
+
+  // ページをめくるたび、前後にページがあるか判定
+  useEffect(() => {
+    if (firstTask && currentFirstTask) {
+      setHasPreviousPage(firstTask.id !== currentFirstTask.id);
+    }
+    if (lastTask && currentLastTask) {
+      setHasNextPage(lastTask.id !== currentLastTask.id);
+    }
+  }, [currentFirstTask, currentLastTask]);
 
   const deleteTask = (id: string) => {
     db.collection("users")
@@ -79,6 +146,92 @@ export const TasksContent = (): JSX.Element => {
       .catch((error) => {
         console.error("Error removing document: ", error);
       });
+  };
+
+  const getPreviousPage = () => {
+    const tasksRef = db
+      .collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .limit(LIMIT)
+      .orderBy("created_at", "desc")
+      .endBefore(currentFirstTask?.created_at);
+
+    tasksRef.onSnapshot((snapshot) => {
+      setCurrentFirstTask(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          title: doc.data().title,
+          progress: doc.data().progress,
+          created_at: doc.data().created_at,
+          todoList: doc.data().todoList,
+        }))[0]
+      );
+      setTableContents(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          title: doc.data().title,
+          progress: doc.data().progress,
+          created_at: doc.data().created_at,
+          todoList: doc.data().todoList,
+        }))
+      );
+    });
+
+    tasksRef.limitToLast(1).onSnapshot((snapshot) => {
+      setCurrentLastTask(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          title: doc.data().title,
+          progress: doc.data().progress,
+          created_at: doc.data().created_at,
+          todoList: doc.data().todoList,
+        }))[0]
+      );
+    });
+  };
+
+  const getNextPage = () => {
+    const tasksRef = db
+      .collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .limit(LIMIT)
+      .orderBy("created_at", "desc")
+      .startAfter(currentLastTask?.created_at);
+
+    tasksRef.onSnapshot((snapshot) => {
+      setCurrentFirstTask(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          title: doc.data().title,
+          progress: doc.data().progress,
+          created_at: doc.data().created_at,
+          todoList: doc.data().todoList,
+        }))[0]
+      );
+      setTableContents(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          title: doc.data().title,
+          progress: doc.data().progress,
+          created_at: doc.data().created_at,
+          todoList: doc.data().todoList,
+        }))
+      );
+    });
+
+    tasksRef.limitToLast(1).onSnapshot((snapshot) => {
+      setCurrentLastTask(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          title: doc.data().title,
+          progress: doc.data().progress,
+          created_at: doc.data().created_at,
+          todoList: doc.data().todoList,
+        }))[0]
+      );
+    });
   };
 
   return (
@@ -149,10 +302,22 @@ export const TasksContent = (): JSX.Element => {
           </div>
           <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
             <div className="px-6 flex-1 flex justify-between">
-              <p className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 cursor-pointer">
+              <p
+                className={classNames(
+                  "relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 cursor-pointer select-none",
+                  !hasPreviousPage && "pointer-events-none bg-gray-200"
+                )}
+                onClick={getPreviousPage}
+              >
                 ＜Previous
               </p>
-              <p className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 cursor-pointer">
+              <p
+                className={classNames(
+                  "ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 cursor-pointer select-none",
+                  !hasNextPage && "pointer-events-none bg-gray-200"
+                )}
+                onClick={getNextPage}
+              >
                 Next＞
               </p>
             </div>
