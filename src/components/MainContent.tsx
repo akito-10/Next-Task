@@ -56,8 +56,8 @@ export const MainContent = (): JSX.Element => {
               ?.todoList.filter((curr: TodoListType) => curr.isDone === false)
           : null;
 
-        // 全タスクが完了している場合、falseとなり、空の値が設定される。
-        if (notDoneTodoList.length > 0) {
+        // Todoが設定されていない＆全タスクが完了している場合、falseとなり、空の値が設定される。
+        if (notDoneTodoList && notDoneTodoList.length > 0) {
           const firstTodo = notDoneTodoList.sort(
             (a: TodoListType, b: TodoListType) =>
               formatDeadline(a.deadline) - formatDeadline(b.deadline)
