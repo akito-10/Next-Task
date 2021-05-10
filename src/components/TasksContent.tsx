@@ -180,9 +180,6 @@ export const TasksContent = (): JSX.Element => {
           todoList: doc.data().todoList,
         }))
       );
-    });
-
-    tasksRef.limitToLast(1).onSnapshot((snapshot) => {
       setCurrentLastTask(
         snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -190,7 +187,7 @@ export const TasksContent = (): JSX.Element => {
           progress: doc.data().progress,
           created_at: doc.data().created_at,
           todoList: doc.data().todoList,
-        }))[0]
+        }))[snapshot.docs.length - 1]
       );
     });
   };
@@ -223,9 +220,6 @@ export const TasksContent = (): JSX.Element => {
           todoList: doc.data().todoList,
         }))
       );
-    });
-
-    tasksRef.limitToLast(1).onSnapshot((snapshot) => {
       setCurrentLastTask(
         snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -233,7 +227,7 @@ export const TasksContent = (): JSX.Element => {
           progress: doc.data().progress,
           created_at: doc.data().created_at,
           todoList: doc.data().todoList,
-        }))[0]
+        }))[snapshot.docs.length - 1]
       );
     });
   };
@@ -242,6 +236,7 @@ export const TasksContent = (): JSX.Element => {
   console.log("last:", lastTask);
   console.log("currFirst:", currentFirstTask);
   console.log("currentLast:", currentLastTask);
+  console.log("tableContents", tableContents);
 
   return (
     <div className="flex flex-col max-w-full -my-8 sm:my-0">
