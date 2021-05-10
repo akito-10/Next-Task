@@ -96,16 +96,20 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   return (
     <div className="text-center max-w-full mb-28">
       <h1 className="text-3xl text-gray-700 mb-6 sm:mb-14">{`タスク名：${task.title}`}</h1>
-      {task.todoList.map((todo) => (
-        <CheckItem
-          key={`${todo.todoId}`}
-          setCurrTodo={setCurrTodo}
-          todo={todo}
-          setIsEditOpen={setIsEditOpen}
-          checkedFunc={checkedTodo}
-          deleteFunc={deleteTodo}
-        />
-      ))}
+      {task.todoList.length > 0 ? (
+        task.todoList.map((todo) => (
+          <CheckItem
+            key={`${todo.todoId}`}
+            setCurrTodo={setCurrTodo}
+            todo={todo}
+            setIsEditOpen={setIsEditOpen}
+            checkedFunc={checkedTodo}
+            deleteFunc={deleteTodo}
+          />
+        ))
+      ) : (
+        <p>＊現在、Todoは設定されていません。</p>
+      )}
       <PrimaryButton
         onClick={() => setIsAddOpen(true)}
         fixed

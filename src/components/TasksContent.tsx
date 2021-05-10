@@ -177,12 +177,6 @@ export const TasksContent = (): JSX.Element => {
     });
   };
 
-  console.log("first:", firstTask);
-  console.log("last:", lastTask);
-  console.log("currFirst:", currentFirstTask);
-  console.log("currentLast:", currentLastTask);
-  console.log("tableContents", tableContents);
-
   return (
     <div className="flex flex-col max-w-full -my-8 sm:my-0">
       <div className="-my-2">

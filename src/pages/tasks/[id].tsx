@@ -39,12 +39,14 @@ export default function TaskDetailPage() {
           title: snapshot.data()?.title,
           progress: snapshot.data()?.progress,
           created_at: snapshot.data()?.created_at,
-          todoList: snapshot
-            .data()
-            ?.todoList.sort(
-              (a: TodoListType, b: TodoListType) =>
-                formatDeadline(a.deadline) - formatDeadline(b.deadline)
-            ),
+          todoList: snapshot.data()?.todoList
+            ? snapshot
+                .data()
+                ?.todoList.sort(
+                  (a: TodoListType, b: TodoListType) =>
+                    formatDeadline(a.deadline) - formatDeadline(b.deadline)
+                )
+            : [],
         });
       });
     setIsLoading(false);
