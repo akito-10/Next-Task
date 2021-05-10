@@ -57,42 +57,18 @@ export const TasksContent = (): JSX.Element => {
           .orderBy("created_at", "desc")
           .limit(LIMIT)
           .onSnapshot((snapshot) => {
-            setFirstTask(
-              snapshot.docs.map((doc) => ({
-                id: doc.id,
-                title: doc.data().title,
-                progress: doc.data().progress,
-                created_at: doc.data().created_at,
-                todoList: doc.data().todoList,
-              }))[0]
-            );
-            setCurrentFirstTask(
-              snapshot.docs.map((doc) => ({
-                id: doc.id,
-                title: doc.data().title,
-                progress: doc.data().progress,
-                created_at: doc.data().created_at,
-                todoList: doc.data().todoList,
-              }))[0]
-            );
-            setCurrentLastTask(
-              snapshot.docs.map((doc) => ({
-                id: doc.id,
-                title: doc.data().title,
-                progress: doc.data().progress,
-                created_at: doc.data().created_at,
-                todoList: doc.data().todoList,
-              }))[snapshot.docs.length - 1]
-            );
-            setTableContents(
-              snapshot.docs.map((doc) => ({
-                id: doc.id,
-                title: doc.data().title,
-                progress: doc.data().progress,
-                created_at: doc.data().created_at,
-                todoList: doc.data().todoList,
-              }))
-            );
+            const contentsArray = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              title: doc.data().title,
+              progress: doc.data().progress,
+              created_at: doc.data().created_at,
+              todoList: doc.data().todoList,
+            }));
+
+            setFirstTask(contentsArray[0]);
+            setCurrentFirstTask(contentsArray[0]);
+            setCurrentLastTask(contentsArray[snapshot.docs.length - 1]);
+            setTableContents(contentsArray);
           })
       : console.log;
 
@@ -159,36 +135,21 @@ export const TasksContent = (): JSX.Element => {
       .collection("tasks")
       .limit(LIMIT)
       .orderBy("created_at", "desc")
-      .endBefore(currentFirstTask?.created_at);
+      .endBefore(currentFirstTask?.created_at)
+      .limitToLast(LIMIT);
 
     tasksRef.onSnapshot((snapshot) => {
-      setCurrentFirstTask(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          title: doc.data().title,
-          progress: doc.data().progress,
-          created_at: doc.data().created_at,
-          todoList: doc.data().todoList,
-        }))[0]
-      );
-      setTableContents(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          title: doc.data().title,
-          progress: doc.data().progress,
-          created_at: doc.data().created_at,
-          todoList: doc.data().todoList,
-        }))
-      );
-      setCurrentLastTask(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          title: doc.data().title,
-          progress: doc.data().progress,
-          created_at: doc.data().created_at,
-          todoList: doc.data().todoList,
-        }))[snapshot.docs.length - 1]
-      );
+      const contentsArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        title: doc.data().title,
+        progress: doc.data().progress,
+        created_at: doc.data().created_at,
+        todoList: doc.data().todoList,
+      }));
+
+      setCurrentFirstTask(contentsArray[0]);
+      setTableContents(contentsArray);
+      setCurrentLastTask(contentsArray[snapshot.docs.length - 1]);
     });
   };
 
@@ -202,33 +163,17 @@ export const TasksContent = (): JSX.Element => {
       .startAfter(currentLastTask?.created_at);
 
     tasksRef.onSnapshot((snapshot) => {
-      setCurrentFirstTask(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          title: doc.data().title,
-          progress: doc.data().progress,
-          created_at: doc.data().created_at,
-          todoList: doc.data().todoList,
-        }))[0]
-      );
-      setTableContents(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          title: doc.data().title,
-          progress: doc.data().progress,
-          created_at: doc.data().created_at,
-          todoList: doc.data().todoList,
-        }))
-      );
-      setCurrentLastTask(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          title: doc.data().title,
-          progress: doc.data().progress,
-          created_at: doc.data().created_at,
-          todoList: doc.data().todoList,
-        }))[snapshot.docs.length - 1]
-      );
+      const contentsArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        title: doc.data().title,
+        progress: doc.data().progress,
+        created_at: doc.data().created_at,
+        todoList: doc.data().todoList,
+      }));
+
+      setCurrentFirstTask(contentsArray[0]);
+      setTableContents(contentsArray);
+      setCurrentLastTask(contentsArray[snapshot.docs.length - 1]);
     });
   };
 
