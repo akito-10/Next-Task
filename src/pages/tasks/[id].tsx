@@ -49,9 +49,14 @@ export default function TaskDetailPage() {
             : [],
         });
       });
-    setIsLoading(false);
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+    }, 200);
 
-    return () => unSub();
+    return () => {
+      unSub();
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
