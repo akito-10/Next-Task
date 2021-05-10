@@ -49,68 +49,72 @@ export const TasksContent = (): JSX.Element => {
 
   // 初期リロードにて値をセット
   useEffect(() => {
-    const unSub_1 = db
-      .collection("users")
-      .doc(user.uid)
-      .collection("tasks")
-      .orderBy("created_at", "desc")
-      .limit(LIMIT)
-      .onSnapshot((snapshot) => {
-        setFirstTask(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            title: doc.data().title,
-            progress: doc.data().progress,
-            created_at: doc.data().created_at,
-            todoList: doc.data().todoList,
-          }))[0]
-        );
-        setCurrentFirstTask(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            title: doc.data().title,
-            progress: doc.data().progress,
-            created_at: doc.data().created_at,
-            todoList: doc.data().todoList,
-          }))[0]
-        );
-        setCurrentLastTask(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            title: doc.data().title,
-            progress: doc.data().progress,
-            created_at: doc.data().created_at,
-            todoList: doc.data().todoList,
-          }))[snapshot.docs.length - 1]
-        );
-        setTableContents(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            title: doc.data().title,
-            progress: doc.data().progress,
-            created_at: doc.data().created_at,
-            todoList: doc.data().todoList,
-          }))
-        );
-      });
+    const unSub_1 = user.uid
+      ? db
+          .collection("users")
+          .doc(user.uid)
+          .collection("tasks")
+          .orderBy("created_at", "desc")
+          .limit(LIMIT)
+          .onSnapshot((snapshot) => {
+            setFirstTask(
+              snapshot.docs.map((doc) => ({
+                id: doc.id,
+                title: doc.data().title,
+                progress: doc.data().progress,
+                created_at: doc.data().created_at,
+                todoList: doc.data().todoList,
+              }))[0]
+            );
+            setCurrentFirstTask(
+              snapshot.docs.map((doc) => ({
+                id: doc.id,
+                title: doc.data().title,
+                progress: doc.data().progress,
+                created_at: doc.data().created_at,
+                todoList: doc.data().todoList,
+              }))[0]
+            );
+            setCurrentLastTask(
+              snapshot.docs.map((doc) => ({
+                id: doc.id,
+                title: doc.data().title,
+                progress: doc.data().progress,
+                created_at: doc.data().created_at,
+                todoList: doc.data().todoList,
+              }))[snapshot.docs.length - 1]
+            );
+            setTableContents(
+              snapshot.docs.map((doc) => ({
+                id: doc.id,
+                title: doc.data().title,
+                progress: doc.data().progress,
+                created_at: doc.data().created_at,
+                todoList: doc.data().todoList,
+              }))
+            );
+          })
+      : console.log;
 
-    const unSub_2 = db
-      .collection("users")
-      .doc(user.uid)
-      .collection("tasks")
-      .orderBy("created_at", "desc")
-      .limitToLast(1)
-      .onSnapshot((snapshot) => {
-        setLastTask(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            title: doc.data().title,
-            progress: doc.data().progress,
-            created_at: doc.data().created_at,
-            todoList: doc.data().todoList,
-          }))[0]
-        );
-      });
+    const unSub_2 = user.uid
+      ? db
+          .collection("users")
+          .doc(user.uid)
+          .collection("tasks")
+          .orderBy("created_at", "desc")
+          .limitToLast(1)
+          .onSnapshot((snapshot) => {
+            setLastTask(
+              snapshot.docs.map((doc) => ({
+                id: doc.id,
+                title: doc.data().title,
+                progress: doc.data().progress,
+                created_at: doc.data().created_at,
+                todoList: doc.data().todoList,
+              }))[0]
+            );
+          })
+      : console.log;
 
     setIsLoading(false);
 
@@ -118,7 +122,7 @@ export const TasksContent = (): JSX.Element => {
       unSub_1();
       unSub_2();
     };
-  }, []);
+  }, [user.uid]);
 
   // ページをめくるたび、前後にページがあるか判定
   useEffect(() => {
@@ -128,7 +132,7 @@ export const TasksContent = (): JSX.Element => {
     if (lastTask && currentLastTask) {
       setHasNextPage(lastTask.id !== currentLastTask.id);
     }
-  }, [currentFirstTask, currentLastTask]);
+  }, [user.uid, firstTask, lastTask, currentFirstTask, currentLastTask]);
 
   const deleteTask = (id: string) => {
     db.collection("users")
@@ -233,6 +237,11 @@ export const TasksContent = (): JSX.Element => {
       );
     });
   };
+
+  console.log("first:", firstTask);
+  console.log("last:", lastTask);
+  console.log("currFirst:", currentFirstTask);
+  console.log("currentLast:", currentLastTask);
 
   return (
     <div className="flex flex-col max-w-full -my-8 sm:my-0">
