@@ -1,3 +1,4 @@
+import Skeleton from "@yisheng90/react-loading";
 import classNames from "classnames";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -92,11 +93,14 @@ export const TasksContent = (): JSX.Element => {
           })
       : console.log;
 
-    setIsLoading(false);
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+    }, 150);
 
     return () => {
       unSub_1();
       unSub_2();
+      clearTimeout(timeoutId);
     };
   }, [user.uid]);
 
@@ -179,102 +183,103 @@ export const TasksContent = (): JSX.Element => {
 
   return (
     <div className="flex flex-col max-w-full -my-8 sm:my-0">
-      <div className="-my-2">
-        <div className="py-2 align-middle sm:rounded-t-lg bg-gray-50">
-          <div
-            className={classNames(
-              "shadow overflow-hidden border-b border-gray-200 w-650px max-w-full mx-auto",
-              classes
-            )}
-          >
-            <table className="divide-y divide-gray-200 w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Name
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
-                  >
-                    Progress
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
-                  >
-                    Delete
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {isLoading ? (
-                  <tr></tr>
-                ) : tableContents.length > 0 &&
-                  tableContents[0].title !== "" ? (
-                  tableContents.map((content) => (
-                    <TableContents
-                      key={content.id}
-                      className="h-14"
-                      sub={`${content.progress}%`}
-                      onClick={() => {
-                        setIsAlertOpen(true);
-                        setCurrId(content.id);
-                      }}
+      {isLoading ? (
+        <Skeleton width={640} height={401} color="#C0C0C0" />
+      ) : (
+        <div className="-my-2">
+          <div className="py-2 align-middle sm:rounded-t-lg bg-gray-50">
+            <div
+              className={classNames(
+                "shadow overflow-hidden border-b border-gray-200 w-650px max-w-full mx-auto",
+                classes
+              )}
+            >
+              <table className="divide-y divide-gray-200 w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      <Link href={`/tasks/${content.id}`}>
-                        <span
-                          onClick={() =>
-                            localStorage.setItem("taskId", content.id)
-                          }
-                          className="cursor-pointer"
-                        >
-                          {content.title}
-                        </span>
-                      </Link>
-                    </TableContents>
-                  ))
-                ) : (
-                  <></>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-            <div className="px-6 flex-1 flex justify-between">
-              <p
-                className={classNames(
-                  "relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 cursor-pointer select-none",
-                  !hasPreviousPage && "pointer-events-none bg-gray-200"
-                )}
-                onClick={getPreviousPage}
-              >
-                ＜Previous
-              </p>
-              <p
-                className={classNames(
-                  "ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 cursor-pointer select-none",
-                  !hasNextPage && "pointer-events-none bg-gray-200"
-                )}
-                onClick={getNextPage}
-              >
-                Next＞
-              </p>
+                      Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
+                    >
+                      Progress
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
+                    >
+                      Delete
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {tableContents.length > 0 && tableContents[0].title !== "" ? (
+                    tableContents.map((content) => (
+                      <TableContents
+                        key={content.id}
+                        className="h-14"
+                        sub={`${content.progress}%`}
+                        onClick={() => {
+                          setIsAlertOpen(true);
+                          setCurrId(content.id);
+                        }}
+                      >
+                        <Link href={`/tasks/${content.id}`}>
+                          <span
+                            onClick={() =>
+                              localStorage.setItem("taskId", content.id)
+                            }
+                            className="cursor-pointer"
+                          >
+                            {content.title}
+                          </span>
+                        </Link>
+                      </TableContents>
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+              <div className="px-6 flex-1 flex justify-between">
+                <p
+                  className={classNames(
+                    "relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 cursor-pointer select-none",
+                    !hasPreviousPage && "pointer-events-none bg-gray-200"
+                  )}
+                  onClick={getPreviousPage}
+                >
+                  ＜Previous
+                </p>
+                <p
+                  className={classNames(
+                    "ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 cursor-pointer select-none",
+                    !hasNextPage && "pointer-events-none bg-gray-200"
+                  )}
+                  onClick={getNextPage}
+                >
+                  Next＞
+                </p>
+              </div>
             </div>
           </div>
+          <PrimaryButton
+            bgColor="blue"
+            className="bottom-20 left-1/2 translate-x-50"
+            fixed
+            onClick={() => router.push("/tasks-page/new-task")}
+          >
+            新規タスク追加
+          </PrimaryButton>
         </div>
-        <PrimaryButton
-          bgColor="blue"
-          className="bottom-20 left-1/2 translate-x-50"
-          fixed
-          onClick={() => router.push("/tasks-page/new-task")}
-        >
-          新規タスク追加
-        </PrimaryButton>
-      </div>
+      )}
       <AlertModal
         isOpen={isAlertOpen}
         setIsOpen={setIsAlertOpen}
