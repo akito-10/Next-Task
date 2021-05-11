@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { auth, storage } from "src/firebase/firebase";
 import { useDispatch } from "react-redux";
 import { updateUserProfile } from "src/features/userSlice";
+import { InputModal } from "./shared/InputModal";
 
 export const Auth = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -16,6 +17,8 @@ export const Auth = (): JSX.Element => {
   const [alertText, setAlertText] = useState<string>("");
   const [isViewAlert, setIsViewAlert] = useState<boolean>(true);
   const [isPasswordRemember, setIsPassWordRemember] = useState<boolean>(false);
+  const [resetEmail, setResetEmail] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
@@ -105,6 +108,19 @@ export const Auth = (): JSX.Element => {
     );
   };
 
+  const sendResetEmail = async () => {
+    await auth
+      .sendPasswordResetEmail(resetEmail)
+      .then(() => {
+        setIsModalOpen(false);
+        setResetEmail("");
+      })
+      .catch((err) => {
+        alert(err.message);
+        setResetEmail("");
+      });
+  };
+
   return (
     <div className="max-w-md w-full space-y-8">
       <div>
@@ -187,16 +203,15 @@ export const Auth = (): JSX.Element => {
           </div>
           {isLogin && (
             <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-indigo-700 hover:text-indigo-900"
+              <p
+                className="font-medium text-indigo-700 hover:text-indigo-900 cursor-pointer"
+                onClick={() => setIsModalOpen(true)}
               >
                 パスワードを忘れた
-              </a>
+              </p>
             </div>
           )}
         </div>
-
         <div>
           <button
             type="button"
@@ -243,6 +258,14 @@ export const Auth = (): JSX.Element => {
           </div>
         </div>
       </form>
+      <InputModal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        message={"リセット用メールアドレスを記入"}
+        value={resetEmail}
+        setValue={setResetEmail}
+        onClick={sendResetEmail}
+      />
     </div>
   );
 };
