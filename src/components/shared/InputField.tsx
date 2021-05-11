@@ -3,8 +3,8 @@ import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 type InputFieldProps = {
   color?: "white" | "gray";
-  name: string;
-  type: "text" | "email" | "password" | "date";
+  name?: string;
+  type?: "text" | "email" | "password" | "date";
   autoComplete?: string;
   placeholder?: string;
   value: string;
@@ -14,7 +14,7 @@ type InputFieldProps = {
 export const InputField = ({
   color = "gray",
   name,
-  type,
+  type = "text",
   autoComplete,
   placeholder,
   value,
