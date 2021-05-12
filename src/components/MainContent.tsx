@@ -56,7 +56,7 @@ export const MainContent = (): JSX.Element => {
               ?.todoList.filter((curr: TodoListType) => curr.isDone === false)
           : null;
 
-        // Todoが設定されていない＆全タスクが完了している場合、falseとなり、空の値が設定される。
+        // 現在のタスクが設定されている&タスクが完了していない場合の処理
         if (notDoneTodoList && notDoneTodoList.length > 0) {
           const firstTodo = notDoneTodoList.sort(
             (a: TodoListType, b: TodoListType) =>
@@ -77,7 +77,8 @@ export const MainContent = (): JSX.Element => {
               todo: firstTodo,
             });
           }
-        } else {
+          // Todoが残っていない場合の処理
+        } else if (notDoneTodoList && notDoneTodoList.length === 0) {
           setCurrTask({
             id: snapshot.data()?.id,
             title: snapshot.data()?.title,
@@ -178,7 +179,9 @@ export const MainContent = (): JSX.Element => {
             bgColor={isComplete ? "gray" : "blue"}
             ripple={!isComplete}
             onClick={() => currTodoDone()}
-            className={isComplete ? "pointer-events-none" : ""}
+            className={
+              isComplete || !currTask.title ? "pointer-events-none" : ""
+            }
           >
             {isComplete ? "Complete!!" : "Done!!"}
           </PrimaryButton>
