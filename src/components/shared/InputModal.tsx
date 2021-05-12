@@ -38,6 +38,7 @@ export const InputModal = ({
             <div className="w-4/5 mx-auto">
               <InputField
                 value={value}
+                type="email"
                 placeholder={message}
                 onChange={setValue}
               />
