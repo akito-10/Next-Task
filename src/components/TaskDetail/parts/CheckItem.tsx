@@ -21,7 +21,7 @@ export const CheckItem = ({
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
   return (
-    <div className="w-650px max-w-90p h-16 bg-gray-50 rounded-md flex items-center px-6 justify-between mx-auto mb-4">
+    <div className="w-650px max-w-90p min-h-16 bg-gray-50 rounded-md flex items-center px-6 justify-between mx-auto mb-4">
       <input
         type="checkbox"
         checked={todo.isDone}
@@ -31,7 +31,7 @@ export const CheckItem = ({
         readOnly
         className="w-4 h-4 cursor-pointer"
       />
-      <div>
+      <div className="w-2/3 p-2">
         <p>{todo.title}</p>
         <p className="text-xs text-gray-600">{todo.deadline}</p>
       </div>
