@@ -42,7 +42,7 @@ export const SettingContent = (): JSX.Element => {
 
   return (
     <div className="w-full">
-      <div className="w-11/12 bg-gray-50 h-auto m-auto py-4 rounded-lg">
+      <div className="w-11/12 max-w-xl bg-gray-50 h-auto m-auto py-4 rounded-lg">
         <h1 className="border-b-2 border-gray-400 px-5 pb-2">設定</h1>
         <ul>
           {SETTING_MENU.map((item, index) => (
