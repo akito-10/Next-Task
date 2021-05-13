@@ -62,7 +62,7 @@ export const SettingContent = (): JSX.Element => {
         setIsOpen={setIsWithdrawalOpen}
         primaryText="OK"
         message={"退会をするとアカウントが削除されます。よろしいですか？"}
-        type="warning"
+        type="alert"
         secondText="キャンセル"
         onClick={() => deleteUser()}
       />
