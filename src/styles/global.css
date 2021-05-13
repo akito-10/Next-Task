@@ -20,6 +20,9 @@
 .max-w-90p {
   max-width: 90%;
 }
+.min-h-16 {
+  min-height: 64px;
+}
 .max-h-500px {
   max-width: 500px;
 }
