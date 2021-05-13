@@ -8,7 +8,7 @@ export const ContactContent = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [content, setContent] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [type, setType] = useState<"alert" | "success">("success");
 
