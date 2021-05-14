@@ -8,9 +8,9 @@ import { CurrTaskType, TasksContentType, TodoListType } from "src/models";
 import { PrimaryButton } from "./shared/PrimaryButton";
 import Skeleton from "@yisheng90/react-loading";
 
-export const MainContent = (): JSX.Element => {
+const MainContent = (): JSX.Element => {
   const user = useSelector(selectUser);
-  const currTaskId = localStorage.getItem("currTaskId");
+  let currTaskId = localStorage.getItem("currTaskId");
   const [task, setTask] = useState<TasksContentType>({
     id: "",
     title: "",
@@ -44,55 +44,59 @@ export const MainContent = (): JSX.Element => {
   const isComplete = currTask.progress === 100;
 
   useEffect(() => {
-    const unSub = db
-      .collection("users")
-      .doc(user.uid)
-      .collection("tasks")
-      .doc(currTaskId!)
-      .onSnapshot((snapshot) => {
-        const notDoneTodoList = snapshot.data()?.todoList
-          ? snapshot
-              .data()
-              ?.todoList.filter((curr: TodoListType) => curr.isDone === false)
-          : null;
+    const unSub = user.uid
+      ? db
+          .collection("users")
+          .doc(user.uid)
+          .collection("tasks")
+          .doc(currTaskId!)
+          .onSnapshot((snapshot) => {
+            const notDoneTodoList = snapshot.data()?.todoList
+              ? snapshot
+                  .data()
+                  ?.todoList.filter(
+                    (curr: TodoListType) => curr.isDone === false
+                  )
+              : null;
 
-        // 現在のタスクが設定されている&タスクが完了していない場合の処理
-        if (notDoneTodoList && notDoneTodoList.length > 0) {
-          const firstTodo = notDoneTodoList.sort(
-            (a: TodoListType, b: TodoListType) =>
-              formatDeadline(a.deadline) - formatDeadline(b.deadline)
-          )[0];
-          if (snapshot.data()) {
-            setTask({
-              id: snapshot.data()?.id,
-              title: snapshot.data()?.title,
-              progress: snapshot.data()?.progress,
-              created_at: snapshot.data()?.created_at,
-              todoList: snapshot.data()?.todoList,
-            });
-            setCurrTask({
-              id: snapshot.data()?.id,
-              title: snapshot.data()?.title,
-              progress: snapshot.data()?.progress,
-              todo: firstTodo,
-            });
-          }
-          // Todoが残っていない場合の処理
-        } else if (notDoneTodoList && notDoneTodoList.length === 0) {
-          setCurrTask({
-            id: snapshot.data()?.id,
-            title: snapshot.data()?.title,
-            progress: snapshot.data()?.progress,
-            todo: {
-              todoId: 0,
-              title: "タスクは完了しました。",
-              deadline: "",
-              doneDate: null,
-              isDone: false,
-            },
-          });
-        }
-      });
+            // 現在のタスクが設定されている&タスクが完了していない場合の処理
+            if (notDoneTodoList && notDoneTodoList.length > 0) {
+              const firstTodo = notDoneTodoList.sort(
+                (a: TodoListType, b: TodoListType) =>
+                  formatDeadline(a.deadline) - formatDeadline(b.deadline)
+              )[0];
+              if (snapshot.data()) {
+                setTask({
+                  id: snapshot.data()?.id,
+                  title: snapshot.data()?.title,
+                  progress: snapshot.data()?.progress,
+                  created_at: snapshot.data()?.created_at,
+                  todoList: snapshot.data()?.todoList,
+                });
+                setCurrTask({
+                  id: snapshot.data()?.id,
+                  title: snapshot.data()?.title,
+                  progress: snapshot.data()?.progress,
+                  todo: firstTodo,
+                });
+              }
+              // Todoが残っていない場合の処理
+            } else if (notDoneTodoList && notDoneTodoList.length === 0) {
+              setCurrTask({
+                id: snapshot.data()?.id,
+                title: snapshot.data()?.title,
+                progress: snapshot.data()?.progress,
+                todo: {
+                  todoId: 0,
+                  title: "タスクは完了しました。",
+                  deadline: "",
+                  doneDate: null,
+                  isDone: false,
+                },
+              });
+            }
+          })
+      : console.log;
     const timeoutId = setTimeout(() => {
       setIsLoading(false);
     }, 200);
@@ -101,7 +105,7 @@ export const MainContent = (): JSX.Element => {
       unSub();
       clearTimeout(timeoutId);
     };
-  }, [isDoneCurrTask]);
+  }, [isDoneCurrTask, user.uid]);
 
   const currTodoDone = () => {
     const allTodoLength = task.todoList.length;
@@ -190,3 +194,5 @@ export const MainContent = (): JSX.Element => {
     </div>
   );
 };
+
+export default MainContent;
