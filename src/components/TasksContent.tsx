@@ -11,7 +11,7 @@ import { TasksContentType } from "src/models";
 import { AlertModal } from "./shared/AlertModal";
 import { PrimaryButton } from "./shared/PrimaryButton";
 
-export const TasksContent = (): JSX.Element => {
+const TasksContent = (): JSX.Element => {
   const router = useRouter();
   const user = useSelector(selectUser);
   const [tableContents, setTableContents] = useState<TasksContentType[]>([
@@ -291,3 +291,5 @@ export const TasksContent = (): JSX.Element => {
     </div>
   );
 };
+
+export default TasksContent;
