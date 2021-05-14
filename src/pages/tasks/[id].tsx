@@ -6,8 +6,9 @@ import { db } from "src/firebase/firebase";
 import { MainLayout } from "src/layouts/main";
 import { formatDeadline } from "src/lib/format-deadline";
 import { TasksContentType, TodoListType } from "src/models";
+import dynamic from "next/dynamic";
 
-export default function TaskDetailPage() {
+function TaskDetailPage() {
   const user = useSelector(selectUser);
   const [task, setTask] = useState<TasksContentType>({
     id: "",
@@ -28,27 +29,29 @@ export default function TaskDetailPage() {
   const taskId = localStorage.getItem("taskId");
 
   useEffect(() => {
-    const unSub = db
-      .collection("users")
-      .doc(user.uid)
-      .collection("tasks")
-      .doc(taskId!)
-      .onSnapshot((snapshot) => {
-        setTask({
-          id: snapshot.id,
-          title: snapshot.data()?.title,
-          progress: snapshot.data()?.progress,
-          created_at: snapshot.data()?.created_at,
-          todoList: snapshot.data()?.todoList
-            ? snapshot
-                .data()
-                ?.todoList.sort(
-                  (a: TodoListType, b: TodoListType) =>
-                    formatDeadline(a.deadline) - formatDeadline(b.deadline)
-                )
-            : [],
-        });
-      });
+    const unSub = user.uid
+      ? db
+          .collection("users")
+          .doc(user.uid)
+          .collection("tasks")
+          .doc(taskId!)
+          .onSnapshot((snapshot) => {
+            setTask({
+              id: snapshot.id,
+              title: snapshot.data()?.title,
+              progress: snapshot.data()?.progress,
+              created_at: snapshot.data()?.created_at,
+              todoList: snapshot.data()?.todoList
+                ? snapshot
+                    .data()
+                    ?.todoList.sort(
+                      (a: TodoListType, b: TodoListType) =>
+                        formatDeadline(a.deadline) - formatDeadline(b.deadline)
+                    )
+                : [],
+            });
+          })
+      : console.log;
     const timeoutId = setTimeout(() => {
       setIsLoading(false);
     }, 200);
@@ -57,7 +60,7 @@ export default function TaskDetailPage() {
       unSub();
       clearTimeout(timeoutId);
     };
-  }, []);
+  }, [user.uid]);
 
   return (
     <MainLayout
@@ -68,3 +71,14 @@ export default function TaskDetailPage() {
     </MainLayout>
   );
 }
+
+const DynamicTaskDetailPage = dynamic(
+  {
+    loader: async () => TaskDetailPage,
+  },
+  {
+    ssr: false,
+  }
+);
+
+export default DynamicTaskDetailPage;
