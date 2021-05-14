@@ -47,24 +47,28 @@ export const ContactContent = () => {
         value={name}
         onChange={setName}
       />
-      <InputField
-        type="email"
-        color="white"
-        name="email"
-        autoComplete="email"
-        placeholder="メールアドレス*"
-        value={email}
-        onChange={setEmail}
-      />
-      <textarea
-        className="appearance-none relative block w-full h-40 px-3 py-2 mb-3 bg-gray-50 border border-gray-300 placeholder-gray-500 text-gray-600 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-        placeholder="お問い合わせ内容*"
-        value={content}
-        onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-          setContent(e.target.value)
-        }
-      />
-      <PrimaryButton onClick={() => sendMail()}>送信</PrimaryButton>
+      <form onSubmit={() => sendMail()}>
+        <InputField
+          type="email"
+          color="white"
+          name="email"
+          autoComplete="email"
+          placeholder="メールアドレス*"
+          value={email}
+          onChange={setEmail}
+        />
+        <textarea
+          className="appearance-none relative block w-full h-40 px-3 py-2 mb-3 bg-gray-50 border border-gray-300 placeholder-gray-500 text-gray-600 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+          placeholder="お問い合わせ内容*"
+          value={content}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            setContent(e.target.value)
+          }
+        />
+        <PrimaryButton type="submit" expanded>
+          送信
+        </PrimaryButton>
+      </form>
       <AlertModal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
