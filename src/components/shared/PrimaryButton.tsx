@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React from "react";
 
 type ButtonProps = {
-  onClick: any;
+  onClick?: any;
   children: React.ReactNode;
   bgColor?:
     | "blue"
@@ -16,6 +16,8 @@ type ButtonProps = {
   className?: string;
   fixed?: boolean;
   ripple?: boolean;
+  type?: "button" | "submit";
+  expanded?: boolean;
 };
 
 export const PrimaryButton: React.VFC<ButtonProps> = ({
@@ -26,8 +28,12 @@ export const PrimaryButton: React.VFC<ButtonProps> = ({
   className,
   fixed = false,
   ripple = false,
+  type = "button",
+  expanded = false,
 }) => {
   const position = fixed ? "fixed" : "relative";
+
+  const width = expanded ? "w-full" : "";
 
   // 指定した色をクラスに追加
   const colorClasses = classNames({
@@ -71,8 +77,10 @@ export const PrimaryButton: React.VFC<ButtonProps> = ({
         "my-4 px-6 py-2 rounded-lg",
         position,
         colorClasses,
+        width,
         className
       )}
+      type={type}
       onMouseUp={(e) => {
         const rippleElement = document.getElementById("btn");
         if (rippleElement && ripple) addRippleEffect(rippleElement, e);
