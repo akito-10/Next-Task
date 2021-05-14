@@ -31,6 +31,7 @@ export const ControlModal = ({
       : "";
   const [title, setTitle] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
+  const [alertText, setAlertText] = useState<string>("");
 
   const todoIds = task.todoList.map((todo) => todo.todoId);
   const maxIdNum = Math.max(...todoIds);
@@ -73,12 +74,25 @@ export const ControlModal = ({
           },
         ],
       });
+
+    setIsOpen(false);
+    setTitle("");
+    setDeadline("");
   };
 
   const addTodo = async () => {
+    if (!title && !deadline) {
+      return setAlertText("Todo名・締め切りを入力してください。");
+    } else if (!title) {
+      return setAlertText("Todo名を入力してください。");
+    } else if (!deadline) {
+      return setAlertText("締め切りを入力してください。");
+    }
+
     const allTodoLength = task.todoList.length + 1;
-    const doneTodoLength = task.todoList.filter((curr) => curr.isDone === true)
-      .length;
+    const doneTodoLength = task.todoList.filter(
+      (curr) => curr.isDone === true
+    ).length;
 
     // 完了率の計算
     const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
@@ -102,7 +116,17 @@ export const ControlModal = ({
           },
         ],
       });
+
+    setIsOpen(false);
+    setTitle("");
+    setDeadline("");
   };
+
+  useEffect(() => {
+    setTitle("");
+    setDeadline("");
+    setAlertText("");
+  }, [isOpen]);
 
   return (
     <div
@@ -152,7 +176,7 @@ export const ControlModal = ({
                 />
               </div>
               <div className="mt-2">
-                <p className="text-sm text-gray-500"></p>
+                <p className="text-sm text-red-500">{alertText}</p>
               </div>
             </div>
           </div>
@@ -160,10 +184,7 @@ export const ControlModal = ({
             <PrimaryButton
               bgColor="green"
               onClick={async () => {
-                setIsOpen(false);
                 type === "edit" ? await updateTodo() : await addTodo();
-                setTitle("");
-                setDeadline("");
               }}
               className="w-full inline-flex justify-center rounded-md border border-transparent text-base font-medium sm:ml-3 sm:w-auto sm:text-sm"
             >
