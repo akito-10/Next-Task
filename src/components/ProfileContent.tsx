@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { auth, storage } from "src/firebase/firebase";
 import { InputField } from "./shared/InputField";
 import { PrimaryButton } from "./shared/PrimaryButton";
-import { updateUserProfile } from "src/features/userSlice";
+import { selectUser, updateUserProfile } from "src/features/userSlice";
 import { AlertModal } from "./shared/AlertModal";
 
 export const ProfileContent = () => {
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const currentUser = auth.currentUser;
-  const [username, setUsername] = useState<string>(currentUser?.displayName!);
+  const [username, setUsername] = useState<string>(user.displayName);
   const [email, setEmail] = useState<string>(currentUser?.email!);
   const [avatar, setAvatar] = useState<File | null>(null);
   const [isSuccessOpen, setIsSuccessOpen] = useState<boolean>(false);
@@ -54,11 +55,6 @@ export const ProfileContent = () => {
     );
   };
 
-  useEffect(() => {
-    setUsername(currentUser?.displayName!);
-    setEmail(currentUser?.email!);
-  }, []);
-
   return (
     <div className="w-64 text-center m-auto">
       <p className="mb-4">ユーザー名</p>
@@ -67,7 +63,7 @@ export const ProfileContent = () => {
         name="username"
         type="text"
         autoComplete="username"
-        placeholder={currentUser?.displayName!}
+        placeholder={user.displayName}
         value={username}
         onChange={setUsername}
       />
@@ -83,7 +79,7 @@ export const ProfileContent = () => {
       />
       <div className="flex items-center mt-10">
         <img
-          src={currentUser?.photoURL!}
+          src={user.photoUrl}
           width={40}
           height={40}
           className={"rounded-full mx-auto"}
