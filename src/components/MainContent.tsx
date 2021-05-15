@@ -159,7 +159,7 @@ const MainContent = (): JSX.Element => {
           <Skeleton width={258} height={250} color="#C0C0C0" />
         </div>
       ) : (
-        <div className="bg-gray-50 text-gray-500 px-16 py-4 mt-4 rounded-lg shadow-xl">
+        <div className="max-w-sm bg-gray-50 text-gray-500 px-16 py-4 mt-4 mx-2 rounded-lg shadow-xl">
           <h4 className="mb-2 border-b border-black border-solid text-black">
             {currTask.title ? currTask.title : "タスクが設定されていません"}
           </h4>
@@ -169,7 +169,7 @@ const MainContent = (): JSX.Element => {
               : "- "
           }%`}</p>
           <p className="mb-2 text-black">次のタスク</p>
-          <p>
+          <p className="mb-2">
             {currTask.todo?.title
               ? currTask.todo.title
               : "現在進行中のタスクはありません。"}
