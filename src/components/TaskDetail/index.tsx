@@ -89,7 +89,7 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   };
 
   const addCurrTask = () => {
-    localStorage.setItem("currTaskId", task.id);
+    localStorage.setItem(user.uid, task.id);
   };
 
   return (
