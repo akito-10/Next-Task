@@ -93,7 +93,7 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   };
 
   return (
-    <div className="text-center max-w-full mb-28">
+    <div className="text-center max-w-full mb-28 pt-24 pb-8">
       <h1 className="text-3xl text-gray-700 mb-6 sm:mb-14">{`タスク名：${task.title}`}</h1>
       {task.todoList.length > 0 ? (
         task.todoList.map((todo) => (

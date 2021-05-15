@@ -182,7 +182,7 @@ const TasksContent = (): JSX.Element => {
   };
 
   return (
-    <div className="flex flex-col max-w-full -my-8 sm:my-0">
+    <div className="flex flex-col max-w-full pt-24 pb-8">
       {isLoading ? (
         <Skeleton width={640} height={401} color="#C0C0C0" />
       ) : (

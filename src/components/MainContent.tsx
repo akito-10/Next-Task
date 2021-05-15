@@ -143,7 +143,7 @@ const MainContent = (): JSX.Element => {
   };
 
   return (
-    <div className="text-center text-gray-50">
+    <div className="text-center text-gray-50 pt-24 pb-8">
       {user.photoUrl && (
         <img
           src={user.photoUrl}
