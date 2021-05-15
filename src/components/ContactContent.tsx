@@ -12,7 +12,7 @@ export const ContactContent = () => {
   const [message, setMessage] = useState<string>("");
   const [type, setType] = useState<"alert" | "success">("success");
 
-  const sendMail = () => {
+  const sendMail = async () => {
     const data = {
       name: name,
       email: email,
@@ -20,7 +20,7 @@ export const ContactContent = () => {
     };
     const sendMail = functions.httpsCallable("sendMail");
 
-    sendMail(data)
+    await sendMail(data)
       .then(() => {
         setName("");
         setEmail("");
@@ -47,7 +47,7 @@ export const ContactContent = () => {
         value={name}
         onChange={setName}
       />
-      <form onSubmit={() => sendMail()}>
+      <form className="mb-20" onSubmit={async () => await sendMail()}>
         <InputField
           type="email"
           color="white"
