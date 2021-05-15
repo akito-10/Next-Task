@@ -81,20 +81,20 @@ export const ProfileContent = () => {
         value={email}
         onChange={setEmail}
       />
-      <div className="flex items-center">
+      <div className="flex items-center mt-10">
         <img
           src={currentUser?.photoURL!}
           width={40}
           height={40}
-          className="rounded-full mt-8 mx-auto"
+          className={"rounded-full mx-auto"}
         />
-        <label className="cursor-pointer inline-block mt-10 mr-4">
+        <label className="cursor-pointer inline-block mr-6">
           <input type="file" hidden onChange={onChangeImageHandler} />
           <p
             id="btn"
             className="bg-gray-50 px-4 py-2 rounded-lg hover:bg-gray-200"
           >
-            Change
+            変更
           </p>
         </label>
       </div>
