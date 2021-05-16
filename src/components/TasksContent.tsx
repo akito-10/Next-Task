@@ -95,7 +95,7 @@ const TasksContent = (): JSX.Element => {
 
     const timeoutId = setTimeout(() => {
       setIsLoading(false);
-    }, 150);
+    }, 300);
 
     return () => {
       unSub_1();

@@ -97,13 +97,10 @@ const MainContent = (): JSX.Element => {
               }
             })
         : console.log;
-    const timeoutId = setTimeout(() => {
-      setIsLoading(false);
-    }, 200);
+    setIsLoading(false);
 
     return () => {
       unSub();
-      clearTimeout(timeoutId);
     };
   }, [isDoneCurrTask, user.uid]);
 
@@ -156,7 +153,7 @@ const MainContent = (): JSX.Element => {
       <h2 className="text-3xl mt-4 h-9 text-gray-800">{user.displayName}</h2>
       <h3 className="text-2xl mt-12 text-gray-800">進行中のタスク</h3>
 
-      {isLoading ? (
+      {currTaskId && (isLoading || currTask.title === "") ? (
         <div className="mt-4">
           <Skeleton width={258} height={250} color="#C0C0C0" />
         </div>
