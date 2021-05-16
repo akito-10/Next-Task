@@ -14,8 +14,8 @@ export default class MyDocument extends Document {
     return (
       <Html lang="ja">
         <Head>
-          <title>Tasker</title>
-          <link rel="icon" href="/Tasker.ico" />
+          <title>Next-Task</title>
+          <link rel="icon" href="/next-task.ico" />
         </Head>
         <body>
           <Main />

@@ -12,7 +12,7 @@ export function MainLayout({
 
   return (
     <>
-      <NextSeo title={`Tasker - ${page}`} description={description}></NextSeo>
+      <NextSeo title={`NextTask - ${page}`} description={description}></NextSeo>
       <main>
         <div className="font-mono min-h-screen flex justify-center bg-gray-300">
           <HeaderComponent />

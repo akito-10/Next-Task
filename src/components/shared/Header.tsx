@@ -117,7 +117,9 @@ export const HeaderComponent = (): JSX.Element => {
             </div>
             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
               <div className="flex-shrink-0 flex items-center">
-                <h1 className="text-gray-50 font-extrabold text-2xl">Tasker</h1>
+                <h1 className="text-gray-50 font-extrabold text-2xl">
+                  NextTask
+                </h1>
               </div>
               {/* メインメニュー */}
               <div className="hidden sm:block sm:ml-6">
