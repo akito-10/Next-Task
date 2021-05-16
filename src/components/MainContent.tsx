@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/features/userSlice";
@@ -144,15 +143,17 @@ const MainContent = (): JSX.Element => {
 
   return (
     <div className="text-center text-gray-50 pt-24 pb-8">
-      {user.photoUrl && (
-        <img
-          src={user.photoUrl}
-          width={100}
-          height={100}
-          className="rounded-full mx-auto"
-        />
-      )}
-      <h2 className="text-3xl mt-4 text-gray-800">{user.displayName}</h2>
+      <div className="w-24 h-24 mx-auto">
+        {user.photoUrl && (
+          <img
+            src={user.photoUrl}
+            width={100}
+            height={100}
+            className="rounded-full mx-auto"
+          />
+        )}
+      </div>
+      <h2 className="text-3xl mt-4 h-9 text-gray-800">{user.displayName}</h2>
       <h3 className="text-2xl mt-12 text-gray-800">進行中のタスク</h3>
 
       {isLoading ? (
