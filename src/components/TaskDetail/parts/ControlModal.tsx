@@ -159,7 +159,7 @@ export const ControlModal = ({
                   color="white"
                   name="todo"
                   type="text"
-                  placeholder={todo ? todo.title : ""}
+                  placeholder={todo ? todo.title : "Todo名を入力"}
                   value={title}
                   onChange={setTitle}
                 />
@@ -170,7 +170,7 @@ export const ControlModal = ({
                   color="white"
                   name="deadline"
                   type="date"
-                  placeholder={todo ? todo.deadline : ""}
+                  placeholder={todo ? todo.deadline : "締め切りを入力"}
                   value={deadline}
                   onChange={setDeadline}
                 />
