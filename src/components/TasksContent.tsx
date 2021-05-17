@@ -184,7 +184,7 @@ const TasksContent = (): JSX.Element => {
   return (
     <div className="flex flex-col max-w-full pt-24 pb-8">
       {isLoading ? (
-        <Skeleton width={640} height={401} color="#C0C0C0" />
+        <Skeleton height={401} color="#C0C0C0" />
       ) : (
         <div className="-my-2">
           <div className="py-2 align-middle sm:rounded-t-lg bg-gray-50">
