@@ -4,11 +4,6 @@ import dynamic from "next/dynamic";
 const DynamicTasksContent = dynamic(
   () => import("src/components/TasksContent"),
   {
-    loading: () => (
-      <MainLayout page="タスク一覧" description="タスク一覧ページです。">
-        <p></p>
-      </MainLayout>
-    ),
     ssr: false,
   }
 );
