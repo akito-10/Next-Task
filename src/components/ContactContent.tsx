@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { functions } from "src/firebase/firebase";
 import { AlertModal } from "./shared/AlertModal";
 import { InputField } from "./shared/InputField";
@@ -12,7 +12,9 @@ export const ContactContent = () => {
   const [message, setMessage] = useState<string>("");
   const [type, setType] = useState<"alert" | "success">("success");
 
-  const sendMail = async () => {
+  const sendMail = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     const data = {
       name: name,
       email: email,
@@ -47,7 +49,10 @@ export const ContactContent = () => {
         value={name}
         onChange={setName}
       />
-      <form className="mb-20" onSubmit={async () => await sendMail()}>
+      <form
+        className="mb-20"
+        onSubmit={async (e: FormEvent<HTMLFormElement>) => await sendMail(e)}
+      >
         <InputField
           type="email"
           color="white"
