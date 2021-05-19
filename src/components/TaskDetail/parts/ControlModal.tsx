@@ -116,7 +116,7 @@ export const ControlModal = ({
   };
 
   useEffect(() => {
-    setTitle("");
+    setTitle(currTodo ? currTodo.title : "");
     setDeadline("");
     setAlertText("");
   }, [isOpen]);
@@ -153,7 +153,6 @@ export const ControlModal = ({
                   name="todo"
                   type="text"
                   placeholder={currTodo ? currTodo.title : "Todo名を入力"}
-                  defaultValue={currTodo ? currTodo.title : undefined}
                   value={title}
                   onChange={setTitle}
                 />
