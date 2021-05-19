@@ -24,19 +24,12 @@ export const ControlModal = ({
 }: ControlModalProps) => {
   const user = useSelector(selectUser);
   const taskId = localStorage.getItem("taskId");
-  // filterから返ってくる値は配列であるが、返ってくる値は１つであるため。
-  const todo =
-    type === "edit"
-      ? task.todoList.filter((curr) => curr.todoId === currTodo?.todoId)[0]
-      : "";
   const [title, setTitle] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
   const [alertText, setAlertText] = useState<string>("");
 
   const todoIds = task.todoList.map((todo) => todo.todoId);
   const maxIdNum = Math.max(...todoIds);
-
-  console.log(`${currTodo?.todoId} is edited`);
 
   const updateTodo = async () => {
     const allTodoLength = task.todoList.length;
@@ -62,13 +55,13 @@ export const ControlModal = ({
         ...task,
         progress: progress,
         todoList: [
-          ...task.todoList.filter((curr) => curr !== todo),
+          ...task.todoList.filter((curr) => curr !== currTodo),
           {
             todoId: maxIdNum + 1,
             // １.編集時、入力欄に何も入れていなかった場合、前回の値をいれるようにする。
             // ２.typeがaddの時にtodoが""になってしまうための振り分け
-            title: title ? title : todo && todo.title,
-            deadline: deadline ? deadline : todo && todo.deadline,
+            title: title ? title : currTodo && currTodo.title,
+            deadline: deadline ? deadline : currTodo && currTodo.deadline,
             isDone: false,
             doneDate: null,
           },
@@ -159,7 +152,8 @@ export const ControlModal = ({
                   color="white"
                   name="todo"
                   type="text"
-                  placeholder={todo ? todo.title : "Todo名を入力"}
+                  placeholder={currTodo ? currTodo.title : "Todo名を入力"}
+                  defaultValue={currTodo ? currTodo.title : undefined}
                   value={title}
                   onChange={setTitle}
                 />
@@ -170,7 +164,7 @@ export const ControlModal = ({
                   color="white"
                   name="deadline"
                   type="date"
-                  placeholder={todo ? todo.deadline : "締め切りを入力"}
+                  placeholder={currTodo ? currTodo.deadline : "締め切りを入力"}
                   value={deadline}
                   onChange={setDeadline}
                 />
