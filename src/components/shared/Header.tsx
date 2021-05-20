@@ -7,6 +7,7 @@ import { selectUser } from "src/features/userSlice";
 import { auth } from "src/firebase/firebase";
 import { AlertModal } from "./AlertModal";
 import { ShadowCover } from "./ShadowCover";
+import Image from "next/image";
 
 type MenuItemProps = {
   title: string;
@@ -162,11 +163,15 @@ export const HeaderComponent = (): JSX.Element => {
                     }}
                   >
                     <span className="sr-only">Open user menu</span>
-                    <img
-                      className="h-8 w-8 rounded-full"
-                      src={user.photoUrl}
-                      alt="プロフィール画像"
-                    />
+                    {user.photoUrl && (
+                      <Image
+                        className="rounded-full"
+                        src={user.photoUrl}
+                        width={32}
+                        height={32}
+                        alt="プロフィール画像"
+                      />
+                    )}
                   </button>
                 </div>
                 {/* サブメニュー */}

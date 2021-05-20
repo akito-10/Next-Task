@@ -6,6 +6,7 @@ import { formatDeadline } from "src/lib/format-deadline";
 import { CurrTaskType, TasksContentType, TodoListType } from "src/models";
 import { PrimaryButton } from "./shared/PrimaryButton";
 import Skeleton from "@yisheng90/react-loading";
+import Image from "next/image";
 
 const MainContent = (): JSX.Element => {
   const user = useSelector(selectUser);
@@ -142,7 +143,7 @@ const MainContent = (): JSX.Element => {
     <div className="text-center text-gray-50 pt-24 pb-8">
       <div className="w-24 h-24 mx-auto">
         {user.photoUrl && (
-          <img
+          <Image
             src={user.photoUrl}
             width={100}
             height={100}
