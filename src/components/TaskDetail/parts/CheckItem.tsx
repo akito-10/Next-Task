@@ -7,7 +7,7 @@ type CheckItemProps = {
   setIsEditOpen: Dispatch<SetStateAction<boolean>>;
   setCurrTodo: Dispatch<SetStateAction<TodoListType>>;
   checkedFunc: (todo: TodoListType, checked: boolean) => void;
-  deleteFunc: (id: number) => void;
+  deleteFunc: (id: number, checked: boolean) => void;
 };
 
 export const CheckItem = ({
@@ -87,7 +87,7 @@ export const CheckItem = ({
         message={`${todo.title}を削除してよろしいですか？`}
         primaryText={"削除"}
         secondText={"キャンセル"}
-        onClick={() => deleteFunc(todo.todoId)}
+        onClick={() => deleteFunc(todo.todoId, todo.isDone)}
       />
     </div>
   );

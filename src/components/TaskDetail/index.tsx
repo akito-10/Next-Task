@@ -66,13 +66,13 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
     await db.collection("users").doc(user.uid).set(addedBody);
   };
 
-  const deleteTodo = (id: number) => {
+  const deleteTodo = (id: number, checked: boolean) => {
     const allTodoLength = task.todoList.length - 1;
 
-    // 渡ってきたcheckedがtrueの時はfalseになる時であるので-1、逆の時は+1
-    const doneTodoLength = task.todoList.filter(
-      (curr) => curr.isDone === true
-    ).length;
+    // 渡ってきたtodoのcheckedがtrueの時はfalseになる時であるので-1、逆の時は+1
+    const doneTodoLength = checked
+      ? task.todoList.filter((curr) => curr.isDone === true).length - 1
+      : task.todoList.filter((curr) => curr.isDone === true).length;
 
     // 完了率の計算
     const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
