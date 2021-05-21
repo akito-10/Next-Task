@@ -187,8 +187,8 @@ export const Auth = (): JSX.Element => {
           </span>
         </div>
 
-        <div className="flex items-center justify-between px-3">
-          <div className="flex items-center">
+        <div className="flex items-center justify-end px-3">
+          {/* <div className="flex items-center">
             <input
               id="remember_me"
               name="remember_me"
@@ -200,7 +200,7 @@ export const Auth = (): JSX.Element => {
             <label className="ml-2 block text-sm text-gray-900">
               パスワードを覚えておく
             </label>
-          </div>
+          </div> */}
           {isLogin && (
             <div className="text-sm">
               <p
