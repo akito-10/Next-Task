@@ -167,7 +167,7 @@ export const TodoList = ({
           </table>
         </div>
       </div>
-      <div className="absolute bottom-16 left-1/2 translate-x-50 w-full">
+      <div className="mt-20 w-full">
         <PrimaryButton
           bgColor="red"
           className="mr-5"
