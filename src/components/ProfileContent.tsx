@@ -5,6 +5,7 @@ import { InputField } from "./shared/InputField";
 import { PrimaryButton } from "./shared/PrimaryButton";
 import { selectUser, updateUserProfile } from "src/features/userSlice";
 import { AlertModal } from "./shared/AlertModal";
+import Image from "next/image";
 
 export const ProfileContent = () => {
   const dispatch = useDispatch();
@@ -77,14 +78,16 @@ export const ProfileContent = () => {
         value={email}
         onChange={setEmail}
       />
-      <div className="flex items-center mt-10">
-        <img
-          src={user.photoUrl}
-          width={40}
-          height={40}
-          className={"rounded-full mx-auto"}
-        />
-        <label className="cursor-pointer inline-block mr-6">
+      <div className="flex justify-evenly items-center mt-10">
+        {user.photoUrl && (
+          <Image
+            src={user.photoUrl}
+            width={40}
+            height={40}
+            className={"rounded-full mx-auto"}
+          />
+        )}
+        <label className="cursor-pointer inline-block">
           <input type="file" hidden onChange={onChangeImageHandler} />
           <p
             id="btn"
