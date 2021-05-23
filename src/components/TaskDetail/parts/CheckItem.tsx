@@ -21,7 +21,7 @@ export const CheckItem = ({
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
   return (
-    <div className="w-650px max-w-90p min-h-16 bg-gray-50 rounded-md flex items-center px-6 justify-between mx-auto mb-4">
+    <li className="w-650px max-w-90p min-h-16 bg-gray-50 rounded-md flex items-center px-6 justify-between mx-auto mb-4">
       <input
         type="checkbox"
         checked={todo.isDone}
@@ -89,6 +89,6 @@ export const CheckItem = ({
         secondText={"キャンセル"}
         onClick={() => deleteFunc(todo.todoId, todo.isDone)}
       />
-    </div>
+    </li>
   );
 };
