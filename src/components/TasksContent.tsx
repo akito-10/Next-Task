@@ -118,9 +118,9 @@ const TasksContent = (): JSX.Element => {
       .doc(id)
       .delete()
       .then(() => {
-        const currTaskId = localStorage.getItem("currTaskId");
+        const currTaskId = localStorage.getItem(user.uid);
         if (id === currTaskId) {
-          localStorage.removeItem("currTaskId");
+          localStorage.removeItem(user.uid);
         }
         console.log("削除成功！");
       })
