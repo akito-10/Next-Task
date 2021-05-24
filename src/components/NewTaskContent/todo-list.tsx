@@ -56,8 +56,6 @@ export const TodoList = ({
       });
   };
 
-  console.log(id);
-
   return (
     <div className="text-center">
       <h1 className="text-3xl text-gray-700 mb-6 sm:mb-14">

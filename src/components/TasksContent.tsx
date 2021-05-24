@@ -93,14 +93,11 @@ const TasksContent = (): JSX.Element => {
           })
       : console.log;
 
-    const timeoutId = setTimeout(() => {
-      setIsLoading(false);
-    }, 300);
+    setIsLoading(false);
 
     return () => {
       unSub_1();
       unSub_2();
-      clearTimeout(timeoutId);
     };
   }, [user.uid]);
 
@@ -183,7 +180,7 @@ const TasksContent = (): JSX.Element => {
 
   return (
     <div className="flex flex-col max-w-full pt-24 pb-8">
-      {isLoading ? (
+      {isLoading || tableContents[0]?.title === "" ? (
         <Skeleton height={401} color="#C0C0C0" />
       ) : (
         <div className="-my-2">
