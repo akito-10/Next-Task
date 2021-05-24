@@ -52,13 +52,10 @@ function TaskDetailPage() {
             });
           })
       : console.log;
-    const timeoutId = setTimeout(() => {
-      setIsLoading(false);
-    }, 200);
+    setIsLoading(false);
 
     return () => {
       unSub();
-      clearTimeout(timeoutId);
     };
   }, [user.uid]);
 
