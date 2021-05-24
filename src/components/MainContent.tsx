@@ -27,7 +27,7 @@ const MainContent = (): JSX.Element => {
     ],
   });
   const [currTask, setCurrTask] = useState<CurrTaskType>({
-    id: "",
+    id: "-1",
     title: "",
     progress: 0,
     todo: {
@@ -42,6 +42,8 @@ const MainContent = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const isComplete = currTask.progress === 100;
+
+  console.log(currTask);
 
   useEffect(() => {
     const unSub =
@@ -95,6 +97,13 @@ const MainContent = (): JSX.Element => {
                     isDone: false,
                   },
                 });
+                // そもそも現在のタスクにTodoがない時の処理
+              } else {
+                setCurrTask((prev) => ({
+                  ...prev,
+                  // ロード中は、idを-1に設定している
+                  id: "0",
+                }));
               }
             })
         : console.log;
@@ -154,7 +163,7 @@ const MainContent = (): JSX.Element => {
       <h2 className="text-3xl mt-4 h-9 text-gray-800">{user.displayName}</h2>
       <h3 className="text-2xl mt-12 text-gray-800">進行中のタスク</h3>
 
-      {currTaskId && (isLoading || currTask.title === "") ? (
+      {currTaskId && (isLoading || currTask.id === "-1") ? (
         <div className="mt-4">
           <Skeleton width={258} height={250} color="#C0C0C0" />
         </div>
