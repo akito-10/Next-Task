@@ -219,7 +219,7 @@ const TasksContent = (): JSX.Element => {
                     tableContents.map((content) => (
                       <TableContents
                         key={content.id}
-                        className="h-14"
+                        className={classNames("h-14", content.progress === 100 && "bg-gray-200 opacity-70")}
                         sub={`${content.progress}%`}
                         onClick={() => {
                           setIsAlertOpen(true);
