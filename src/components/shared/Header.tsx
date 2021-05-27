@@ -127,7 +127,7 @@ export const HeaderComponent = (): JSX.Element => {
                 <div className="flex space-x-4">
                   {MENU_ITEMS.map((item) => (
                     <Link key={item.title} href={`/${item.link}`}>
-                      <p
+                      <a
                         className={classNames(
                           "px-3 py-2 rounded-md text-sm font-medium cursor-pointer",
                           router.pathname === `/${item.link}`
@@ -136,7 +136,7 @@ export const HeaderComponent = (): JSX.Element => {
                         )}
                       >
                         {item.title}
-                      </p>
+                      </a>
                     </Link>
                   ))}
                 </div>

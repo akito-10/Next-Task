@@ -43,8 +43,6 @@ const MainContent = (): JSX.Element => {
 
   const isComplete = currTask.progress === 100;
 
-  console.log(currTask);
-
   useEffect(() => {
     const unSub =
       user.uid && currTaskId

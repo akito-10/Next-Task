@@ -227,14 +227,14 @@ const TasksContent = (): JSX.Element => {
                         }}
                       >
                         <Link href={`/tasks/${content.id}`}>
-                          <span
+                          <a
                             onClick={() =>
                               localStorage.setItem("taskId", content.id)
                             }
                             className="cursor-pointer"
                           >
                             {content.title}
-                          </span>
+                          </a>
                         </Link>
                       </TableContents>
                     ))

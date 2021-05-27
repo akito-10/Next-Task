@@ -42,10 +42,6 @@ export const ControlModal = ({
     // 完了率の計算
     const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
 
-    console.log(allTodoLength);
-    console.log(doneTodoLength);
-    console.log(progress);
-
     await db
       .collection("users")
       .doc(user.uid)
