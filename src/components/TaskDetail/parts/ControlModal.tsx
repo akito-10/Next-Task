@@ -152,6 +152,7 @@ export const ControlModal = ({
                   name="todo"
                   type="text"
                   placeholder={currTodo ? currTodo.title : 'Todo名を入力'}
+                  defaultValue={currTodo?.title}
                   onBlur={setTitle}
                 />
               </div>
@@ -162,6 +163,7 @@ export const ControlModal = ({
                   name="deadline"
                   type="date"
                   placeholder={currTodo ? currTodo.deadline : '締め切りを入力'}
+                  defaultValue={currTodo?.deadline}
                   onBlur={setDeadline}
                 />
               </div>
