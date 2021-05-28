@@ -2,12 +2,12 @@ import Skeleton from '@yisheng90/react-loading';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { TableContents } from 'src/components/shared/TableContents';
 import { selectUser } from 'src/features/userSlice';
-import { db } from 'src/firebase/firebase';
 import { useGetTableContent } from 'src/hooks/useGetTableContent';
+import { deleteTask } from 'src/lib/deleteTask';
 import { AlertModal } from './shared/AlertModal';
 import { PrimaryButton } from './shared/PrimaryButton';
 
@@ -26,24 +26,6 @@ const TasksContent = (): JSX.Element => {
   } = useGetTableContent();
 
   const classes = tableContents.length > 3 ? 'h-auto' : 'h-80';
-
-  const deleteTask = (id: string) => {
-    db.collection('users')
-      .doc(user.uid)
-      .collection('tasks')
-      .doc(id)
-      .delete()
-      .then(() => {
-        const currTaskId = localStorage.getItem(user.uid);
-        if (id === currTaskId) {
-          localStorage.removeItem(user.uid);
-        }
-        console.log('削除成功！');
-      })
-      .catch((error) => {
-        console.error('Error removing document: ', error);
-      });
-  };
 
   return (
     <div className="flex flex-col max-w-full pt-24 pb-8">
@@ -153,7 +135,7 @@ const TasksContent = (): JSX.Element => {
         primaryText={'削除する'}
         message="このタスクを削除しますか？"
         secondText={'キャンセル'}
-        onClick={() => deleteTask(currId)}
+        onClick={() => deleteTask(user.uid, currId)}
       />
     </div>
   );
