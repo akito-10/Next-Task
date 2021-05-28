@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { AlertModal } from "../shared/AlertModal";
-import { InputField } from "../shared/InputField";
-import { PrimaryButton } from "../shared/PrimaryButton";
+import { Dispatch, SetStateAction, useState } from 'react';
+import { AlertModal } from '../shared/AlertModal';
+import { InputField } from '../shared/InputField';
+import { PrimaryButton } from '../shared/PrimaryButton';
 
 type TaskProps = {
   setTitle: Dispatch<SetStateAction<string>>;
@@ -9,8 +9,8 @@ type TaskProps = {
 };
 
 export const Task = ({ setTitle, setPage }: TaskProps): JSX.Element => {
-  const [taskTitle, setTaskTitle] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
+  const [taskTitle, setTaskTitle] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -22,8 +22,7 @@ export const Task = ({ setTitle, setPage }: TaskProps): JSX.Element => {
           color="white"
           name="title"
           type="text"
-          value={taskTitle}
-          onChange={setTaskTitle}
+          onBlur={setTaskTitle}
         />
       </div>
       <PrimaryButton
@@ -32,11 +31,11 @@ export const Task = ({ setTitle, setPage }: TaskProps): JSX.Element => {
         fixed
         onClick={() => {
           if (!taskTitle) {
-            setMessage("タイトル");
+            setMessage('タイトル');
             setIsOpen(true);
             return;
           }
-          setPage("todo");
+          setPage('todo');
           setTitle(taskTitle);
         }}
       >

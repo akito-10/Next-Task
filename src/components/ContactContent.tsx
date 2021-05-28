@@ -1,16 +1,16 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { functions } from "src/firebase/firebase";
-import { AlertModal } from "./shared/AlertModal";
-import { InputField } from "./shared/InputField";
-import { PrimaryButton } from "./shared/PrimaryButton";
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { functions } from 'src/firebase/firebase';
+import { AlertModal } from './shared/AlertModal';
+import { InputField } from './shared/InputField';
+import { PrimaryButton } from './shared/PrimaryButton';
 
 export const ContactContent = () => {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [content, setContent] = useState<string>("");
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [content, setContent] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
-  const [type, setType] = useState<"alert" | "success">("success");
+  const [message, setMessage] = useState<string>('');
+  const [type, setType] = useState<'alert' | 'success'>('success');
 
   const sendMail = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,21 +20,21 @@ export const ContactContent = () => {
       email: email,
       content: content,
     };
-    const sendMail = functions.httpsCallable("sendMail");
+    const sendMail = functions.httpsCallable('sendMail');
 
     await sendMail(data)
       .then(() => {
-        setName("");
-        setEmail("");
-        setContent("");
+        setName('');
+        setEmail('');
+        setContent('');
         setIsModalOpen(true);
-        setType("success");
-        setMessage("お問い合わせありがとうございます。送信が完了しました。");
+        setType('success');
+        setMessage('お問い合わせありがとうございます。送信が完了しました。');
       })
       .catch(() => {
         setIsModalOpen(true);
-        setType("alert");
-        setMessage("申し訳ありません。送信に失敗しました。");
+        setType('alert');
+        setMessage('申し訳ありません。送信に失敗しました。');
       });
   };
 
@@ -46,8 +46,7 @@ export const ContactContent = () => {
         name="username"
         autoComplete="username"
         placeholder="お名前*"
-        value={name}
-        onChange={setName}
+        onBlur={setName}
       />
       <form
         className="mb-20"
@@ -59,8 +58,7 @@ export const ContactContent = () => {
           name="email"
           autoComplete="email"
           placeholder="メールアドレス*"
-          value={email}
-          onChange={setEmail}
+          onBlur={setEmail}
         />
         <textarea
           className="appearance-none relative block w-full h-40 px-3 py-2 mb-3 bg-gray-50 border border-gray-300 placeholder-gray-500 text-gray-600 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -77,7 +75,7 @@ export const ContactContent = () => {
       <AlertModal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
-        primaryText={"OK"}
+        primaryText={'OK'}
         message={message}
         type={type}
       />

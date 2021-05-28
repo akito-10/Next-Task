@@ -1,42 +1,42 @@
-import { useState } from "react";
-import { InputField } from "./shared/InputField";
-import Image from "next/image";
-import classNames from "classnames";
-import { auth, storage } from "src/firebase/firebase";
-import { useDispatch } from "react-redux";
-import { updateUserProfile } from "src/features/userSlice";
-import { InputModal } from "./shared/InputModal";
+import { useState } from 'react';
+import { InputField } from './shared/InputField';
+import Image from 'next/image';
+import classNames from 'classnames';
+import { auth, storage } from 'src/firebase/firebase';
+import { useDispatch } from 'react-redux';
+import { updateUserProfile } from 'src/features/userSlice';
+import { InputModal } from './shared/InputModal';
 
 export const Auth = (): JSX.Element => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [avatar, setAvatar] = useState<File | null>(null);
-  const [username, setUsername] = useState<string>("");
-  const [alertText, setAlertText] = useState<string>("");
+  const [username, setUsername] = useState<string>('');
+  const [alertText, setAlertText] = useState<string>('');
   const [isViewAlert, setIsViewAlert] = useState<boolean>(true);
   const [isPasswordRemember, setIsPassWordRemember] = useState<boolean>(false);
-  const [resetEmail, setResetEmail] = useState<string>("");
+  const [resetEmail, setResetEmail] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
       setAvatar(e.target.files![0]);
-      e.target.value = "";
+      e.target.value = '';
     }
   };
 
   // ログイン時のバリデーション
   const checkItemsInLogin = () => {
     if (!email && !password) {
-      setAlertText("メールアドレス、パスワードは必須です。");
+      setAlertText('メールアドレス、パスワードは必須です。');
       return false;
     } else if (!email) {
-      setAlertText("メールアドレスは必須です。");
+      setAlertText('メールアドレスは必須です。');
       return false;
     } else if (!password) {
-      setAlertText("パスワードは必須です。");
+      setAlertText('パスワードは必須です。');
       return false;
     }
     return true;
@@ -46,23 +46,23 @@ export const Auth = (): JSX.Element => {
   const checkItemsInSignUp = () => {
     if (!username && !avatar && !email && !password) {
       setAlertText(
-        "ユーザー名、アバター、メールアドレス、パスワードは必須です。"
+        'ユーザー名、アバター、メールアドレス、パスワードは必須です。'
       );
       return false;
     } else if (!username) {
-      setAlertText("ユーザー名は必須です。");
+      setAlertText('ユーザー名は必須です。');
       return false;
     } else if (!avatar) {
-      setAlertText("アバターは必須です。");
+      setAlertText('アバターは必須です。');
       return false;
     } else if (!email) {
-      setAlertText("メールアドレスは必須です。");
+      setAlertText('メールアドレスは必須です。');
       return false;
     } else if (!password) {
-      setAlertText("パスワードは必須です。");
+      setAlertText('パスワードは必須です。');
       return false;
     } else if (password.length < 6) {
-      setAlertText("パスワードは6文字以上です。");
+      setAlertText('パスワードは6文字以上です。');
       return false;
     }
     return true;
@@ -73,7 +73,7 @@ export const Auth = (): JSX.Element => {
       .signInWithEmailAndPassword(email, password)
       .then(() => {})
       .catch(() => {
-        setAlertText("メールアドレスまたはパスワードが正しくありません。");
+        setAlertText('メールアドレスまたはパスワードが正しくありません。');
         setIsViewAlert(true);
       });
   };
@@ -81,18 +81,18 @@ export const Auth = (): JSX.Element => {
   const signUpEmail = async () => {
     const authUser = await auth.createUserWithEmailAndPassword(email, password);
 
-    let url = "";
+    let url = '';
     if (avatar) {
       const S =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       const N = 16;
       const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
         .map((n) => S[n % S.length])
-        .join("");
-      const fileName = randomChar + "_" + avatar.name;
+        .join('');
+      const fileName = randomChar + '_' + avatar.name;
 
       await storage.ref(`avatars/${fileName}`).put(avatar);
-      url = await storage.ref("avatars").child(fileName).getDownloadURL();
+      url = await storage.ref('avatars').child(fileName).getDownloadURL();
     }
 
     await authUser.user?.updateProfile({
@@ -113,11 +113,11 @@ export const Auth = (): JSX.Element => {
       .sendPasswordResetEmail(resetEmail)
       .then(() => {
         setIsModalOpen(false);
-        setResetEmail("");
+        setResetEmail('');
       })
       .catch((err) => {
         alert(err.message);
-        setResetEmail("");
+        setResetEmail('');
       });
   };
 
@@ -125,7 +125,7 @@ export const Auth = (): JSX.Element => {
     <div className="max-w-md w-full space-y-8">
       <div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-600">
-          {isLogin ? "Login" : "Sign Up"}
+          {isLogin ? 'Login' : 'Sign Up'}
         </h2>
       </div>
       <form className="mt-8 space-y-6 text-center">
@@ -138,8 +138,7 @@ export const Auth = (): JSX.Element => {
                 type="text"
                 autoComplete="username"
                 placeholder="ユーザー名"
-                value={username}
-                onChange={setUsername}
+                onBlur={setUsername}
               />
             </div>
           )}
@@ -150,8 +149,8 @@ export const Auth = (): JSX.Element => {
                 width={40}
                 height={40}
                 className={classNames(
-                  "rounded-full",
-                  !avatar ? "opacity-30" : "opacity-100"
+                  'rounded-full',
+                  !avatar ? 'opacity-30' : 'opacity-100'
                 )}
               />
               <input type="file" hidden onChange={onChangeImageHandler} />
@@ -163,8 +162,7 @@ export const Auth = (): JSX.Element => {
               type="email"
               autoComplete="email"
               placeholder="メールアドレス"
-              value={email}
-              onChange={setEmail}
+              onBlur={setEmail}
             />
           </div>
           <div>
@@ -173,14 +171,13 @@ export const Auth = (): JSX.Element => {
               type="password"
               autoComplete="password"
               placeholder="パスワード"
-              value={password}
-              onChange={setPassword}
+              onBlur={setPassword}
             />
           </div>
           <span
             className={classNames(
-              "text-xs text-red-600",
-              !isViewAlert && "hidden"
+              'text-xs text-red-600',
+              !isViewAlert && 'hidden'
             )}
           >
             {alertText}
@@ -243,7 +240,7 @@ export const Auth = (): JSX.Element => {
                 />
               </svg>
             </span>
-            {isLogin ? "Login" : "Sign up"}
+            {isLogin ? 'Login' : 'Sign up'}
           </button>
           <div className="mt-3 ml-3">
             <span
@@ -253,7 +250,7 @@ export const Auth = (): JSX.Element => {
                 setIsLogin(!isLogin);
               }}
             >
-              {isLogin ? "新規登録へ" : "ログイン画面へ"}
+              {isLogin ? '新規登録へ' : 'ログイン画面へ'}
             </span>
           </div>
         </div>
@@ -261,7 +258,7 @@ export const Auth = (): JSX.Element => {
       <InputModal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
-        message={"リセット用メールアドレスを記入"}
+        message={'リセット用メールアドレスを記入'}
         value={resetEmail}
         setValue={setResetEmail}
         onClick={sendResetEmail}

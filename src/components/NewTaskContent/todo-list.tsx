@@ -1,13 +1,13 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { db } from "src/firebase/firebase";
-import firebase from "firebase/app";
-import { InputField } from "../shared/InputField";
-import { PrimaryButton } from "../shared/PrimaryButton";
-import { TableContents } from "../shared/TableContents";
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import { selectUser } from "src/features/userSlice";
-import { AlertModal } from "../shared/AlertModal";
+import { Dispatch, SetStateAction, useState } from 'react';
+import { db } from 'src/firebase/firebase';
+import firebase from 'firebase/app';
+import { InputField } from '../shared/InputField';
+import { PrimaryButton } from '../shared/PrimaryButton';
+import { TableContents } from '../shared/TableContents';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'src/features/userSlice';
+import { AlertModal } from '../shared/AlertModal';
 
 type TodoListProps = {
   taskTitle: string;
@@ -21,23 +21,23 @@ export const TodoList = ({
   const router = useRouter();
   const user = useSelector(selectUser);
   const [id, setId] = useState<number>(0);
-  const [title, setTitle] = useState<string>("");
-  const [date, setDate] = useState<string>("");
+  const [title, setTitle] = useState<string>('');
+  const [date, setDate] = useState<string>('');
   const [todoInfo, setTodoInfo] = useState([
     {
       id: 0,
-      title: "",
-      deadline: "",
+      title: '',
+      deadline: '',
     },
   ]);
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<string>('');
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [isWarningOpen, setIsWarningOpen] = useState<boolean>(false);
 
   const registerTask = () => {
-    db.collection("users")
+    db.collection('users')
       .doc(user.uid)
-      .collection("tasks")
+      .collection('tasks')
       .add({
         title: taskTitle,
         progress: 0,
@@ -59,45 +59,33 @@ export const TodoList = ({
   return (
     <div className="text-center">
       <h1 className="text-3xl text-gray-700 mb-6 sm:mb-14">
-        {taskTitle ? `${taskTitle}のTodo登録` : "無名のタスク"}
+        {taskTitle ? `${taskTitle}のTodo登録` : '無名のタスク'}
       </h1>
       <div className="h-96 w-96 flex flex-col items-center justify-center mx-auto max-w-90p">
         <h2 className="text-2xl text-gray-700 mb-5">タイトルを入力</h2>
-        <InputField
-          color="white"
-          name="title"
-          type="text"
-          value={title}
-          onChange={setTitle}
-        />
+        <InputField color="white" name="title" type="text" onBlur={setTitle} />
         <h2 className="text-2xl text-gray-700 mb-3">締め切りを入力</h2>
-        <InputField
-          color="white"
-          name="title"
-          type="date"
-          value={date}
-          onChange={setDate}
-        />
+        <InputField color="white" name="title" type="date" onBlur={setDate} />
         <PrimaryButton
           bgColor="black"
           ripple
           onClick={() => {
             if (!title && !date) {
-              setMessage("タイトルと締め切り");
+              setMessage('タイトルと締め切り');
               setIsAlertOpen(true);
               return;
             } else if (!title) {
-              setMessage("タイトル");
+              setMessage('タイトル');
               setIsAlertOpen(true);
               return;
             } else if (!date) {
-              setMessage("締め切り");
+              setMessage('締め切り');
               setIsAlertOpen(true);
               return;
             }
             setId((prev) => prev + 1);
             setTodoInfo((prev) =>
-              prev[0]?.title !== ""
+              prev[0]?.title !== ''
                 ? [
                     ...prev,
                     {
@@ -114,8 +102,8 @@ export const TodoList = ({
                     },
                   ]
             );
-            setTitle("");
-            setDate("");
+            setTitle('');
+            setDate('');
           }}
         >
           Todo登録
@@ -169,7 +157,7 @@ export const TodoList = ({
         <PrimaryButton
           bgColor="red"
           className="mr-5"
-          onClick={() => setPage("task")}
+          onClick={() => setPage('task')}
         >
           戻る
         </PrimaryButton>
@@ -180,7 +168,7 @@ export const TodoList = ({
               setIsWarningOpen(true);
             } else {
               registerTask();
-              router.push("/tasks-page");
+              router.push('/tasks-page');
             }
           }}
         >
@@ -197,11 +185,11 @@ export const TodoList = ({
         isOpen={isWarningOpen}
         setIsOpen={setIsWarningOpen}
         primaryText="進む"
-        message={"Todoが登録されていませんが、そのまま進みますか？"}
+        message={'Todoが登録されていませんが、そのまま進みますか？'}
         secondText="戻る"
         onClick={() => {
           registerTask();
-          router.push("/tasks-page");
+          router.push('/tasks-page');
         }}
       />
     </div>

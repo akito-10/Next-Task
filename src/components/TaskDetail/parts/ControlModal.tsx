@@ -1,16 +1,16 @@
-import classNames from "classnames";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { selectUser } from "src/features/userSlice";
-import { db } from "src/firebase/firebase";
-import { TasksContentType, TodoListType } from "src/models";
-import { InputField } from "../../shared/InputField";
-import { PrimaryButton } from "../../shared/PrimaryButton";
+import classNames from 'classnames';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'src/features/userSlice';
+import { db } from 'src/firebase/firebase';
+import { TasksContentType, TodoListType } from 'src/models';
+import { InputField } from '../../shared/InputField';
+import { PrimaryButton } from '../../shared/PrimaryButton';
 
 type ControlModalProps = {
   isOpen: boolean;
   task: TasksContentType;
-  type: "add" | "edit";
+  type: 'add' | 'edit';
   currTodo?: TodoListType;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
@@ -23,10 +23,13 @@ export const ControlModal = ({
   setIsOpen,
 }: ControlModalProps) => {
   const user = useSelector(selectUser);
-  const taskId = localStorage.getItem("taskId");
-  const [title, setTitle] = useState<string>("");
-  const [deadline, setDeadline] = useState<string>("");
-  const [alertText, setAlertText] = useState<string>("");
+  const taskId = localStorage.getItem('taskId');
+  const [title, setTitle] = useState<string>('');
+  const [deadline, setDeadline] = useState<string>('');
+  const [alertText, setAlertText] = useState<string>('');
+
+  const buttonStyle =
+    'w-full inline-flex justify-center rounded-md border border-transparent text-base font-medium sm:ml-3 sm:w-auto sm:text-sm';
 
   const todoIds = task.todoList.map((todo) => todo.todoId);
   const maxIdNum = Math.max(...todoIds);
@@ -43,9 +46,9 @@ export const ControlModal = ({
     const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
 
     await db
-      .collection("users")
+      .collection('users')
       .doc(user.uid)
-      .collection("tasks")
+      .collection('tasks')
       .doc(taskId!)
       .set({
         ...task,
@@ -65,17 +68,17 @@ export const ControlModal = ({
       });
 
     setIsOpen(false);
-    setTitle("");
-    setDeadline("");
+    setTitle('');
+    setDeadline('');
   };
 
   const addTodo = async () => {
     if (!title && !deadline) {
-      return setAlertText("Todo名・締め切りを入力してください。");
+      return setAlertText('Todo名・締め切りを入力してください。');
     } else if (!title) {
-      return setAlertText("Todo名を入力してください。");
+      return setAlertText('Todo名を入力してください。');
     } else if (!deadline) {
-      return setAlertText("締め切りを入力してください。");
+      return setAlertText('締め切りを入力してください。');
     }
 
     const allTodoLength = task.todoList.length + 1;
@@ -87,9 +90,9 @@ export const ControlModal = ({
     const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
 
     await db
-      .collection("users")
+      .collection('users')
       .doc(user.uid)
-      .collection("tasks")
+      .collection('tasks')
       .doc(taskId!)
       .set({
         ...task,
@@ -107,21 +110,21 @@ export const ControlModal = ({
       });
 
     setIsOpen(false);
-    setTitle("");
-    setDeadline("");
+    setTitle('');
+    setDeadline('');
   };
 
   useEffect(() => {
-    setTitle(currTodo ? currTodo.title : "");
-    setDeadline("");
-    setAlertText("");
+    setTitle(currTodo ? currTodo.title : '');
+    setDeadline('');
+    setAlertText('');
   }, [isOpen]);
 
   return (
     <div
       className={classNames(
-        "fixed z-10 inset-0 overflow-y-auto",
-        !isOpen && "hidden"
+        'fixed z-10 inset-0 overflow-y-auto',
+        !isOpen && 'hidden'
       )}
       aria-labelledby="modal-title"
       role="dialog"
@@ -148,9 +151,8 @@ export const ControlModal = ({
                   color="white"
                   name="todo"
                   type="text"
-                  placeholder={currTodo ? currTodo.title : "Todo名を入力"}
-                  value={title}
-                  onChange={setTitle}
+                  placeholder={currTodo ? currTodo.title : 'Todo名を入力'}
+                  onBlur={setTitle}
                 />
               </div>
               <div>
@@ -159,9 +161,8 @@ export const ControlModal = ({
                   color="white"
                   name="deadline"
                   type="date"
-                  placeholder={currTodo ? currTodo.deadline : "締め切りを入力"}
-                  value={deadline}
-                  onChange={setDeadline}
+                  placeholder={currTodo ? currTodo.deadline : '締め切りを入力'}
+                  onBlur={setDeadline}
                 />
               </div>
               <div className="mt-2">
@@ -173,9 +174,9 @@ export const ControlModal = ({
             <PrimaryButton
               bgColor="green"
               onClick={async () => {
-                type === "edit" ? await updateTodo() : await addTodo();
+                type === 'edit' ? await updateTodo() : await addTodo();
               }}
-              className="w-full inline-flex justify-center rounded-md border border-transparent text-base font-medium sm:ml-3 sm:w-auto sm:text-sm"
+              className={buttonStyle}
             >
               確定する
             </PrimaryButton>
@@ -184,7 +185,7 @@ export const ControlModal = ({
               onClick={() => {
                 setIsOpen(false);
               }}
-              className="w-full inline-flex justify-center rounded-md border border-transparent text-base font-medium  sm:ml-3 sm:w-auto sm:text-sm"
+              className={buttonStyle}
             >
               戻る
             </PrimaryButton>

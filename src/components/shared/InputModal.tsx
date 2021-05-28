@@ -1,8 +1,8 @@
-import classNames from "classnames";
-import { Dispatch, SetStateAction } from "react";
-import { InputField } from "./InputField";
-import { PrimaryButton } from "./PrimaryButton";
-import { ShadowCover } from "./ShadowCover";
+import classNames from 'classnames';
+import { Dispatch, SetStateAction } from 'react';
+import { InputField } from './InputField';
+import { PrimaryButton } from './PrimaryButton';
+import { ShadowCover } from './ShadowCover';
 
 type InputModalProps = {
   isOpen: boolean;
@@ -24,8 +24,8 @@ export const InputModal = ({
   return (
     <div
       className={classNames(
-        "fixed z-10 inset-0 overflow-y-auto",
-        !isOpen && "hidden"
+        'fixed z-10 inset-0 overflow-y-auto',
+        !isOpen && 'hidden'
       )}
       aria-labelledby="modal-title"
       role="dialog"
@@ -37,10 +37,9 @@ export const InputModal = ({
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="w-4/5 mx-auto">
               <InputField
-                value={value}
                 type="email"
                 placeholder={message}
-                onChange={setValue}
+                onBlur={setValue}
               />
             </div>
           </div>
