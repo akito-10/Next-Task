@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FocusEvent, Dispatch, SetStateAction } from 'react';
+import { FocusEvent } from 'react';
 
 type InputFieldProps = {
   color?: 'white' | 'gray';
@@ -7,7 +7,8 @@ type InputFieldProps = {
   type?: 'text' | 'email' | 'password' | 'date';
   autoComplete?: string;
   placeholder?: string;
-  onBlur: Dispatch<SetStateAction<string>>;
+  defaultValue?: string;
+  onBlur: any;
 };
 
 export const InputField = ({
@@ -16,6 +17,7 @@ export const InputField = ({
   type = 'text',
   autoComplete,
   placeholder,
+  defaultValue,
   onBlur,
 }: InputFieldProps): JSX.Element => {
   const inputStyle =
@@ -31,6 +33,7 @@ export const InputField = ({
         required
         className={classNames(inputStyle, bgColor)}
         placeholder={placeholder}
+        defaultValue={defaultValue}
         onBlur={(e: FocusEvent<HTMLInputElement>) => {
           onBlur(e.currentTarget.value);
         }}
