@@ -27,26 +27,23 @@ const TasksContent = (): JSX.Element => {
 
   const classes = tableContents.length > 3 ? 'h-auto' : 'h-80';
 
-  const deleteTask = useCallback(
-    (id: string) => {
-      db.collection('users')
-        .doc(user.uid)
-        .collection('tasks')
-        .doc(id)
-        .delete()
-        .then(() => {
-          const currTaskId = localStorage.getItem(user.uid);
-          if (id === currTaskId) {
-            localStorage.removeItem(user.uid);
-          }
-          console.log('削除成功！');
-        })
-        .catch((error) => {
-          console.error('Error removing document: ', error);
-        });
-    },
-    [user.uid]
-  );
+  const deleteTask = (id: string) => {
+    db.collection('users')
+      .doc(user.uid)
+      .collection('tasks')
+      .doc(id)
+      .delete()
+      .then(() => {
+        const currTaskId = localStorage.getItem(user.uid);
+        if (id === currTaskId) {
+          localStorage.removeItem(user.uid);
+        }
+        console.log('削除成功！');
+      })
+      .catch((error) => {
+        console.error('Error removing document: ', error);
+      });
+  };
 
   return (
     <div className="flex flex-col max-w-full pt-24 pb-8">
@@ -93,7 +90,7 @@ const TasksContent = (): JSX.Element => {
                           'h-14',
                           content.progress === 100 && 'bg-gray-200 opacity-70'
                         )}
-                        sub={`${content.progress}%`}
+                        sub={content.progress ? `${content.progress}%` : '0%'}
                         onClick={() => {
                           setIsAlertOpen(true);
                           setCurrId(content.id);
