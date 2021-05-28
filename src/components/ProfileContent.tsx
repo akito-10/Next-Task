@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth, storage } from 'src/firebase/firebase';
 import { InputField } from './shared/InputField';
@@ -7,54 +7,85 @@ import { selectUser, updateUserProfile } from 'src/features/userSlice';
 import { AlertModal } from './shared/AlertModal';
 import Image from 'next/image';
 
+type ProfileType = {
+  username: string;
+  email: string;
+  avatar: File | null;
+};
+
 export const ProfileContent = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const currentUser = auth.currentUser;
-  const [username, setUsername] = useState<string>(user.displayName);
-  const [email, setEmail] = useState<string>(currentUser?.email!);
-  const [avatar, setAvatar] = useState<File | null>(null);
+  const [profile, setProfile] = useState<ProfileType>({
+    username: user.displayName,
+    email: currentUser?.email!,
+    avatar: null,
+  });
   const [isSuccessOpen, setIsSuccessOpen] = useState<boolean>(false);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
-      setAvatar(e.target.files![0]);
+      setProfile({
+        ...profile,
+        avatar: e.target.files![0],
+      });
       e.target.value = '';
     }
   };
 
   const updateProfileHandler = async () => {
     let url = '';
-    if (avatar) {
+    if (profile.avatar) {
       const S =
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       const N = 16;
       const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
         .map((n) => S[n % S.length])
         .join('');
-      const fileName = randomChar + '_' + avatar.name;
+      const fileName = randomChar + '_' + profile.avatar.name;
 
-      await storage.ref(`avatars/${fileName}`).put(avatar);
+      await storage.ref(`avatars/${fileName}`).put(profile.avatar);
       url = await storage.ref('avatars').child(fileName).getDownloadURL();
     } else {
       url = currentUser?.photoURL!;
     }
 
     await currentUser?.updateProfile({
-      displayName: username,
+      displayName: profile.username,
       photoURL: url,
     });
 
-    await currentUser?.updateEmail(email);
+    await currentUser?.updateEmail(profile.email);
 
     dispatch(
       updateUserProfile({
-        displayName: username,
+        displayName: profile.username,
         photoUrl: url,
       })
     );
   };
+
+  const updateUsername = useCallback(
+    (v: string) => {
+      setProfile({
+        ...profile,
+        username: v,
+      });
+    },
+    [profile]
+  );
+
+  const updateEmail = useCallback(
+    (v: string) => {
+      setProfile({
+        ...profile,
+        email: v,
+      });
+    },
+    [profile]
+  );
 
   return (
     <div className="w-64 text-center m-auto">
@@ -65,7 +96,8 @@ export const ProfileContent = () => {
         type="text"
         autoComplete="username"
         placeholder={user.displayName}
-        onBlur={setUsername}
+        defaultValue={user.displayName}
+        onBlur={updateUsername}
       />
       <p className="mt-8 mb-4">メールアドレス</p>
       <InputField
@@ -74,7 +106,8 @@ export const ProfileContent = () => {
         type="email"
         autoComplete="email"
         placeholder={currentUser?.email!}
-        onBlur={setEmail}
+        defaultValue={currentUser?.email!}
+        onBlur={updateEmail}
       />
       <div className="flex justify-evenly items-center mt-10">
         {user.photoUrl && (
