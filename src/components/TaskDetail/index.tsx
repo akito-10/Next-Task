@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { selectUser } from "src/features/userSlice";
-import { db } from "src/firebase/firebase";
-import { TasksContentType, TodoListType } from "src/models";
-import { AlertModal } from "../shared/AlertModal";
-import { PrimaryButton } from "../shared/PrimaryButton";
-import { CheckItem } from "./parts/CheckItem";
-import { ControlModal } from "./parts/ControlModal";
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser } from 'src/features/userSlice';
+import { db } from 'src/firebase/firebase';
+import { TasksContentType, TodoListType } from 'src/models';
+import { AlertModal } from '../shared/AlertModal';
+import { PrimaryButton } from '../shared/PrimaryButton';
+import { CheckItem } from './parts/CheckItem';
+import { ControlModal } from './parts/ControlModal';
 
 type TaskDetailProps = {
   task: TasksContentType;
@@ -14,14 +14,14 @@ type TaskDetailProps = {
 
 export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
   const user = useSelector(selectUser);
-  const taskId = localStorage.getItem("taskId");
+  const taskId = localStorage.getItem('taskId');
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isWarningOpen, setIsWarningOpen] = useState<boolean>(false);
   const [currTodo, setCurrTodo] = useState<TodoListType>({
     todoId: 0,
-    title: "",
-    deadline: "",
+    title: '',
+    deadline: '',
     isDone: false,
     doneDate: null,
   });
@@ -56,14 +56,11 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
 
     // tasksコレクションに値を格納
     await db
-      .collection("users")
+      .collection('users')
       .doc(user.uid)
-      .collection("tasks")
+      .collection('tasks')
       .doc(taskId!)
       .set(addedBody);
-
-    // 現在のタスクに最新の値を代入するため。
-    await db.collection("users").doc(user.uid).set(addedBody);
   };
 
   const deleteTodo = (id: number, checked: boolean) => {
@@ -77,9 +74,9 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
     // 完了率の計算
     const progress = Math.floor((doneTodoLength / allTodoLength) * 100);
 
-    db.collection("users")
+    db.collection('users')
       .doc(user.uid)
-      .collection("tasks")
+      .collection('tasks')
       .doc(taskId!)
       .set({
         ...task,
@@ -96,7 +93,7 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
     <div className="text-center max-w-full mb-28 pt-24 pb-8">
       <h1 className="text-3xl text-gray-700 mb-6 sm:mb-14">{`タスク名：${task.title}`}</h1>
       <ul>
-        {task.todoList.length > 0 && task.title !== "" ? (
+        {task.todoList.length > 0 && task.title !== '' ? (
           task.todoList.map((todo) => (
             <CheckItem
               key={`${todo.todoId}`}
@@ -142,10 +139,10 @@ export const TaskDetail = ({ task }: TaskDetailProps): JSX.Element => {
       <AlertModal
         isOpen={isWarningOpen}
         setIsOpen={setIsWarningOpen}
-        primaryText={"設定"}
-        message={"このタスクを現在のタスクにしますか？"}
+        primaryText={'設定'}
+        message={'このタスクを現在のタスクにしますか？'}
         type="warning"
-        secondText={"キャンセル"}
+        secondText={'キャンセル'}
         onClick={() => addCurrTask()}
       />
     </div>
