@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { InputField } from './shared/InputField';
 import Image from 'next/image';
 import classNames from 'classnames';
@@ -7,13 +7,22 @@ import { useDispatch } from 'react-redux';
 import { updateUserProfile } from 'src/features/userSlice';
 import { InputModal } from './shared/InputModal';
 
+type UserInfoType = {
+  email: string;
+  password: string;
+  avatar: File | null;
+  username: string;
+};
+
 export const Auth = (): JSX.Element => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [userInfo, setUserInfo] = useState<UserInfoType>({
+    email: '',
+    password: '',
+    avatar: null,
+    username: '',
+  });
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [avatar, setAvatar] = useState<File | null>(null);
-  const [username, setUsername] = useState<string>('');
   const [alertText, setAlertText] = useState<string>('');
   const [isViewAlert, setIsViewAlert] = useState<boolean>(true);
   const [isPasswordRemember, setIsPassWordRemember] = useState<boolean>(false);
@@ -22,20 +31,23 @@ export const Auth = (): JSX.Element => {
 
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
-      setAvatar(e.target.files![0]);
+      setUserInfo({
+        ...userInfo,
+        avatar: e.target.files![0],
+      });
       e.target.value = '';
     }
   };
 
   // ログイン時のバリデーション
   const checkItemsInLogin = () => {
-    if (!email && !password) {
+    if (!userInfo.email && !userInfo.password) {
       setAlertText('メールアドレス、パスワードは必須です。');
       return false;
-    } else if (!email) {
+    } else if (!userInfo.email) {
       setAlertText('メールアドレスは必須です。');
       return false;
-    } else if (!password) {
+    } else if (!userInfo.password) {
       setAlertText('パスワードは必須です。');
       return false;
     }
@@ -44,24 +56,29 @@ export const Auth = (): JSX.Element => {
 
   // 新規登録時のバリデーション
   const checkItemsInSignUp = () => {
-    if (!username && !avatar && !email && !password) {
+    if (
+      !userInfo.username &&
+      !userInfo.avatar &&
+      !userInfo.email &&
+      !userInfo.password
+    ) {
       setAlertText(
         'ユーザー名、アバター、メールアドレス、パスワードは必須です。'
       );
       return false;
-    } else if (!username) {
+    } else if (!userInfo.username) {
       setAlertText('ユーザー名は必須です。');
       return false;
-    } else if (!avatar) {
+    } else if (!userInfo.avatar) {
       setAlertText('アバターは必須です。');
       return false;
-    } else if (!email) {
+    } else if (!userInfo.email) {
       setAlertText('メールアドレスは必須です。');
       return false;
-    } else if (!password) {
+    } else if (!userInfo.password) {
       setAlertText('パスワードは必須です。');
       return false;
-    } else if (password.length < 6) {
+    } else if (userInfo.password.length < 6) {
       setAlertText('パスワードは6文字以上です。');
       return false;
     }
@@ -70,7 +87,7 @@ export const Auth = (): JSX.Element => {
 
   const signInEmail = async () => {
     await auth
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(userInfo.email!, userInfo.password!)
       .then(() => {})
       .catch(() => {
         setAlertText('メールアドレスまたはパスワードが正しくありません。');
@@ -79,30 +96,33 @@ export const Auth = (): JSX.Element => {
   };
 
   const signUpEmail = async () => {
-    const authUser = await auth.createUserWithEmailAndPassword(email, password);
+    const authUser = await auth.createUserWithEmailAndPassword(
+      userInfo.email!,
+      userInfo.password!
+    );
 
     let url = '';
-    if (avatar) {
+    if (userInfo.avatar) {
       const S =
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       const N = 16;
       const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
         .map((n) => S[n % S.length])
         .join('');
-      const fileName = randomChar + '_' + avatar.name;
+      const fileName = randomChar + '_' + userInfo.avatar.name;
 
-      await storage.ref(`avatars/${fileName}`).put(avatar);
+      await storage.ref(`avatars/${fileName}`).put(userInfo.avatar);
       url = await storage.ref('avatars').child(fileName).getDownloadURL();
     }
 
     await authUser.user?.updateProfile({
-      displayName: username,
+      displayName: userInfo.username,
       photoURL: url,
     });
 
     dispatch(
       updateUserProfile({
-        displayName: username,
+        displayName: userInfo.username!,
         photoUrl: url,
       })
     );
@@ -121,6 +141,36 @@ export const Auth = (): JSX.Element => {
       });
   };
 
+  const changeUsername = useCallback(
+    (v: string) => {
+      setUserInfo({
+        ...userInfo,
+        username: v,
+      });
+    },
+    [userInfo]
+  );
+
+  const changeEmail = useCallback(
+    (v: string) => {
+      setUserInfo({
+        ...userInfo,
+        email: v,
+      });
+    },
+    [userInfo]
+  );
+
+  const changePassword = useCallback(
+    (v: string) => {
+      setUserInfo({
+        ...userInfo,
+        password: v,
+      });
+    },
+    [userInfo]
+  );
+
   return (
     <div className="max-w-md w-full space-y-8">
       <div>
@@ -138,7 +188,7 @@ export const Auth = (): JSX.Element => {
                 type="text"
                 autoComplete="username"
                 placeholder="ユーザー名"
-                onBlur={setUsername}
+                onBlur={changeUsername}
               />
             </div>
           )}
@@ -150,7 +200,7 @@ export const Auth = (): JSX.Element => {
                 height={40}
                 className={classNames(
                   'rounded-full',
-                  !avatar ? 'opacity-30' : 'opacity-100'
+                  !userInfo.avatar ? 'opacity-30' : 'opacity-100'
                 )}
               />
               <input type="file" hidden onChange={onChangeImageHandler} />
@@ -162,7 +212,7 @@ export const Auth = (): JSX.Element => {
               type="email"
               autoComplete="email"
               placeholder="メールアドレス"
-              onBlur={setEmail}
+              onBlur={changeEmail}
             />
           </div>
           <div>
@@ -171,7 +221,7 @@ export const Auth = (): JSX.Element => {
               type="password"
               autoComplete="password"
               placeholder="パスワード"
-              onBlur={setPassword}
+              onBlur={changePassword}
             />
           </div>
           <span
