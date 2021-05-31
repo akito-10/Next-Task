@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, updateUserProfile } from 'src/features/userSlice';
 import { auth, storage } from 'src/firebase/firebase';
+import { addStorage } from 'src/lib/addStorage';
+import { updateProfile } from 'src/lib/updateProfile';
 
 type ProfileType = {
   username: string;
@@ -55,33 +57,12 @@ export const useControlProfile = () => {
   const updateProfileHandler = useCallback(async () => {
     let url = '';
     if (profile.avatar) {
-      const S =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      const N = 16;
-      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-        .map((n) => S[n % S.length])
-        .join('');
-      const fileName = randomChar + '_' + profile.avatar.name;
-
-      await storage.ref(`avatars/${fileName}`).put(profile.avatar);
-      url = await storage.ref('avatars').child(fileName).getDownloadURL();
+      url = await addStorage(profile.avatar, url);
     } else {
       url = currentUser?.photoURL!;
     }
 
-    await currentUser?.updateProfile({
-      displayName: profile.username,
-      photoURL: url,
-    });
-
-    await currentUser?.updateEmail(profile.email);
-
-    dispatch(
-      updateUserProfile({
-        displayName: profile.username,
-        photoUrl: url,
-      })
-    );
+    await updateProfile(currentUser, profile.username, url, profile.email);
   }, [profile]);
 
   return {

@@ -1,175 +1,37 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { InputField } from './shared/InputField';
 import Image from 'next/image';
 import classNames from 'classnames';
-import { auth, storage } from 'src/firebase/firebase';
-import { useDispatch } from 'react-redux';
-import { updateUserProfile } from 'src/features/userSlice';
 import { InputModal } from './shared/InputModal';
-
-type UserInfoType = {
-  email: string;
-  password: string;
-  avatar: File | null;
-  username: string;
-};
+import { useControlUserInfo } from 'src/hooks/useControlUserInfo';
+import { useResetPassword } from 'src/hooks/useResetPassword';
 
 export const Auth = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const [userInfo, setUserInfo] = useState<UserInfoType>({
-    email: '',
-    password: '',
-    avatar: null,
-    username: '',
-  });
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [alertText, setAlertText] = useState<string>('');
-  const [isViewAlert, setIsViewAlert] = useState<boolean>(true);
-  const [isPasswordRemember, setIsPassWordRemember] = useState<boolean>(false);
-  const [resetEmail, setResetEmail] = useState<string>('');
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  // const [isPasswordRemember, setIsPassWordRemember] = useState<boolean>(false);
 
-  const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files![0]) {
-      setUserInfo({
-        ...userInfo,
-        avatar: e.target.files![0],
-      });
-      e.target.value = '';
-    }
-  };
+  const {
+    alertText,
+    userInfo,
+    isViewAlert,
+    setIsViewAlert,
+    checkItemsInLogin,
+    checkItemsInSignUp,
+    changeImageHandler,
+    signInEmail,
+    signUpEmail,
+    changeUsername,
+    changeEmail,
+    changePassword,
+  } = useControlUserInfo();
 
-  // ログイン時のバリデーション
-  const checkItemsInLogin = () => {
-    if (!userInfo.email && !userInfo.password) {
-      setAlertText('メールアドレス、パスワードは必須です。');
-      return false;
-    } else if (!userInfo.email) {
-      setAlertText('メールアドレスは必須です。');
-      return false;
-    } else if (!userInfo.password) {
-      setAlertText('パスワードは必須です。');
-      return false;
-    }
-    return true;
-  };
-
-  // 新規登録時のバリデーション
-  const checkItemsInSignUp = () => {
-    if (
-      !userInfo.username &&
-      !userInfo.avatar &&
-      !userInfo.email &&
-      !userInfo.password
-    ) {
-      setAlertText(
-        'ユーザー名、アバター、メールアドレス、パスワードは必須です。'
-      );
-      return false;
-    } else if (!userInfo.username) {
-      setAlertText('ユーザー名は必須です。');
-      return false;
-    } else if (!userInfo.avatar) {
-      setAlertText('アバターは必須です。');
-      return false;
-    } else if (!userInfo.email) {
-      setAlertText('メールアドレスは必須です。');
-      return false;
-    } else if (!userInfo.password) {
-      setAlertText('パスワードは必須です。');
-      return false;
-    } else if (userInfo.password.length < 6) {
-      setAlertText('パスワードは6文字以上です。');
-      return false;
-    }
-    return true;
-  };
-
-  const signInEmail = async () => {
-    await auth
-      .signInWithEmailAndPassword(userInfo.email!, userInfo.password!)
-      .then(() => {})
-      .catch(() => {
-        setAlertText('メールアドレスまたはパスワードが正しくありません。');
-        setIsViewAlert(true);
-      });
-  };
-
-  const signUpEmail = async () => {
-    const authUser = await auth.createUserWithEmailAndPassword(
-      userInfo.email!,
-      userInfo.password!
-    );
-
-    let url = '';
-    if (userInfo.avatar) {
-      const S =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      const N = 16;
-      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-        .map((n) => S[n % S.length])
-        .join('');
-      const fileName = randomChar + '_' + userInfo.avatar.name;
-
-      await storage.ref(`avatars/${fileName}`).put(userInfo.avatar);
-      url = await storage.ref('avatars').child(fileName).getDownloadURL();
-    }
-
-    await authUser.user?.updateProfile({
-      displayName: userInfo.username,
-      photoURL: url,
-    });
-
-    dispatch(
-      updateUserProfile({
-        displayName: userInfo.username!,
-        photoUrl: url,
-      })
-    );
-  };
-
-  const sendResetEmail = async () => {
-    await auth
-      .sendPasswordResetEmail(resetEmail)
-      .then(() => {
-        setIsModalOpen(false);
-        setResetEmail('');
-      })
-      .catch((err) => {
-        alert(err.message);
-        setResetEmail('');
-      });
-  };
-
-  const changeUsername = useCallback(
-    (v: string) => {
-      setUserInfo({
-        ...userInfo,
-        username: v,
-      });
-    },
-    [userInfo]
-  );
-
-  const changeEmail = useCallback(
-    (v: string) => {
-      setUserInfo({
-        ...userInfo,
-        email: v,
-      });
-    },
-    [userInfo]
-  );
-
-  const changePassword = useCallback(
-    (v: string) => {
-      setUserInfo({
-        ...userInfo,
-        password: v,
-      });
-    },
-    [userInfo]
-  );
+  const {
+    resetEmail,
+    isModalOpen,
+    setResetEmail,
+    setIsModalOpen,
+    sendResetEmail,
+  } = useResetPassword();
 
   return (
     <div className="max-w-md w-full space-y-8">
@@ -203,7 +65,7 @@ export const Auth = (): JSX.Element => {
                   !userInfo.avatar ? 'opacity-30' : 'opacity-100'
                 )}
               />
-              <input type="file" hidden onChange={onChangeImageHandler} />
+              <input type="file" hidden onChange={changeImageHandler} />
             </label>
           )}
           <div>

@@ -26,3 +26,10 @@ export type CurrTaskType = {
     isDone: boolean;
   };
 };
+
+export type UserInfoType = {
+  email: string;
+  password: string;
+  avatar: File | null;
+  username: string;
+};
